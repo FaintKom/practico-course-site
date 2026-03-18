@@ -1221,27 +1221,36 @@ window.addEventListener('scroll', () => {
     document.getElementById('progress').style.width = pct + '%';
 });
 
-// ═══ Section isolation mode: ?section=ID shows only that section ═══
+// ═══ Embed mode: ?section=ID&embed=true — clean slide for Miro ═══
+// ═══ Section mode: ?section=ID — isolated section with nav ═══
+// ═══ Normal mode: full page with copy buttons ═══
 (function() {
     var params = new URLSearchParams(window.location.search);
     var sectionId = params.get('section');
+    var isEmbed = params.get('embed') === 'true';
+
     if (sectionId) {
-        // Hide everything except the target section
+        // Hide chrome
         document.querySelector('nav').style.display = 'none';
         document.querySelector('.hero').style.display = 'none';
         document.getElementById('progress').style.display = 'none';
         document.querySelector('footer').style.display = 'none';
+        // Hide all other sections
         document.querySelectorAll('section.section').forEach(function(sec) {
             if (sec.id !== sectionId) sec.style.display = 'none';
         });
-        // Remove body margin for clean embed
         document.body.style.margin = '0';
         document.body.style.padding = '0';
     }
-})();
 
-// ═══ Copy iframe tag for each section ═══
-(function() {
+    if (isEmbed) {
+        // Embed mode: hide password gate, no copy buttons
+        var gate = document.getElementById('pw-gate');
+        if (gate) gate.style.display = 'none';
+        return; // skip copy buttons
+    }
+
+    // ═══ Copy iframe buttons — only on normal/section mode (not embed) ═══
     var baseUrl = window.location.origin + window.location.pathname;
     var sections = document.querySelectorAll('section.section');
 
@@ -1259,7 +1268,9 @@ window.addEventListener('scroll', () => {
 
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
-            var iframeCode = '<iframe src="' + baseUrl + '?section=' + sec.id + '" width="100%" height="800" frameborder="0" style="border:none; border-radius:12px;" allowfullscreen></iframe>';
+            // Embed URL always includes embed=true (no password, no buttons)
+            var embedUrl = baseUrl + '?section=' + sec.id + '&embed=true';
+            var iframeCode = '<iframe src="' + embedUrl + '" width="100%" height="800" frameborder="0" style="border:none; border-radius:12px;" allowfullscreen></iframe>';
             navigator.clipboard.writeText(iframeCode).then(function() {
                 btn.textContent = '\u2705 Скопировано!';
                 btn.style.background = '#2e8749';
