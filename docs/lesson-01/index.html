@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 1 — Знакомство и введение в AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+    --blue: #0080ff;
+    --blue-dark: #0060cc;
+    --blue-light: #e9f1fc;
+    --green: #2e8749;
+    --green-light: #e9fcf0;
+    --orange: #ff6805;
+    --orange-light: #ffebe1;
+    --purple: #5243c3;
+    --purple-light: #ebe9fc;
+    --dark: #1e1e1e;
+    --gray: #64748B;
+    --gray-light: #9CA3AF;
+    --bg: #F8FAFC;
+    --white: #FFFFFF;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito', sans-serif; color: var(--dark); line-height: 1.7; background: var(--white); }
+a { color: var(--blue); text-decoration: none; }
+
+/* ── Nav ── */
+.top-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+    border-bottom: 1px solid #E2E8F0;
+}
+.nav-inner {
+    max-width: 1200px; margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { font-weight: 800; font-size: 1.1rem; color: var(--blue); }
+.nav-links { display: flex; gap: 24px; font-size: 0.85rem; font-weight: 600; color: var(--gray); }
+.nav-links a { color: var(--gray); transition: color 0.2s; }
+.nav-links a:hover { color: var(--blue); }
+.progress-track { height: 3px; background: #E2E8F0; }
+.progress-fill { height: 3px; background: linear-gradient(90deg, var(--blue), var(--purple)); width: 0%; transition: width 0.3s; }
+
+/* ── Section base ── */
+.section { padding: 100px 24px; }
+.section:nth-child(odd) { background: var(--white); }
+.section:nth-child(even) { background: var(--bg); }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+.section-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 16px; border-radius: 50px;
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px;
+    margin-bottom: 16px;
+}
+.section-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 12px; line-height: 1.3; }
+.section-subtitle { font-size: 1.1rem; color: var(--gray); margin-bottom: 48px; max-width: 700px; }
+
+/* ── Hero ── */
+.hero {
+    background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d2b 100%);
+    color: white; padding: 160px 24px 100px; text-align: center;
+    position: relative; overflow: hidden;
+}
+.hero::before {
+    content: ''; position: absolute; top: -200px; right: -200px;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,128,255,0.15) 0%, transparent 70%);
+}
+.hero::after {
+    content: ''; position: absolute; bottom: -150px; left: -150px;
+    width: 400px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(82,67,195,0.12) 0%, transparent 70%);
+}
+.hero-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-badge {
+    display: inline-block; padding: 8px 20px; border-radius: 50px;
+    background: rgba(0,128,255,0.15); border: 1px solid rgba(0,128,255,0.3);
+    color: #6db8ff; font-size: 0.85rem; font-weight: 700; margin-bottom: 24px;
+}
+.hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 16px; line-height: 1.2; }
+.hero p { font-size: 1.15rem; color: rgba(255,255,255,0.7); max-width: 600px; margin: 0 auto 48px; }
+
+/* Stats row */
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 48px; }
+.stat-card {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius); padding: 24px 16px; text-align: center;
+}
+.stat-number { font-size: 2.2rem; font-weight: 800; color: var(--orange); }
+.stat-label { font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: 4px; }
+
+/* ── Cards grid ── */
+.cards-grid { display: grid; gap: 20px; }
+.cards-2 { grid-template-columns: repeat(2, 1fr); }
+.cards-3 { grid-template-columns: repeat(3, 1fr); }
+.cards-4 { grid-template-columns: repeat(4, 1fr); }
+.card {
+    background: var(--white); border-radius: var(--radius); padding: 28px;
+    border: 1px solid #E2E8F0; transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.card-icon { font-size: 2rem; margin-bottom: 12px; }
+.card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+.card-text { font-size: 0.9rem; color: var(--gray); }
+.card-accent { border-left: 4px solid; }
+.card-accent.blue { border-color: var(--blue); }
+.card-accent.green { border-color: var(--green); }
+.card-accent.orange { border-color: var(--orange); }
+.card-accent.purple { border-color: var(--purple); }
+
+/* ── Tree diagram ── */
+.tree { text-align: center; }
+.tree-root {
+    display: inline-block; padding: 16px 32px; border-radius: 12px;
+    background: var(--blue); color: white; font-weight: 700; font-size: 1.2rem;
+    margin-bottom: 0;
+}
+.tree-connector { width: 3px; height: 40px; background: var(--blue); margin: 0 auto; }
+.tree-branches { display: flex; justify-content: center; gap: 32px; position: relative; }
+.tree-branches::before {
+    content: ''; position: absolute; top: 0; left: 16.66%; right: 16.66%;
+    height: 3px; background: #CBD5E1;
+}
+.tree-branch {
+    flex: 1; max-width: 320px; text-align: center; position: relative; padding-top: 40px;
+}
+.tree-branch::before {
+    content: ''; position: absolute; top: 0; left: 50%;
+    width: 3px; height: 40px; background: #CBD5E1;
+}
+.branch-head {
+    padding: 12px 20px; border-radius: 10px; font-weight: 700;
+    margin-bottom: 12px; font-size: 0.95rem;
+}
+.branch-body { font-size: 0.85rem; color: var(--gray); margin-bottom: 12px; }
+.branch-examples {
+    display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;
+}
+.branch-tag {
+    padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600;
+    background: #F1F5F9; color: var(--dark);
+}
+
+/* ── Comparison ── */
+.comparison { display: grid; grid-template-columns: 1fr 80px 1fr; gap: 0; align-items: start; }
+.comp-col { padding: 32px; border-radius: var(--radius); }
+.comp-col h3 { font-size: 1.3rem; margin-bottom: 16px; }
+.comp-vs {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; font-weight: 800; color: var(--gray-light);
+}
+.comp-list { list-style: none; }
+.comp-list li { padding: 8px 0; border-bottom: 1px solid #F1F5F9; font-size: 0.95rem; }
+.comp-list li:last-child { border: none; }
+
+/* ── Flowchart ── */
+.flowchart { display: flex; flex-direction: column; align-items: center; gap: 0; }
+.flow-box {
+    padding: 14px 24px; border-radius: 10px; font-weight: 600;
+    text-align: center; max-width: 400px; font-size: 0.9rem;
+}
+.flow-arrow {
+    width: 3px; height: 32px; background: #CBD5E1; position: relative;
+}
+.flow-arrow::after {
+    content: ''; position: absolute; bottom: 0; left: -4px;
+    border-left: 5px solid transparent; border-right: 5px solid transparent;
+    border-top: 8px solid #CBD5E1;
+}
+.flow-branch { display: flex; gap: 40px; align-items: flex-start; }
+.flow-label {
+    position: absolute; font-size: 0.75rem; font-weight: 700;
+    color: var(--gray); top: 50%; transform: translateY(-50%);
+}
+
+/* ── Timeline ── */
+.timeline-h { display: flex; justify-content: space-between; position: relative; padding: 0 40px; margin: 48px 0; }
+.timeline-h::before {
+    content: ''; position: absolute; top: 24px; left: 60px; right: 60px;
+    height: 4px; background: linear-gradient(90deg, var(--blue), var(--purple));
+    border-radius: 2px;
+}
+.tl-step { text-align: center; flex: 1; position: relative; }
+.tl-dot {
+    width: 48px; height: 48px; border-radius: 50%; margin: 0 auto 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; color: white; font-size: 1.1rem; position: relative; z-index: 1;
+}
+.tl-title { font-weight: 700; margin-bottom: 4px; }
+.tl-desc { font-size: 0.85rem; color: var(--gray); max-width: 200px; margin: 0 auto; }
+
+/* ── Metric cards ── */
+.metric-card {
+    background: var(--white); border-radius: var(--radius); padding: 32px;
+    border: 1px solid #E2E8F0; text-align: center;
+}
+.metric-value { font-size: 1.6rem; font-weight: 800; margin: 12px 0; }
+.metric-formula {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+    background: #F1F5F9; padding: 8px 16px; border-radius: 8px;
+    display: inline-block; margin: 12px 0;
+}
+.metric-example { font-size: 0.85rem; color: var(--gray); margin-top: 12px; }
+
+/* ── Neural network ── */
+.nn-diagram { display: flex; justify-content: center; align-items: center; gap: 60px; padding: 40px 0; }
+.nn-layer { display: flex; flex-direction: column; gap: 20px; align-items: center; }
+.nn-neuron {
+    width: 44px; height: 44px; border-radius: 50%; border: 3px solid;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; font-weight: 700;
+}
+.nn-label { text-align: center; font-size: 0.8rem; font-weight: 700; color: var(--gray); margin-top: 8px; }
+.nn-connections {
+    position: relative; width: 60px;
+}
+.nn-line {
+    position: absolute; height: 2px; background: #CBD5E1;
+    transform-origin: left center;
+}
+
+/* ── Steps (GPT) ── */
+.steps { display: flex; flex-direction: column; gap: 0; }
+.step {
+    display: grid; grid-template-columns: 80px 1fr; gap: 24px;
+    padding: 32px 0; border-bottom: 1px solid #E2E8F0;
+}
+.step:last-child { border: none; }
+.step-num {
+    width: 56px; height: 56px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; font-weight: 800; color: white;
+}
+.step-content h3 { font-size: 1.15rem; margin-bottom: 8px; }
+.step-content p { font-size: 0.95rem; color: var(--gray); }
+.step-visual {
+    margin-top: 16px; padding: 20px; background: #F8FAFC;
+    border-radius: 12px; font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+}
+
+/* ── Nested circles (taxonomy) ── */
+.taxonomy { display: flex; justify-content: center; padding: 40px 0; }
+.tax-ring {
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    position: relative;
+}
+.tax-ring .tax-label {
+    position: absolute; font-weight: 700; font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+/* ── Table ── */
+.styled-table { width: 100%; border-collapse: separate; border-spacing: 0; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+.styled-table th { background: var(--blue); color: white; padding: 16px 20px; text-align: left; font-weight: 700; }
+.styled-table td { padding: 14px 20px; border-bottom: 1px solid #E2E8F0; font-size: 0.9rem; }
+.styled-table tr:nth-child(even) td { background: var(--bg); }
+.styled-table tr:last-child td { border-bottom: none; }
+
+/* ── CTA ── */
+.cta-block {
+    text-align: center; padding: 80px 24px;
+    background: linear-gradient(135deg, var(--blue-light) 0%, var(--purple-light) 100%);
+    border-radius: var(--radius);
+}
+.cta-block h2 { font-size: 2rem; margin-bottom: 12px; }
+.cta-block p { color: var(--gray); margin-bottom: 32px; }
+.cta-btn {
+    display: inline-block; padding: 14px 36px; border-radius: 50px;
+    background: var(--blue); color: white; font-weight: 700; font-size: 1rem;
+    transition: background 0.2s;
+}
+.cta-btn:hover { background: var(--blue-dark); color: white; }
+
+/* ── Utility ── */
+.text-blue { color: var(--blue); }
+.text-green { color: var(--green); }
+.text-orange { color: var(--orange); }
+.text-purple { color: var(--purple); }
+.bg-blue-light { background: var(--blue-light); }
+.bg-green-light { background: var(--green-light); }
+.bg-orange-light { background: var(--orange-light); }
+.bg-purple-light { background: var(--purple-light); }
+.mb-24 { margin-bottom: 24px; }
+.mb-48 { margin-bottom: 48px; }
+.mt-48 { margin-top: 48px; }
+.bold { font-weight: 700; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .hero h1 { font-size: 2rem; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .cards-3, .cards-4 { grid-template-columns: 1fr; }
+    .cards-2 { grid-template-columns: 1fr; }
+    .comparison { grid-template-columns: 1fr; }
+    .comp-vs { padding: 16px 0; }
+    .tree-branches { flex-direction: column; align-items: center; }
+    .tree-branches::before { display: none; }
+    .tree-branch::before { display: none; }
+    .tree-branch { padding-top: 16px; }
+    .timeline-h { flex-direction: column; gap: 24px; padding: 0; }
+    .timeline-h::before { display: none; }
+    .step { grid-template-columns: 56px 1fr; }
+    .nav-links { display: none; }
+    .section { padding: 60px 16px; }
+    .section-title { font-size: 1.6rem; }
+    .nn-diagram { flex-wrap: wrap; gap: 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav class="top-nav">
+    <div class="nav-inner">
+        <div class="nav-logo">Practico.ai</div>
+        <div class="nav-links">
+            <a href="#what-is-ai">Что такое AI</a>
+            <a href="#rule-vs-ml">Rule-Based vs ML</a>
+            <a href="#ml-types">Типы ML</a>
+            <a href="#neural">Нейросети</a>
+            <a href="#gpt">Как работает GPT</a>
+            <a href="#models">Модели</a>
+        </div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+</nav>
+
+<!-- ═══ 1. HERO ═══ -->
+<section class="hero" id="hero">
+    <div class="hero-inner">
+        <div class="hero-badge">Урок 1 из 26</div>
+        <h1>Знакомство и введение в AI</h1>
+        <p>От базовых понятий до архитектуры GPT. Всё, что нужно знать о современном искусственном интеллекте.</p>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-number">34%</div>
+                <div class="stat-label">компаний отмечают недостаток понимания AI</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">35%</div>
+                <div class="stat-label">обеспокоены дефицитом навыков в области AI</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">29%</div>
+                <div class="stat-label">считают стоимость внедрения слишком высокой</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">77%</div>
+                <div class="stat-label">опасаются потери рабочих мест из-за AI</div>
+            </div>
+        </div>
+        <p style="font-size:0.75rem; color:rgba(255,255,255,0.4); margin-top:12px;">Источник: <a href="https://www.ibm.com/downloads/cas/GVAGA3JP" style="color:rgba(255,255,255,0.5);" target="_blank">IBM Global AI Adoption Index 2022</a></p>
+    </div>
+</section>
+
+<!-- ═══ 2. ЧТО ТАКОЕ AI ═══ -->
+<section class="section" id="what-is-ai">
+    <div class="section-inner">
+        <div class="section-badge bg-blue-light text-blue">01 &mdash; Основы</div>
+        <h2 class="section-title">Что такое искусственный интеллект</h2>
+        <p class="section-subtitle">Artificial Intelligence (AI) &mdash; это технологии, выполняющие задачи на уровне человеческого интеллекта.</p>
+
+        <!-- Visual: what AI can do -->
+        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; margin-bottom:48px;">
+            <div style="background:var(--blue-light); border-radius:12px; padding:20px 16px; text-align:center;">
+                <div style="font-size:2.2rem; margin-bottom:8px;">&#x1f5e3;&#xfe0f;</div>
+                <div style="font-weight:700; color:var(--blue); font-size:0.9rem; margin-bottom:6px;">Понимание речи</div>
+                <div style="font-size:0.78rem; color:var(--gray);">Siri, Алиса, голосовой поиск Google</div>
+            </div>
+            <div style="background:var(--purple-light); border-radius:12px; padding:20px 16px; text-align:center;">
+                <div style="font-size:2.2rem; margin-bottom:8px;">&#x1f441;&#xfe0f;</div>
+                <div style="font-weight:700; color:var(--purple); font-size:0.9rem; margin-bottom:6px;">Распознавание образов</div>
+                <div style="font-size:0.78rem; color:var(--gray);">Face ID, контроль качества, медицинские снимки</div>
+            </div>
+            <div style="background:var(--green-light); border-radius:12px; padding:20px 16px; text-align:center;">
+                <div style="font-size:2.2rem; margin-bottom:8px;">&#x1f9e0;</div>
+                <div style="font-weight:700; color:var(--green); font-size:0.9rem; margin-bottom:6px;">Принятие решений</div>
+                <div style="font-size:0.78rem; color:var(--gray);">Рекомендации Netflix, одобрение кредита, автопилот</div>
+            </div>
+            <div style="background:var(--orange-light); border-radius:12px; padding:20px 16px; text-align:center;">
+                <div style="font-size:2.2rem; margin-bottom:8px;">&#x270d;&#xfe0f;</div>
+                <div style="font-weight:700; color:var(--orange); font-size:0.9rem; margin-bottom:6px;">Генерация контента</div>
+                <div style="font-size:0.78rem; color:var(--gray);">ChatGPT, Midjourney, генерация кода</div>
+            </div>
+        </div>
+
+        <div class="tree mb-48">
+            <div class="tree-root">Artificial Intelligence</div>
+            <div class="tree-connector"></div>
+            <div class="tree-branches">
+                <div class="tree-branch">
+                    <div class="branch-head bg-blue-light text-blue">Narrow AI (узкий)</div>
+                    <div class="branch-body">AI для конкретных задач. Всё, что существует сегодня &mdash; это Narrow AI.</div>
+                    <div class="branch-examples">
+                        <span class="branch-tag">Google Translate</span>
+                        <span class="branch-tag">Siri / Алиса</span>
+                        <span class="branch-tag">Netflix</span>
+                        <span class="branch-tag">Gmail спам</span>
+                    </div>
+                </div>
+                <div class="tree-branch">
+                    <div class="branch-head bg-purple-light text-purple">General AI (общий)</div>
+                    <div class="branch-body">AI с широкими возможностями, способный решать задачи в разных доменах.</div>
+                    <div class="branch-examples">
+                        <span class="branch-tag">Маркетинг</span>
+                        <span class="branch-tag">Финансы</span>
+                        <span class="branch-tag">HR</span>
+                        <span class="branch-tag">R&D</span>
+                        <span class="branch-tag">IT</span>
+                    </div>
+                </div>
+                <div class="tree-branch">
+                    <div class="branch-head bg-orange-light text-orange">Super AI (супер)</div>
+                    <div class="branch-body">Гипотетический AI, превосходящий человека во всём. Его пока нет.</div>
+                    <div class="branch-examples">
+                        <span class="branch-tag" style="background:#FEF2F2; color:#EF4444;">Не существует</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ 3. RULE-BASED VS ML ═══ -->
+<section class="section" id="rule-vs-ml">
+    <div class="section-inner">
+        <div class="section-badge bg-green-light text-green">02 &mdash; Подходы</div>
+        <h2 class="section-title">Rule-Based vs Machine Learning</h2>
+        <p class="section-subtitle">Два фундаментально разных подхода к решению задач.</p>
+
+        <div class="comparison mb-48">
+            <div class="comp-col" style="background: var(--blue-light);">
+                <h3 class="text-blue">Традиционное программирование</h3>
+                <p class="bold mb-24">Rule-Based алгоритмы</p>
+                <p style="font-size:0.95rem; margin-bottom:16px;">Использует подход <strong>ЕСЛИ X, ТО Y</strong>. Человек вручную пишет правила.</p>
+                <ul class="comp-list">
+                    <li>&#x2705; Предсказуемость</li>
+                    <li>&#x2705; Прозрачность логики</li>
+                    <li>&#x274c; Нет адаптивности</li>
+                    <li>&#x274c; Сложность масштабирования</li>
+                    <li>&#x274c; Ограничения в сложных задачах</li>
+                </ul>
+            </div>
+            <div class="comp-vs">VS</div>
+            <div class="comp-col" style="background: var(--purple-light);">
+                <h3 class="text-purple">Искусственный интеллект</h3>
+                <p class="bold mb-24">Machine Learning</p>
+                <p style="font-size:0.95rem; margin-bottom:16px;">Анализирует данные и <strong>сам находит закономерности</strong>. Принимает решения на основе изученного.</p>
+                <ul class="comp-list">
+                    <li>&#x2705; Адаптивность</li>
+                    <li>&#x2705; Масштабируемость</li>
+                    <li>&#x2705; Работает со сложными задачами</li>
+                    <li>&#x274c; Нужны данные для обучения</li>
+                    <li>&#x274c; "Чёрный ящик"</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Spam filter example -->
+        <h3 class="mb-24" style="text-align:center;">Пример: фильтрация спама</h3>
+        <div class="cards-grid cards-2 mb-48">
+            <div class="card card-accent blue">
+                <div class="card-title text-blue">Rule-Based подход</div>
+                <div style="margin-top:16px;">
+                    <!-- Input email -->
+                    <div style="background:white; border:2px solid var(--blue); border-radius:10px; padding:12px; margin-bottom:12px; display:flex; align-items:center; gap:10px;">
+                        <div style="font-size:1.5rem;">&#x2709;&#xfe0f;</div>
+                        <div style="font-size:0.8rem;"><strong>От:</strong> unknown@promo.com<br><strong>Тема:</strong> &laquo;Вы выиграли iPhone!&raquo;</div>
+                    </div>
+                    <!-- Decision tree -->
+                    <div style="background:var(--blue-light); border-radius:10px; padding:14px;">
+                        <div style="background:white; border:1.5px solid var(--blue); border-radius:8px; padding:8px 12px; text-align:center; font-size:0.8rem; margin-bottom:8px;">
+                            &#x1f50d; Содержит &laquo;Вы выиграли&raquo;?
+                        </div>
+                        <div style="display:flex; gap:12px; justify-content:center; margin-bottom:8px;">
+                            <div style="text-align:center;">
+                                <div style="font-size:0.7rem; font-weight:700; color:var(--green);">&#x2713; Да</div>
+                                <div style="width:2px; height:12px; background:var(--green); margin:4px auto;"></div>
+                            </div>
+                            <div style="text-align:center;">
+                                <div style="font-size:0.7rem; font-weight:700; color:var(--gray);">&#x2717; Нет &darr;</div>
+                            </div>
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            <div style="flex:1; background:#FEF2F2; border:2px solid #EF4444; border-radius:8px; padding:8px; text-align:center; font-size:0.8rem; font-weight:700; color:#EF4444;">&#x1f6ab; СПАМ</div>
+                            <div style="flex:1;">
+                                <div style="background:white; border:1.5px solid var(--blue); border-radius:8px; padding:6px; text-align:center; font-size:0.75rem; margin-bottom:6px;">Отправитель в списке?</div>
+                                <div style="display:flex; gap:6px;">
+                                    <div style="flex:1; background:#FEF2F2; border-radius:6px; padding:4px; text-align:center; font-size:0.7rem; color:#EF4444; font-weight:700;">&#x1f6ab;</div>
+                                    <div style="flex:1; background:var(--green-light); border-radius:6px; padding:4px; text-align:center; font-size:0.7rem; color:var(--green); font-weight:700;">&#x2705; OK</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:12px; background:#FEF2F2; border-radius:8px; padding:8px 12px; font-size:0.75rem; color:#EF4444;">
+                        <strong>&#x26a0;&#xfe0f; Проблема:</strong> спамеры меняют слова &mdash; &laquo;Вы в!играли&raquo;, и правила ломаются
+                    </div>
+                </div>
+            </div>
+            <div class="card card-accent purple">
+                <div class="card-title text-purple">Machine Learning подход</div>
+                <div style="margin-top:16px;">
+                    <!-- Dataset -->
+                    <div style="display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap;">
+                        <div style="background:var(--green-light); border:1.5px solid var(--green); border-radius:8px; padding:5px 8px; font-size:0.7rem; text-align:center;">&#x2709;&#xfe0f; <span style="color:var(--green); font-weight:700;">OK</span></div>
+                        <div style="background:#FEF2F2; border:1.5px solid #EF4444; border-radius:8px; padding:5px 8px; font-size:0.7rem; text-align:center;">&#x2709;&#xfe0f; <span style="color:#EF4444; font-weight:700;">СПАМ</span></div>
+                        <div style="background:var(--green-light); border:1.5px solid var(--green); border-radius:8px; padding:5px 8px; font-size:0.7rem; text-align:center;">&#x2709;&#xfe0f; <span style="color:var(--green); font-weight:700;">OK</span></div>
+                        <div style="background:#FEF2F2; border:1.5px solid #EF4444; border-radius:8px; padding:5px 8px; font-size:0.7rem; text-align:center;">&#x2709;&#xfe0f; <span style="color:#EF4444; font-weight:700;">СПАМ</span></div>
+                        <div style="font-size:0.75rem; color:var(--gray); align-self:center;">...100 000 писем</div>
+                    </div>
+                    <div style="text-align:center; color:var(--purple); font-size:1rem;">&darr;</div>
+                    <!-- Model training -->
+                    <div style="background:var(--purple); color:white; border-radius:10px; padding:12px; text-align:center; margin:8px 0;">
+                        <div style="font-size:1.2rem; margin-bottom:4px;">&#x1f916;</div>
+                        <div style="font-size:0.82rem; font-weight:700;">Модель изучает паттерны</div>
+                        <div style="font-size:0.72rem; opacity:0.8; margin-top:4px;">слова, фразы, структуру, частоту, отправителя...</div>
+                    </div>
+                    <div style="text-align:center; color:var(--purple); font-size:1rem;">&darr;</div>
+                    <!-- New email prediction -->
+                    <div style="background:var(--purple-light); border-radius:10px; padding:12px; margin-top:8px;">
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+                            <div style="font-size:1.3rem;">&#x2709;&#xfe0f;</div>
+                            <div style="font-size:0.78rem;"><strong>Новое письмо:</strong> &laquo;Вы в!играли приз&raquo;</div>
+                        </div>
+                        <div style="background:#FEF2F2; border:2px solid #EF4444; border-radius:8px; padding:8px; text-align:center; font-size:0.82rem;">
+                            <span style="color:#EF4444; font-weight:700;">&#x1f6ab; СПАМ: 97%</span>
+                            <div style="font-size:0.7rem; color:var(--gray); margin-top:4px;">Распознал даже с изменёнными словами!</div>
+                        </div>
+                    </div>
+                    <div style="margin-top:12px; background:var(--green-light); border-radius:8px; padding:8px 12px; font-size:0.75rem; color:var(--green);">
+                        <strong>&#x2705; Преимущество:</strong> адаптируется к новым уловкам спамеров автоматически
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ 4. ОБУЧЕНИЕ МОДЕЛИ ═══ -->
+<section class="section" id="training">
+    <div class="section-inner">
+        <div class="section-badge bg-orange-light text-orange">03 &mdash; Обучение</div>
+        <h2 class="section-title">Что значит обучить модель?</h2>
+        <p class="section-subtitle">Датасет &mdash; это набор данных, собранных и структурированных для обучения или проверки модели AI.</p>
+
+        <div class="timeline-h mb-48">
+            <div class="tl-step">
+                <div class="tl-dot" style="background:var(--blue);">1</div>
+                <div class="tl-title">Датасет</div>
+                <div class="tl-desc">Набор данных, размеченных человеком (спам / не спам)</div>
+            </div>
+            <div class="tl-step">
+                <div class="tl-dot" style="background:var(--purple);">2</div>
+                <div class="tl-title">Обучение</div>
+                <div class="tl-desc">Модель тренируется на размеченных данных</div>
+            </div>
+            <div class="tl-step">
+                <div class="tl-dot" style="background:var(--orange);">3</div>
+                <div class="tl-title">Валидация</div>
+                <div class="tl-desc">Проверка на новых, но тоже размеченных данных</div>
+            </div>
+            <div class="tl-step">
+                <div class="tl-dot" style="background:var(--green);">4</div>
+                <div class="tl-title">Тестирование</div>
+                <div class="tl-desc">Финальная проверка на данных, которых модель не видела</div>
+            </div>
+        </div>
+
+        <h3 class="mb-24" style="text-align:center;">Метрики качества модели</h3>
+        <div class="cards-grid cards-3">
+            <div class="metric-card">
+                <div style="font-size:2rem;">&#x1f3af;</div>
+                <div class="card-title">Accuracy</div>
+                <p style="font-size:0.9rem; color:var(--gray);">Общая правильность</p>
+                <div class="metric-formula">правильные / все</div>
+                <div class="metric-example">Из 100 писем модель правильно определила 90 &rarr; <strong>accuracy = 90%</strong></div>
+            </div>
+            <div class="metric-card">
+                <div style="font-size:2rem;">&#x1f50d;</div>
+                <div class="card-title">Precision</div>
+                <p style="font-size:0.9rem; color:var(--gray);">Насколько можно доверять</p>
+                <div class="metric-formula">верный спам / весь отмеченный спам</div>
+                <div class="metric-example">Модель отметила 20 как спам, из них 15 реально спам &rarr; <strong>precision = 75%</strong></div>
+            </div>
+            <div class="metric-card">
+                <div style="font-size:2rem;">&#x1f4e1;</div>
+                <div class="card-title">Recall</div>
+                <p style="font-size:0.9rem; color:var(--gray);">Насколько не пропустила</p>
+                <div class="metric-formula">найденный спам / весь реальный спам</div>
+                <div class="metric-example">Из 30 реальных спам-писем модель нашла 15 &rarr; <strong>recall = 50%</strong></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ 5. ТИПЫ ML ═══ -->
+<section class="section" id="ml-types">
+    <div class="section-inner">
+        <div class="section-badge bg-purple-light text-purple">04 &mdash; Типы ML</div>
+        <h2 class="section-title">Типы машинного обучения</h2>
+        <p class="section-subtitle">Машинное обучение (Machine Learning) &mdash; подход, при котором компьютер не программируется напрямую, а обучается на данных.</p>
+
+        <div class="cards-grid cards-3 mb-48">
+            <!-- Supervised Learning -->
+            <div class="card" style="border-top: 4px solid var(--blue);">
+                <div class="card-title" style="margin-bottom:8px;">&#x1f393; Supervised Learning</div>
+                <p style="font-size:0.9rem; color:var(--gray); margin-bottom:20px;">Обучение на данных, <strong>размеченных человеком</strong>. Чем больше данных &mdash; тем точнее.</p>
+                <!-- Visual: labeled data → model → prediction -->
+                <div style="background:var(--blue-light); border-radius:12px; padding:16px; margin-bottom:16px;">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; flex-wrap:wrap;">
+                        <div style="background:white; border:2px solid var(--blue); border-radius:8px; padding:6px 10px; font-size:0.75rem; text-align:center;">&#x1f4e7;<br><span style="color:var(--green); font-weight:700;">&#x2713; купил</span></div>
+                        <div style="background:white; border:2px solid var(--blue); border-radius:8px; padding:6px 10px; font-size:0.75rem; text-align:center;">&#x1f4e7;<br><span style="color:#EF4444; font-weight:700;">&#x2717; не купил</span></div>
+                        <div style="background:white; border:2px solid var(--blue); border-radius:8px; padding:6px 10px; font-size:0.75rem; text-align:center;">&#x1f4e7;<br><span style="color:var(--green); font-weight:700;">&#x2713; купил</span></div>
+                    </div>
+                    <div style="text-align:center; color:var(--blue); font-size:1.2rem;">&darr;</div>
+                    <div style="background:var(--blue); color:white; border-radius:8px; padding:8px 12px; text-align:center; font-size:0.8rem; font-weight:700; margin:8px 0;">&#x1f916; Модель учится на метках</div>
+                    <div style="text-align:center; color:var(--blue); font-size:1.2rem;">&darr;</div>
+                    <div style="background:white; border:2px dashed var(--blue); border-radius:8px; padding:8px 12px; text-align:center; font-size:0.8rem;">&#x1f464; Новый клиент &rarr; <strong style="color:var(--green);">купит: 87%</strong></div>
+                </div>
+                <div style="font-size:0.78rem; color:var(--gray);">Пример: предсказание покупки в интернет-магазине по данным клиента</div>
+            </div>
+            <!-- Unsupervised Learning -->
+            <div class="card" style="border-top: 4px solid var(--green);">
+                <div class="card-title" style="margin-bottom:8px;">&#x1f50e; Unsupervised Learning</div>
+                <p style="font-size:0.9rem; color:var(--gray); margin-bottom:20px;">Входные данные <strong>без разметки</strong>. Модель сама находит паттерны и группирует.</p>
+                <!-- Visual: dots clustering -->
+                <div style="background:var(--green-light); border-radius:12px; padding:16px; margin-bottom:16px;">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; flex-wrap:wrap;">
+                        <div style="background:white; border:2px solid #CBD5E1; border-radius:8px; padding:6px 10px; font-size:0.75rem; text-align:center;">&#x1f464;<br><span style="color:var(--gray);">???</span></div>
+                        <div style="background:white; border:2px solid #CBD5E1; border-radius:8px; padding:6px 10px; font-size:0.75rem; text-align:center;">&#x1f464;<br><span style="color:var(--gray);">???</span></div>
+                        <div style="background:white; border:2px solid #CBD5E1; border-radius:8px; padding:6px 10px; font-size:0.75rem; text-align:center;">&#x1f464;<br><span style="color:var(--gray);">???</span></div>
+                    </div>
+                    <div style="text-align:center; color:var(--green); font-size:1.2rem;">&darr;</div>
+                    <div style="background:var(--green); color:white; border-radius:8px; padding:8px 12px; text-align:center; font-size:0.8rem; font-weight:700; margin:8px 0;">&#x1f916; Модель ищет паттерны сама</div>
+                    <div style="text-align:center; color:var(--green); font-size:1.2rem;">&darr;</div>
+                    <div style="display:flex; gap:6px; justify-content:center;">
+                        <div style="background:var(--blue-light); border:2px solid var(--blue); border-radius:8px; padding:6px 8px; font-size:0.7rem; text-align:center;">&#x1f464;&#x1f464;<br><span style="font-weight:700; color:var(--blue);">Группа A</span><br><span style="color:var(--gray); font-size:0.65rem;">VIP-клиенты</span></div>
+                        <div style="background:var(--orange-light); border:2px solid var(--orange); border-radius:8px; padding:6px 8px; font-size:0.7rem; text-align:center;">&#x1f464;&#x1f464;<br><span style="font-weight:700; color:var(--orange);">Группа B</span><br><span style="color:var(--gray); font-size:0.65rem;">Разовые</span></div>
+                        <div style="background:var(--purple-light); border:2px solid var(--purple); border-radius:8px; padding:6px 8px; font-size:0.7rem; text-align:center;">&#x1f464;&#x1f464;<br><span style="font-weight:700; color:var(--purple);">Группа C</span><br><span style="color:var(--gray); font-size:0.65rem;">Уходящие</span></div>
+                    </div>
+                </div>
+                <div style="font-size:0.78rem; color:var(--gray);">Пример: автоматическая сегментация клиентской базы магазина</div>
+            </div>
+            <!-- Reinforcement Learning -->
+            <div class="card" style="border-top: 4px solid var(--orange);">
+                <div class="card-title" style="margin-bottom:8px;">&#x1f3ae; Reinforcement Learning</div>
+                <p style="font-size:0.9rem; color:var(--gray); margin-bottom:20px;"><strong>Вознаграждение и наказание</strong>. Модель пробует действия и учится на результатах.</p>
+                <!-- Visual: agent-environment loop -->
+                <div style="background:var(--orange-light); border-radius:12px; padding:16px; margin-bottom:16px;">
+                    <div style="display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:12px;">
+                        <div style="background:white; border:2px solid var(--orange); border-radius:12px; padding:10px 14px; text-align:center; font-size:0.8rem;">
+                            <div style="font-size:1.5rem;">&#x1f916;</div>
+                            <div style="font-weight:700; color:var(--orange);">Агент</div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; align-items:center; gap:4px;">
+                            <div style="font-size:0.7rem; color:var(--orange); font-weight:600;">действие &rarr;</div>
+                            <div style="font-size:0.7rem; color:var(--gray);">&larr; награда</div>
+                        </div>
+                        <div style="background:white; border:2px solid var(--orange); border-radius:12px; padding:10px 14px; text-align:center; font-size:0.8rem;">
+                            <div style="font-size:1.5rem;">&#x1f30d;</div>
+                            <div style="font-weight:700; color:var(--orange);">Среда</div>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:8px; justify-content:center;">
+                        <div style="background:white; border-radius:6px; padding:6px 10px; font-size:0.75rem; text-align:center;">
+                            <div>Цена $10</div>
+                            <div style="color:#EF4444; font-weight:700;">&#x2717; &minus;$200</div>
+                        </div>
+                        <div style="background:white; border-radius:6px; padding:6px 10px; font-size:0.75rem; text-align:center;">
+                            <div>Цена $25</div>
+                            <div style="color:var(--green); font-weight:700;">&#x2713; +$500</div>
+                        </div>
+                        <div style="background:white; border-radius:6px; padding:6px 10px; font-size:0.75rem; text-align:center;">
+                            <div>Цена $50</div>
+                            <div style="color:#EF4444; font-weight:700;">&#x2717; &minus;$100</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="font-size:0.78rem; color:var(--gray);">Пример: модель экспериментирует с ценами и учится максимизировать прибыль</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ 6. ДИСКРИМИНАТИВНЫЙ VS ГЕНЕРАТИВНЫЙ ═══ -->
+<section class="section" id="disc-vs-gen">
+    <div class="section-inner">
+        <div class="section-badge bg-orange-light text-orange">05 &mdash; Два мира AI</div>
+        <h2 class="section-title">Дискриминативный vs Генеративный AI</h2>
+        <p class="section-subtitle">Два направления AI с принципиально разными задачами.</p>
+
+        <div class="comparison mb-48">
+            <div class="comp-col" style="background: var(--blue-light);">
+                <h3 class="text-blue">&#x1f50d; Дискриминативный AI</h3>
+                <p style="font-size:0.95rem; margin-bottom:20px;">Системы, которые <strong>определяют, классифицируют и распознают</strong>. Задача: определить класс.</p>
+                <p style="font-size:0.85rem; color:var(--gray); font-style:italic;">"Это птица? &mdash; Да, птица."</p>
+                <div class="mt-48">
+                    <div class="bold mb-24" style="font-size:0.85rem; color:var(--blue);">Типы задач:</div>
+                    <div class="cards-grid" style="grid-template-columns:1fr 1fr; gap:8px;">
+                        <div style="background:white; padding:12px; border-radius:8px; font-size:0.8rem;"><strong>Классификация</strong><br><span style="color:var(--gray);">товары, спам, заявки</span></div>
+                        <div style="background:white; padding:12px; border-radius:8px; font-size:0.8rem;"><strong>Object Detection</strong><br><span style="color:var(--gray);">люди, объекты на видео</span></div>
+                        <div style="background:white; padding:12px; border-radius:8px; font-size:0.8rem;"><strong>Computer Vision</strong><br><span style="color:var(--gray);">контроль качества</span></div>
+                        <div style="background:white; padding:12px; border-radius:8px; font-size:0.8rem;"><strong>OCR</strong><br><span style="color:var(--gray);">чеки, накладные</span></div>
+                        <div style="background:white; padding:12px; border-radius:8px; font-size:0.8rem;"><strong>Прогнозирование</strong><br><span style="color:var(--gray);">спрос, закупки</span></div>
+                        <div style="background:white; padding:12px; border-radius:8px; font-size:0.8rem;"><strong>Кластеризация</strong><br><span style="color:var(--gray);">сегментация клиентов</span></div>
+                        <div style="background:white; padding:12px; border-radius:8px; font-size:0.8rem;"><strong>ASR</strong><br><span style="color:var(--gray);">распознавание речи</span></div>
+                        <div style="background:white; padding:12px; border-radius:8px; font-size:0.8rem;"><strong>Аномалии</strong><br><span style="color:var(--gray);">отклонения, поломки</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="comp-vs">VS</div>
+            <div class="comp-col" style="background: var(--purple-light);">
+                <h3 class="text-purple">&#x2728; Генеративный AI</h3>
+                <p style="font-size:0.95rem; margin-bottom:20px;">Технологии, которые <strong>создают новые данные</strong>: текст, изображения, видео, код.</p>
+                <p style="font-size:0.85rem; color:var(--gray); font-style:italic;">"Сгенерируй фото вороны на снегу."</p>
+                <div class="mt-48">
+                    <div class="bold mb-24" style="font-size:0.85rem; color:var(--purple);">Типы генерации:</div>
+                    <div class="cards-grid" style="grid-template-columns:1fr 1fr; gap:8px;">
+                        <div style="background:white; padding:12px; border-radius:8px; font-size:0.8rem;"><strong>&#x270d;&#xfe0f; Текст</strong><br><span style="color:var(--gray);">копирайтинг, отчёты, инструкции</span></div>
+                        <div style="background:white; padding:12px; border-radius:8px; font-size:0.8rem;"><strong>&#x1f5bc;&#xfe0f; Изображения</strong><br><span style="color:var(--gray);">дизайн, баннеры, UI-концепты</span></div>
+                        <div style="background:white; padding:12px; border-radius:8px; font-size:0.8rem;"><strong>&#x1f3ac; Видео</strong><br><span style="color:var(--gray);">ролики, презентации</span></div>
+                        <div style="background:white; padding:12px; border-radius:8px; font-size:0.8rem;"><strong>&#x1f3a4; Аудио</strong><br><span style="color:var(--gray);">озвучка, голосовые ассистенты</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ 7. НЕЙРОННЫЕ СЕТИ ═══ -->
+<section class="section" id="neural">
+    <div class="section-inner">
+        <div class="section-badge bg-green-light text-green">06 &mdash; Нейросети</div>
+        <h2 class="section-title">Нейронные сети</h2>
+        <p class="section-subtitle">Метод в ML, вдохновлённый работой мозга. Нейросеть &mdash; это цепочка математических операций, где данные проходят через слои &laquo;нейронов&raquo;, каждый из которых выделяет всё более сложные закономерности.</p>
+
+        <!-- Analogy -->
+        <div style="background:var(--green-light); border-left:4px solid var(--green); border-radius:0 12px 12px 0; padding:20px 28px; margin-bottom:40px;">
+            <div style="font-weight:700; color:var(--green); margin-bottom:6px;">&#x1f4a1; Аналогия</div>
+            <p style="font-size:0.95rem; color:var(--dark); margin:0;">Представьте команду экспертов, работающих по цепочке. Первый замечает простые признаки (&laquo;есть текст&raquo;), второй &mdash; более сложные (&laquo;текст про скидку&raquo;), третий выносит решение (&laquo;это спам&raquo;). Каждый &laquo;нейрон&raquo; &mdash; такой эксперт, а &laquo;вес&raquo; &mdash; степень его влияния на итоговое решение.</p>
+        </div>
+
+        <!-- How it works: 3 stages — matching SVG colors -->
+        <h3 class="mb-24" style="text-align:center;">Как данные проходят через нейросеть</h3>
+        <!-- Unified: cards + neurons below in one grid, SVG connections overlay -->
+        <div id="nn-unified" style="position:relative; margin-bottom:48px;">
+            <!-- 4-column grid: cards on top, neurons below -->
+            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:20px;">
+                <!-- COL 1: Input -->
+                <div>
+                    <div class="card" style="border-left:4px solid var(--blue); background:var(--blue-light); margin-bottom:24px;">
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+                            <div style="width:36px; height:36px; border-radius:50%; border:2.5px solid var(--blue); background:white; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; color:var(--blue); flex-shrink:0;">x1</div>
+                            <div class="card-title text-blue" style="margin:0;">Входной слой</div>
+                        </div>
+                        <div class="card-text" style="margin-bottom:12px;">Сюда попадают <strong>сырые данные</strong> &mdash; то, что мы подаём нейросети. Каждое число &mdash; это отдельный нейрон.</div>
+                        <div style="background:white; border-radius:8px; padding:10px 14px; font-size:0.82rem;">
+                            <div style="color:var(--gray); margin-bottom:4px;">Пример: фото яблока</div>
+                            <div style="font-family:monospace; color:var(--blue); font-weight:700;">R=255 &nbsp; G=50 &nbsp; B=0 &nbsp; size=0.7</div>
+                        </div>
+                    </div>
+                    <div class="nn-col-neurons" style="display:flex; flex-direction:column; align-items:center; gap:12px;">
+                        <div style="width:52px; height:52px; border-radius:50%; border:2.5px solid var(--blue); background:white; display:flex; flex-direction:column; align-items:center; justify-content:center;"><span style="font-size:0.7rem; font-weight:700; color:var(--blue);">R</span><span style="font-size:0.6rem; color:var(--blue);">255</span></div>
+                        <div style="width:52px; height:52px; border-radius:50%; border:2.5px solid var(--blue); background:white; display:flex; flex-direction:column; align-items:center; justify-content:center;"><span style="font-size:0.7rem; font-weight:700; color:var(--blue);">G</span><span style="font-size:0.6rem; color:var(--blue);">50</span></div>
+                        <div style="width:52px; height:52px; border-radius:50%; border:2.5px solid var(--blue); background:white; display:flex; flex-direction:column; align-items:center; justify-content:center;"><span style="font-size:0.7rem; font-weight:700; color:var(--blue);">B</span><span style="font-size:0.6rem; color:var(--blue);">0</span></div>
+                        <div style="width:52px; height:52px; border-radius:50%; border:2.5px solid var(--blue); background:white; display:flex; flex-direction:column; align-items:center; justify-content:center;"><span style="font-size:0.65rem; font-weight:700; color:var(--blue);">size</span><span style="font-size:0.6rem; color:var(--blue);">0.7</span></div>
+                    </div>
+                </div>
+                <!-- COL 2: Hidden 1 -->
+                <div>
+                    <div class="card" style="border-left:4px solid var(--purple); background:var(--purple-light); margin-bottom:24px;">
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+                            <div style="width:36px; height:36px; border-radius:50%; border:2.5px solid var(--purple); background:#ebe9fc; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; color:var(--purple); flex-shrink:0;">h1</div>
+                            <div class="card-title text-purple" style="margin:0;">Скрытый слой 1</div>
+                        </div>
+                        <div class="card-text" style="margin-bottom:12px;">Ищет <strong>простые признаки</strong>: есть ли край, какой цвет, есть ли тень. Каждый нейрон умножает входы на веса и суммирует.</div>
+                        <div style="background:white; border-radius:8px; padding:10px 14px; font-size:0.82rem;">
+                            <div style="color:var(--gray); margin-bottom:4px;">Что видят нейроны:</div>
+                            <div style="color:var(--purple); font-weight:600;">край? 0.82 &nbsp; цвет? 0.95 &nbsp; тень? 0.33</div>
+                        </div>
+                    </div>
+                    <div class="nn-col-neurons" style="display:flex; flex-direction:column; align-items:center; gap:12px;">
+                        <div style="width:52px; height:52px; border-radius:50%; border:2.5px solid var(--purple); background:#ebe9fc; display:flex; flex-direction:column; align-items:center; justify-content:center;"><span style="font-size:0.65rem; font-weight:600; color:var(--purple);">край?</span><span style="font-size:0.55rem; color:var(--purple); opacity:0.7;">0.82</span></div>
+                        <div style="width:52px; height:52px; border-radius:50%; border:2.5px solid var(--purple); background:#ebe9fc; display:flex; flex-direction:column; align-items:center; justify-content:center;"><span style="font-size:0.65rem; font-weight:600; color:var(--purple);">цвет?</span><span style="font-size:0.55rem; color:var(--purple); opacity:0.7;">0.95</span></div>
+                        <div style="width:52px; height:52px; border-radius:50%; border:2.5px solid var(--purple); background:#ebe9fc; display:flex; flex-direction:column; align-items:center; justify-content:center;"><span style="font-size:0.65rem; font-weight:600; color:var(--purple);">линия?</span><span style="font-size:0.55rem; color:var(--purple); opacity:0.7;">0.41</span></div>
+                        <div style="width:52px; height:52px; border-radius:50%; border:2.5px solid var(--purple); background:#ebe9fc; display:flex; flex-direction:column; align-items:center; justify-content:center;"><span style="font-size:0.65rem; font-weight:600; color:var(--purple);">тень?</span><span style="font-size:0.55rem; color:var(--purple); opacity:0.7;">0.33</span></div>
+                    </div>
+                </div>
+                <!-- COL 3: Hidden 2 -->
+                <div>
+                    <div class="card" style="border-left:4px solid var(--orange); background:var(--orange-light); margin-bottom:24px;">
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+                            <div style="width:36px; height:36px; border-radius:50%; border:2.5px solid var(--orange); background:#ffebe1; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; color:var(--orange); flex-shrink:0;">h4</div>
+                            <div class="card-title text-orange" style="margin:0;">Скрытый слой 2</div>
+                        </div>
+                        <div class="card-text" style="margin-bottom:12px;">Комбинирует простые признаки в <strong>сложные понятия</strong>: &laquo;круглое&raquo;, &laquo;красное&raquo;, &laquo;гладкое&raquo;. Чем глубже слой &mdash; тем абстрактнее признак.</div>
+                        <div style="background:white; border-radius:8px; padding:10px 14px; font-size:0.82rem;">
+                            <div style="color:var(--gray); margin-bottom:4px;">Что видят нейроны:</div>
+                            <div style="color:var(--orange); font-weight:600;">круглое 0.91 &nbsp; красное 0.88 &nbsp; гладкое 0.67</div>
+                        </div>
+                    </div>
+                    <div class="nn-col-neurons" style="display:flex; flex-direction:column; align-items:center; gap:12px;">
+                        <div style="width:52px; height:52px; border-radius:50%; border:2.5px solid var(--orange); background:#ffebe1; display:flex; flex-direction:column; align-items:center; justify-content:center;"><span style="font-size:0.6rem; font-weight:600; color:var(--orange);">круглое</span><span style="font-size:0.55rem; color:var(--orange); opacity:0.7;">0.91</span></div>
+                        <div style="width:52px; height:52px; border-radius:50%; border:2.5px solid var(--orange); background:#ffebe1; display:flex; flex-direction:column; align-items:center; justify-content:center;"><span style="font-size:0.6rem; font-weight:600; color:var(--orange);">красное</span><span style="font-size:0.55rem; color:var(--orange); opacity:0.7;">0.88</span></div>
+                        <div style="width:52px; height:52px; border-radius:50%; border:2.5px solid var(--orange); background:#ffebe1; display:flex; flex-direction:column; align-items:center; justify-content:center;"><span style="font-size:0.6rem; font-weight:600; color:var(--orange);">гладкое</span><span style="font-size:0.55rem; color:var(--orange); opacity:0.7;">0.67</span></div>
+                    </div>
+                </div>
+                <!-- COL 4: Output -->
+                <div>
+                    <div class="card" style="border-left:4px solid var(--green); background:var(--green-light); margin-bottom:24px;">
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+                            <div style="width:36px; height:36px; border-radius:50%; border:2.5px solid var(--green); background:#e9fcf0; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; color:var(--green); flex-shrink:0;">y</div>
+                            <div class="card-title text-green" style="margin:0;">Выходной слой</div>
+                        </div>
+                        <div class="card-text" style="margin-bottom:12px;">Финальный ответ &mdash; <strong>вероятность каждого варианта</strong>. Нейросеть не говорит &laquo;точно яблоко&raquo;, а даёт проценты уверенности.</div>
+                        <div style="background:white; border-radius:8px; padding:10px 14px; font-size:0.82rem;">
+                            <div style="color:var(--gray); margin-bottom:4px;">Результат:</div>
+                            <div><span style="color:var(--green); font-weight:700;">&#x1f34e; яблоко: 95%</span> &nbsp; <span style="color:#94A3B8;">&#x1f345; 5%</span></div>
+                        </div>
+                    </div>
+                    <div class="nn-col-neurons" style="display:flex; flex-direction:column; align-items:center; gap:12px;">
+                        <div style="width:60px; height:60px; border-radius:50%; border:3px solid var(--green); background:#e9fcf0; display:flex; flex-direction:column; align-items:center; justify-content:center;"><span style="font-size:0.85rem;">&#x1f34e;</span><span style="font-size:0.7rem; font-weight:700; color:var(--green);">95%</span></div>
+                        <div style="width:48px; height:48px; border-radius:50%; border:2px solid #CBD5E1; background:white; display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0.5;"><span style="font-size:0.75rem;">&#x1f345;</span><span style="font-size:0.6rem; color:#94A3B8;">5%</span></div>
+                    </div>
+                </div>
+            </div>
+            <!-- SVG overlay for connections between neuron columns -->
+            <svg id="nn-connections-svg" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1;"></svg>
+        </div>
+        <p style="text-align:center; font-size:0.8rem; color:var(--gray); margin-bottom:32px;">Пример: нейросеть распознаёт яблоко на фото. Каждый слой выделяет всё более сложные признаки &mdash; от пикселей до формы и цвета.</p>
+
+        <!-- Script to draw connections between neuron circles -->
+        <script>
+        (function() {
+            function drawConnections() {
+                var container = document.getElementById('nn-unified');
+                var svg = document.getElementById('nn-connections-svg');
+                if (!container || !svg) return;
+                var cols = container.querySelectorAll('.nn-col-neurons');
+                if (cols.length < 4) return;
+                var cRect = container.getBoundingClientRect();
+                svg.setAttribute('viewBox', '0 0 ' + cRect.width + ' ' + cRect.height);
+                var lines = '';
+                var colors = [
+                    ['#0080ff','#5243c3'],
+                    ['#5243c3','#ff6805'],
+                    ['#ff6805','#2e8749']
+                ];
+                for (var g = 0; g < 3; g++) {
+                    var left = cols[g].querySelectorAll('div[style]');
+                    var right = cols[g+1].querySelectorAll('div[style]');
+                    for (var i = 0; i < left.length; i++) {
+                        var lr = left[i].getBoundingClientRect();
+                        var x1 = lr.left + lr.width/2 - cRect.left;
+                        var y1 = lr.top + lr.height/2 - cRect.top;
+                        for (var j = 0; j < right.length; j++) {
+                            var rr = right[j].getBoundingClientRect();
+                            var x2 = rr.left + rr.width/2 - cRect.left;
+                            var y2 = rr.top + rr.height/2 - cRect.top;
+                            var w = (1.5 - Math.abs(i-j)*0.3);
+                            if (w < 0.4) w = 0.4;
+                            lines += '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+colors[g][1]+'" stroke-width="'+w+'" opacity="0.18"/>';
+                        }
+                    }
+                }
+                svg.innerHTML = lines;
+            }
+            window.addEventListener('load', function(){ setTimeout(drawConnections, 200); });
+            window.addEventListener('resize', drawConnections);
+        })();
+        </script>
+
+        <!-- Key concepts -->
+        <div class="cards-grid cards-2">
+            <div style="background:var(--bg); border-radius:12px; padding:24px;">
+                <div class="bold mb-24">&#x2696;&#xfe0f; Что такое вес?</div>
+                <p style="font-size:0.9rem; color:var(--gray);">Вес &mdash; число (например, 0.7), которое определяет, насколько сильно один нейрон влияет на следующий. При обучении модель подбирает миллиарды таких чисел, чтобы давать правильные ответы.</p>
+            </div>
+            <div style="background:var(--bg); border-radius:12px; padding:24px;">
+                <div class="bold mb-24">&#x1f4da; Что такое Deep Learning?</div>
+                <p style="font-size:0.9rem; color:var(--gray);">Deep Learning = нейросеть с <strong>множеством скрытых слоёв</strong> (десятки, сотни). GPT-4 имеет ~120 слоёв и ~1.8 трлн параметров (весов). Больше слоёв = более сложные закономерности.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ 8. КАК РАБОТАЕТ GPT ═══ -->
+<section class="section" id="gpt">
+    <div class="section-inner">
+        <div class="section-badge bg-blue-light text-blue">07 &mdash; Трансформер</div>
+        <h2 class="section-title">Как работает GPT</h2>
+        <p class="section-subtitle">GPT = Generative Pretrained Transformer. Архитектура нейронной сети, разработанная в 2017 году, ставшая основой современного AI.</p>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-num" style="background:var(--blue);">1</div>
+                <div class="step-content">
+                    <h3>Токенизация</h3>
+                    <p>Разбиение входного текста на небольшие фрагменты &mdash; токены. Токен может быть целым словом, частью слова или знаком.</p>
+                    <div class="step-visual">
+                        <span style="background:var(--blue-light); padding:4px 8px; border-radius:4px; margin:2px;">Привет</span>
+                        <span style="background:var(--green-light); padding:4px 8px; border-radius:4px; margin:2px;">,</span>
+                        <span style="background:var(--orange-light); padding:4px 8px; border-radius:4px; margin:2px;">как</span>
+                        <span style="background:var(--purple-light); padding:4px 8px; border-radius:4px; margin:2px;">дела</span>
+                        <span style="background:#FEF2F2; padding:4px 8px; border-radius:4px; margin:2px;">?</span>
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num" style="background:var(--purple);">2</div>
+                <div class="step-content">
+                    <h3>Присвоение ID</h3>
+                    <p>Каждому токену присваивается уникальный числовой ID на основе словаря модели.</p>
+                    <div class="step-visual">
+                        Привет &rarr; <strong>15339</strong> &nbsp;&nbsp; , &rarr; <strong>11</strong> &nbsp;&nbsp; как &rarr; <strong>2482</strong> &nbsp;&nbsp; дела &rarr; <strong>9017</strong> &nbsp;&nbsp; ? &rarr; <strong>30</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num" style="background:var(--green);">3</div>
+                <div class="step-content">
+                    <h3>Эмбеддинги</h3>
+                    <p>ID преобразуется в вектор из сотен чисел, кодирующий смысл токена. Близкие по смыслу слова имеют близкие векторы.</p>
+                    <div class="step-visual">
+                        "кот" &rarr; [0.12, -0.45, 0.78, ...] (768 чисел)<br>
+                        "котёнок" &rarr; [0.14, -0.42, 0.75, ...] &mdash; близко к "кот"<br>
+                        "машина" &rarr; [0.91, 0.33, -0.12, ...] &mdash; далеко от "кот"
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num" style="background:var(--orange);">4</div>
+                <div class="step-content">
+                    <h3>Механизм внимания (Attention)</h3>
+                    <p>Каждое слово "смотрит" на все остальные слова, определяя их важность для контекста. Слово "банк" получает разные эмбеддинги в "речной банк" и "банк данных".</p>
+                    <div class="step-visual">
+                        Энкодер: понимает входной текст &rarr; Декодер: генерирует ответ
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num" style="background:#EF4444;">5</div>
+                <div class="step-content">
+                    <h3>Генерация текста</h3>
+                    <p>Модель вычисляет вероятности следующего токена и выбирает наиболее подходящий. Процесс повторяется для каждого нового токена.</p>
+                    <div class="step-visual">
+                        "Напиши рецепт яичницы" &rarr; <strong>$</strong> &rarr; "Чтобы" &rarr; "приготовить" &rarr; "яичницу" &rarr; "нужно" &rarr; "разбить" &rarr; "яйца" ...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ 9. МОДЕЛИ И ЭКОСИСТЕМА ═══ -->
+<section class="section" id="models">
+    <div class="section-inner">
+        <div class="section-badge bg-purple-light text-purple">08 &mdash; Экосистема</div>
+        <h2 class="section-title">Как все эти термины связаны</h2>
+        <p class="section-subtitle">AI &mdash; это широкая область. Machine Learning &mdash; одна из веток. Нейросети &mdash; один из методов ML. А ChatGPT, Claude, Gemini &mdash; это конкретные продукты на самом глубоком уровне вложенности.</p>
+
+        <!-- Taxonomy with descriptions -->
+        <div style="display:grid; grid-template-columns:420px 1fr; gap:48px; align-items:center; margin-bottom:48px;">
+            <div style="text-align:center;">
+                <div style="background:#F1F5F9; border:3px solid #CBD5E1; border-radius:50%; width:420px; height:420px; display:flex; align-items:center; justify-content:center; margin:0 auto; position:relative;">
+                    <span style="position:absolute; top:8px; left:50%; transform:translateX(-50%); font-size:0.8rem; font-weight:700; color:var(--gray);">AI</span>
+                    <div style="background:#E8F4FD; border:3px solid var(--blue); border-radius:50%; width:340px; height:340px; display:flex; align-items:center; justify-content:center; position:relative;">
+                        <span style="position:absolute; top:8px; left:50%; transform:translateX(-50%); font-size:0.8rem; font-weight:700; color:var(--blue);">Machine Learning</span>
+                        <div style="background:var(--purple-light); border:3px solid var(--purple); border-radius:50%; width:260px; height:260px; display:flex; align-items:center; justify-content:center; position:relative;">
+                            <span style="position:absolute; top:8px; left:50%; transform:translateX(-50%); font-size:0.8rem; font-weight:700; color:var(--purple);">Neural Networks</span>
+                            <div style="background:var(--orange-light); border:3px solid var(--orange); border-radius:50%; width:180px; height:180px; display:flex; align-items:center; justify-content:center; position:relative;">
+                                <span style="position:absolute; top:8px; left:50%; transform:translateX(-50%); font-size:0.75rem; font-weight:700; color:var(--orange);">Deep Learning</span>
+                                <div style="background:var(--green-light); border:3px solid var(--green); border-radius:50%; width:110px; height:110px; display:flex; align-items:center; justify-content:center;">
+                                    <span style="font-size:0.7rem; font-weight:800; color:var(--green); text-align:center; line-height:1.2;">Foundation<br>Models /<br>GenAI</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div style="margin-bottom:16px; padding:14px 18px; background:var(--bg); border-radius:10px; border-left:4px solid #CBD5E1;">
+                    <div style="font-weight:700; font-size:0.9rem; margin-bottom:2px;">AI</div>
+                    <div style="font-size:0.85rem; color:var(--gray);">Любая система, имитирующая интеллект. Включает и простые правила, и сложные модели.</div>
+                </div>
+                <div style="margin-bottom:16px; padding:14px 18px; background:var(--bg); border-radius:10px; border-left:4px solid var(--blue);">
+                    <div style="font-weight:700; font-size:0.9rem; color:var(--blue); margin-bottom:2px;">Machine Learning</div>
+                    <div style="font-size:0.85rem; color:var(--gray);">Подмножество AI: алгоритмы, которые учатся на данных, а не программируются вручную.</div>
+                </div>
+                <div style="margin-bottom:16px; padding:14px 18px; background:var(--bg); border-radius:10px; border-left:4px solid var(--purple);">
+                    <div style="font-weight:700; font-size:0.9rem; color:var(--purple); margin-bottom:2px;">Neural Networks</div>
+                    <div style="font-size:0.85rem; color:var(--gray);">Один из методов ML, вдохновлённый мозгом: слои нейронов, связанных весами.</div>
+                </div>
+                <div style="margin-bottom:16px; padding:14px 18px; background:var(--bg); border-radius:10px; border-left:4px solid var(--orange);">
+                    <div style="font-weight:700; font-size:0.9rem; color:var(--orange); margin-bottom:2px;">Deep Learning</div>
+                    <div style="font-size:0.85rem; color:var(--gray);">Нейросети с множеством слоёв (десятки-сотни). Именно они стоят за прорывами в AI.</div>
+                </div>
+                <div style="padding:14px 18px; background:var(--bg); border-radius:10px; border-left:4px solid var(--green);">
+                    <div style="font-weight:700; font-size:0.9rem; color:var(--green); margin-bottom:2px;">Foundation Models / GenAI</div>
+                    <div style="font-size:0.85rem; color:var(--gray);">Огромные модели (GPT-4, Claude, Gemini), обученные на терабайтах текста. Генерируют новое.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model comparison table -->
+        <h3 class="mb-24">Сравнение моделей</h3>
+        <table class="styled-table mb-48">
+            <thead>
+                <tr><th>Параметр</th><th>GPT-4</th><th>Claude</th><th>Gemini</th><th>LLaMA</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Провайдер</strong></td><td>OpenAI</td><td>Anthropic</td><td>Google</td><td>Meta</td></tr>
+                <tr><td><strong>Контекст</strong></td><td>128K токенов</td><td>200K токенов</td><td>1M токенов</td><td>128K токенов</td></tr>
+                <tr><td><strong>Тип</strong></td><td>Закрытая</td><td>Закрытая</td><td>Закрытая</td><td>Открытая</td></tr>
+                <tr><td><strong>Мультимодальность</strong></td><td>Текст + изображения</td><td>Текст + изображения</td><td>Текст + изображения + видео</td><td>Текст</td></tr>
+            </tbody>
+        </table>
+
+        <!-- Context -->
+        <h3 class="mb-24">Что такое контекст</h3>
+        <div class="cards-grid cards-3 mb-48">
+            <div class="card card-accent blue">
+                <div class="card-title">&#x1f4ac; История диалога</div>
+                <div class="card-text">Все предыдущие сообщения в текущем чате</div>
+            </div>
+            <div class="card card-accent purple">
+                <div class="card-title">&#x2699;&#xfe0f; Системный промпт</div>
+                <div class="card-text">Глобальные правила: стиль ответа, ограничения, источники</div>
+            </div>
+            <div class="card card-accent green">
+                <div class="card-title">&#x1f4c4; Подгружаемые данные</div>
+                <div class="card-text">Документы, база знаний, примеры</div>
+            </div>
+        </div>
+
+        <!-- Pricing -->
+        <h3 class="mb-24">Как зарабатывают модели</h3>
+        <div class="cards-grid cards-2">
+            <div class="card card-accent orange">
+                <div class="card-title">&#x1f4b3; Подписка</div>
+                <div class="card-text">ChatGPT Plus, Claude Pro &mdash; ~$20/мес. Для личного использования.</div>
+            </div>
+            <div class="card card-accent green">
+                <div class="card-title">&#x1f4b0; Pay-as-you-go (API)</div>
+                <div class="card-text">GPT-4o: $5/1M токенов вход, $15/1M выход. Для бизнес-интеграций.</div>
+                <p style="font-size:0.8rem; color:var(--gray); margin-top:8px;">1000 токенов &asymp; 600 слов на русском</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ 10. ВОЗМОЖНОСТИ AI ═══ -->
+<section class="section" id="capabilities">
+    <div class="section-inner">
+        <div class="section-badge bg-green-light text-green">09 &mdash; Возможности</div>
+        <h2 class="section-title">Возможности AI</h2>
+        <p class="section-subtitle">Каталог основных типов моделей и их применений.</p>
+
+        <div class="cards-grid cards-3">
+            <div class="card" style="border-top:4px solid var(--blue);">
+                <div class="card-icon">&#x1f4dd;</div>
+                <div class="card-title">LLM (текст)</div>
+                <div class="card-text mb-24">Генерация и понимание текста</div>
+                <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                    <span class="branch-tag">GPT-4</span>
+                    <span class="branch-tag">Claude</span>
+                    <span class="branch-tag">Gemini</span>
+                    <span class="branch-tag">Mistral</span>
+                    <span class="branch-tag">LLaMA</span>
+                </div>
+            </div>
+            <div class="card" style="border-top:4px solid var(--green);">
+                <div class="card-icon">&#x1f3a4;</div>
+                <div class="card-title">STT (речь &rarr; текст)</div>
+                <div class="card-text mb-24">Распознавание речи</div>
+                <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                    <span class="branch-tag">Whisper</span>
+                    <span class="branch-tag">Google STT</span>
+                    <span class="branch-tag">Azure</span>
+                </div>
+            </div>
+            <div class="card" style="border-top:4px solid var(--purple);">
+                <div class="card-icon">&#x1f50a;</div>
+                <div class="card-title">TTS (текст &rarr; речь)</div>
+                <div class="card-text mb-24">Синтез речи из текста</div>
+                <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                    <span class="branch-tag">ElevenLabs</span>
+                    <span class="branch-tag">WaveNet</span>
+                    <span class="branch-tag">Amazon Polly</span>
+                </div>
+            </div>
+            <div class="card" style="border-top:4px solid var(--orange);">
+                <div class="card-icon">&#x1f5bc;&#xfe0f;</div>
+                <div class="card-title">TTI (текст &rarr; изображение)</div>
+                <div class="card-text mb-24">Генерация изображений</div>
+                <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                    <span class="branch-tag">DALL-E</span>
+                    <span class="branch-tag">Midjourney</span>
+                    <span class="branch-tag">Stable Diffusion</span>
+                </div>
+            </div>
+            <div class="card" style="border-top:4px solid #EF4444;">
+                <div class="card-icon">&#x1f3ac;</div>
+                <div class="card-title">TTV (текст &rarr; видео)</div>
+                <div class="card-text mb-24">Генерация видео</div>
+                <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                    <span class="branch-tag">Runway</span>
+                    <span class="branch-tag">Pika Labs</span>
+                    <span class="branch-tag">Sora</span>
+                </div>
+            </div>
+            <div class="card" style="border-top:4px solid #0EA5E9;">
+                <div class="card-icon">&#x1f441;&#xfe0f;</div>
+                <div class="card-title">CV (компьютерное зрение)</div>
+                <div class="card-text mb-24">Распознавание изображений</div>
+                <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                    <span class="branch-tag">YOLO</span>
+                    <span class="branch-tag">CLIP</span>
+                    <span class="branch-tag">OpenCV</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ 11. ПРОМПТИНГ CTA ═══ -->
+<section class="section" id="prompting">
+    <div class="section-inner">
+        <div class="cta-block">
+            <div style="font-size:3rem; margin-bottom:16px;">&#x1f680;</div>
+            <h2>Промптинг &mdash; ключ к эффективному AI</h2>
+            <p>Хороший промпт &mdash; это компромисс между качеством результата и затратами на токены.</p>
+            <div class="cards-grid cards-3" style="margin-bottom:32px; text-align:left;">
+                <div style="background:white; padding:20px; border-radius:12px;">
+                    <div class="bold text-blue">&#x1f3af; Точность</div>
+                    <div style="font-size:0.85rem; color:var(--gray); margin-top:4px;">Чёткий запрос помогает модели лучше понять контекст</div>
+                </div>
+                <div style="background:white; padding:20px; border-radius:12px;">
+                    <div class="bold text-green">&#x1f4b0; Экономия</div>
+                    <div style="font-size:0.85rem; color:var(--gray); margin-top:4px;">Краткие и структурированные запросы снижают расход токенов</div>
+                </div>
+                <div style="background:white; padding:20px; border-radius:12px;">
+                    <div class="bold text-purple">&#x26a1; Скорость</div>
+                    <div style="font-size:0.85rem; color:var(--gray); margin-top:4px;">Хороший промпт позволяет избежать повторных запросов</div>
+                </div>
+            </div>
+            <a href="#" class="cta-btn">Перейти к Уроку 2: Промпт-инжиниринг &rarr;</a>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ Footer ═══ -->
+<footer style="text-align:center; padding:40px 24px; color:var(--gray); font-size:0.85rem;">
+    <p><strong>Practico.ai</strong> &mdash; AI для бизнеса</p>
+    <p style="margin-top:8px;">Урок 1 из 26 &bull; Знакомство и введение в AI</p>
+</footer>
+
+<script>
+// Progress bar on scroll
+window.addEventListener('scroll', () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = Math.min((window.scrollY / h) * 100, 100);
+    document.getElementById('progress').style.width = pct + '%';
+});
+
+// ═══ Section isolation mode: ?section=ID shows only that section ═══
+(function() {
+    var params = new URLSearchParams(window.location.search);
+    var sectionId = params.get('section');
+    if (sectionId) {
+        // Hide everything except the target section
+        document.querySelector('nav').style.display = 'none';
+        document.querySelector('.hero').style.display = 'none';
+        document.getElementById('progress').style.display = 'none';
+        document.querySelector('footer').style.display = 'none';
+        document.querySelectorAll('section.section').forEach(function(sec) {
+            if (sec.id !== sectionId) sec.style.display = 'none';
+        });
+        // Remove body margin for clean embed
+        document.body.style.margin = '0';
+        document.body.style.padding = '0';
+    }
+})();
+
+// ═══ Copy iframe tag for each section ═══
+(function() {
+    var baseUrl = window.location.origin + window.location.pathname;
+    var sections = document.querySelectorAll('section.section');
+
+    sections.forEach(function(sec) {
+        if (!sec.id) return;
+
+        var btn = document.createElement('button');
+        btn.textContent = '\u{1f4cb} Скопировать iframe';
+        btn.style.cssText = 'position:absolute; top:12px; right:12px; background:#1e1e1e; color:white; border:none; border-radius:8px; padding:6px 14px; font-size:0.75rem; font-family:Nunito,sans-serif; cursor:pointer; opacity:0; transition:opacity 0.2s; z-index:10;';
+        sec.style.position = 'relative';
+        sec.appendChild(btn);
+
+        sec.addEventListener('mouseenter', function() { btn.style.opacity = '1'; });
+        sec.addEventListener('mouseleave', function() { btn.style.opacity = '0'; });
+
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var iframeCode = '<iframe src="' + baseUrl + '?section=' + sec.id + '" width="100%" height="800" frameborder="0" style="border:none; border-radius:12px;" allowfullscreen></iframe>';
+            navigator.clipboard.writeText(iframeCode).then(function() {
+                btn.textContent = '\u2705 Скопировано!';
+                btn.style.background = '#2e8749';
+                setTimeout(function() {
+                    btn.textContent = '\u{1f4cb} Скопировать iframe';
+                    btn.style.background = '#1e1e1e';
+                }, 2000);
+            });
+        });
+    });
+})();
+</script>
+</body>
+</html>
