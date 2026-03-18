@@ -331,13 +331,22 @@ a { color: var(--blue); text-decoration: none; }
 </div>
 <script>
 (function(){
+    var params = new URLSearchParams(window.location.search);
+    var gate = document.getElementById('pw-gate');
+
+    // Embed mode — no password, no gate
+    if (params.get('embed') === 'true') {
+        gate.style.display = 'none';
+        return;
+    }
+
     // Simple hash check — not cryptographically secure, just a course gate
     var HASH = '4d14366ce43d6a20cf0576ec17e3973b1afc4fdb98df73a9dc0a6791b6fcb030'; // sha256 of course password
     var STORAGE_KEY = 'practico_pw_ok';
 
     // If already authenticated in this session, skip
     if (sessionStorage.getItem(STORAGE_KEY) === '1') {
-        document.getElementById('pw-gate').style.display = 'none';
+        gate.style.display = 'none';
         return;
     }
 
@@ -352,7 +361,7 @@ a { color: var(--blue); text-decoration: none; }
         var h = await sha256(val);
         if (h === HASH) {
             sessionStorage.setItem(STORAGE_KEY, '1');
-            document.getElementById('pw-gate').style.display = 'none';
+            gate.style.display = 'none';
         } else {
             document.getElementById('pw-error').textContent = 'Неверный пароль';
             document.getElementById('pw-input').style.borderColor = '#EF4444';
