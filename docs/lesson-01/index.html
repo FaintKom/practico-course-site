@@ -380,6 +380,7 @@ a { color: var(--blue); text-decoration: none; }
     <div class="nav-inner">
         <div class="nav-logo">Practico.ai</div>
         <div class="nav-links">
+            <a href="#instructor">Преподаватель</a>
             <a href="#intro">Знакомство</a>
             <a href="#what-is-ai">Что такое AI</a>
             <a href="#ml-types">Типы ML</a>
@@ -418,6 +419,31 @@ a { color: var(--blue); text-decoration: none; }
             </div>
         </div>
         <p style="font-size:0.75rem; color:rgba(255,255,255,0.4); margin-top:12px;">Источник: <a href="https://www.ibm.com/downloads/cas/GVAGA3JP" style="color:rgba(255,255,255,0.5);" target="_blank">IBM Global AI Adoption Index 2022</a></p>
+    </div>
+</section>
+
+<!-- ═══ 1.2. ПРЕПОДАВАТЕЛЬ ═══ -->
+<section class="section" id="instructor">
+    <div class="section-inner">
+        <div style="display:grid; grid-template-columns:280px 1fr; gap:48px; align-items:center;">
+            <div style="text-align:center;">
+                <img src="images/instructor.png" alt="Константин Пинчуковский" style="width:220px; height:220px; border-radius:50%; object-fit:cover; border:4px solid var(--blue); margin-bottom:16px;">
+                <h3 style="font-size:1.2rem; margin-bottom:4px;">Константин Пинчуковский</h3>
+                <p style="color:var(--blue); font-weight:700; font-size:0.9rem;">Преподаватель курса</p>
+            </div>
+            <div>
+                <div class="section-badge bg-blue-light text-blue" style="display:inline-block; margin-bottom:16px;">Немного о нас</div>
+                <ul style="list-style:none; font-size:0.95rem; line-height:2.2;">
+                    <li>&#x1f4bc; 5 лет в венчурных фондах и стартап-акселераторах (Starta.vc, HSE)</li>
+                    <li>&#x1f916; Партнёр и CIO в <strong>SkaiLab</strong> &mdash; агентство по разработке AI</li>
+                    <li>&#x1f4bb; ex-founder и CTO Credo &mdash; агентство по разработке ПО</li>
+                    <li>&#x1f393; ex-CPO в нескольких немецких EdTech стартапах</li>
+                </ul>
+                <div style="margin-top:24px;">
+                    <img src="images/skailab.png" alt="SkaiLab и Practico.ai" style="width:100%; max-width:600px; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.08);">
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -1298,54 +1324,70 @@ a { color: var(--blue); text-decoration: none; }
         <h2 class="section-title">Книги по AI</h2>
         <p class="section-subtitle">Рекомендуемая литература для углубления в тему искусственного интеллекта.</p>
 
-        <div class="cards-grid cards-2">
-            <div class="card" style="display:flex; gap:16px; align-items:flex-start;">
-                <div style="font-size:2rem; flex-shrink:0;">&#x1f4d7;</div>
-                <div>
-                    <div class="card-title">Superintelligence</div>
-                    <div style="font-size:0.8rem; color:var(--gray); margin-bottom:4px;">Nick Bostrom</div>
-                    <div class="card-text">О рисках и перспективах создания сверхразумного AI. Классика жанра.</div>
-                </div>
+        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:24px; margin-bottom:32px;">
+            <div style="text-align:center;">
+                <img src="images/book_047.png" alt="The Coming Wave" style="width:100%; max-width:180px; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.15); margin-bottom:12px;">
+                <div style="font-weight:700; font-size:0.85rem;">The Coming Wave</div>
+                <div style="font-size:0.75rem; color:var(--gray);">Mustafa Suleyman</div>
             </div>
-            <div class="card" style="display:flex; gap:16px; align-items:flex-start;">
-                <div style="font-size:2rem; flex-shrink:0;">&#x1f4d8;</div>
-                <div>
-                    <div class="card-title">AI Superpowers</div>
-                    <div style="font-size:0.8rem; color:var(--gray); margin-bottom:4px;">Kai-Fu Lee</div>
-                    <div class="card-text">Как AI меняет экономику. Сравнение подходов США и Китая к развитию AI.</div>
-                </div>
+            <div style="text-align:center;">
+                <img src="images/book_048.png" alt="AI: A Guide for Thinking Humans" style="width:100%; max-width:180px; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.15); margin-bottom:12px;">
+                <div style="font-weight:700; font-size:0.85rem;">AI: A Guide for Thinking Humans</div>
+                <div style="font-size:0.75rem; color:var(--gray);">Melanie Mitchell</div>
             </div>
-            <div class="card" style="display:flex; gap:16px; align-items:flex-start;">
-                <div style="font-size:2rem; flex-shrink:0;">&#x1f4d9;</div>
-                <div>
-                    <div class="card-title">Life 3.0</div>
-                    <div style="font-size:0.8rem; color:var(--gray); margin-bottom:4px;">Max Tegmark</div>
-                    <div class="card-text">О будущем AI и человечества. Философия и практика сосуществования с AI.</div>
-                </div>
+            <div style="text-align:center;">
+                <img src="images/book_049.png" alt="Prediction Machines" style="width:100%; max-width:180px; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.15); margin-bottom:12px;">
+                <div style="font-weight:700; font-size:0.85rem;">Prediction Machines</div>
+                <div style="font-size:0.75rem; color:var(--gray);">Agrawal, Gans, Goldfarb</div>
             </div>
-            <div class="card" style="display:flex; gap:16px; align-items:flex-start;">
-                <div style="font-size:2rem; flex-shrink:0;">&#x1f4d5;</div>
-                <div>
-                    <div class="card-title">The Alignment Problem</div>
-                    <div style="font-size:0.8rem; color:var(--gray); margin-bottom:4px;">Brian Christian</div>
-                    <div class="card-text">Проблема согласования AI с человеческими ценностями. Актуально как никогда.</div>
-                </div>
+            <div style="text-align:center;">
+                <img src="images/book_050.png" alt="Competing in the Age of AI" style="width:100%; max-width:180px; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.15); margin-bottom:12px;">
+                <div style="font-weight:700; font-size:0.85rem;">Competing in the Age of AI</div>
+                <div style="font-size:0.75rem; color:var(--gray);">Iansiti, Lakhani</div>
             </div>
-            <div class="card" style="display:flex; gap:16px; align-items:flex-start;">
-                <div style="font-size:2rem; flex-shrink:0;">&#x1f4d3;</div>
-                <div>
-                    <div class="card-title">Prediction Machines</div>
-                    <div style="font-size:0.8rem; color:var(--gray); margin-bottom:4px;">Ajay Agrawal, Joshua Gans, Avi Goldfarb</div>
-                    <div class="card-text">Экономика AI: как использовать машинные прогнозы для бизнес-решений.</div>
-                </div>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:24px; margin-bottom:32px;">
+            <div style="text-align:center;">
+                <img src="images/book_051.png" alt="The Master Algorithm" style="width:100%; max-width:180px; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.15); margin-bottom:12px;">
+                <div style="font-weight:700; font-size:0.85rem;">The Master Algorithm</div>
+                <div style="font-size:0.75rem; color:var(--gray);">Pedro Domingos</div>
             </div>
-            <div class="card" style="display:flex; gap:16px; align-items:flex-start;">
-                <div style="font-size:2rem; flex-shrink:0;">&#x1f4d2;</div>
-                <div>
-                    <div class="card-title">Human Compatible</div>
-                    <div style="font-size:0.8rem; color:var(--gray); margin-bottom:4px;">Stuart Russell</div>
-                    <div class="card-text">Как построить AI, который будет безопасен для человечества. Новый взгляд на проблему.</div>
-                </div>
+            <div style="text-align:center;">
+                <img src="images/book_052.png" alt="Human + Machine" style="width:100%; max-width:180px; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.15); margin-bottom:12px;">
+                <div style="font-weight:700; font-size:0.85rem;">Human + Machine</div>
+                <div style="font-size:0.75rem; color:var(--gray);">Daugherty, Wilson</div>
+            </div>
+            <div style="text-align:center;">
+                <img src="images/book_053.png" alt="Leading Digital" style="width:100%; max-width:180px; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.15); margin-bottom:12px;">
+                <div style="font-weight:700; font-size:0.85rem;">Leading Digital</div>
+                <div style="font-size:0.75rem; color:var(--gray);">Westerman, Bonnet, McAfee</div>
+            </div>
+            <div style="text-align:center;">
+                <img src="images/book_054.png" alt="The AI Advantage" style="width:100%; max-width:180px; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.15); margin-bottom:12px;">
+                <div style="font-weight:700; font-size:0.85rem;">The AI Advantage</div>
+                <div style="font-size:0.75rem; color:var(--gray);">Thomas H. Davenport</div>
+            </div>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:24px;">
+            <div style="text-align:center;">
+                <img src="images/book_055.png" alt="Life 3.0" style="width:100%; max-width:180px; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.15); margin-bottom:12px;">
+                <div style="font-weight:700; font-size:0.85rem;">Life 3.0</div>
+                <div style="font-size:0.75rem; color:var(--gray);">Max Tegmark</div>
+            </div>
+            <div style="text-align:center;">
+                <img src="images/book_056.png" alt="The Algorithmic Leader" style="width:100%; max-width:180px; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.15); margin-bottom:12px;">
+                <div style="font-weight:700; font-size:0.85rem;">The Algorithmic Leader</div>
+                <div style="font-size:0.75rem; color:var(--gray);">Mike Walsh</div>
+            </div>
+            <div style="text-align:center;">
+                <img src="images/book_057.png" alt="Human Compatible" style="width:100%; max-width:180px; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.15); margin-bottom:12px;">
+                <div style="font-weight:700; font-size:0.85rem;">Human Compatible</div>
+                <div style="font-size:0.75rem; color:var(--gray);">Stuart Russell</div>
+            </div>
+            <div style="text-align:center;">
+                <img src="images/book_058.png" alt="Agentic Design Patterns" style="width:100%; max-width:180px; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.15); margin-bottom:12px;">
+                <div style="font-weight:700; font-size:0.85rem;">Agentic Design Patterns</div>
+                <div style="font-size:0.75rem; color:var(--gray);">Antonio Gull&iacute;</div>
             </div>
         </div>
     </div>
