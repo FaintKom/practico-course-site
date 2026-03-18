@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 2 — Промпт-инжиниринг</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="interactive.css">
+<style>
+:root {
+    --blue: #0080ff;
+    --blue-dark: #0060cc;
+    --blue-light: #e9f1fc;
+    --green: #2e8749;
+    --green-light: #e9fcf0;
+    --orange: #ff6805;
+    --orange-light: #ffebe1;
+    --purple: #5243c3;
+    --purple-light: #ebe9fc;
+    --dark: #1e1e1e;
+    --gray: #64748B;
+    --gray-light: #9CA3AF;
+    --bg: #F8FAFC;
+    --white: #FFFFFF;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    --red: #EF4444;
+    --red-light: #FEF2F2;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito', sans-serif; color: var(--dark); line-height: 1.7; background: var(--white); }
+a { color: var(--blue); text-decoration: none; }
+
+/* ── Nav ── */
+.top-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+    border-bottom: 1px solid #E2E8F0;
+}
+.nav-inner {
+    max-width: 1200px; margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { font-weight: 800; font-size: 1.1rem; color: var(--blue); }
+.nav-links { display: flex; gap: 24px; font-size: 0.85rem; font-weight: 600; color: var(--gray); }
+.nav-links a { color: var(--gray); transition: color 0.2s; }
+.nav-links a:hover { color: var(--blue); }
+.progress-track { height: 3px; background: #E2E8F0; }
+.progress-fill { height: 3px; background: linear-gradient(90deg, var(--blue), var(--purple)); width: 0%; transition: width 0.3s; }
+
+/* ── Section base ── */
+.section { padding: 100px 24px; }
+.section:nth-child(odd) { background: var(--white); }
+.section:nth-child(even) { background: var(--bg); }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+.section-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 16px; border-radius: 50px;
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px;
+    margin-bottom: 16px;
+}
+.section-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 12px; line-height: 1.3; }
+.section-subtitle { font-size: 1.1rem; color: var(--gray); margin-bottom: 48px; max-width: 700px; }
+
+/* ── Hero ── */
+.hero {
+    background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d2b 100%);
+    color: white; padding: 160px 24px 100px; text-align: center;
+    position: relative; overflow: hidden;
+}
+.hero::before {
+    content: ''; position: absolute; top: -200px; right: -200px;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,128,255,0.15) 0%, transparent 70%);
+}
+.hero::after {
+    content: ''; position: absolute; bottom: -150px; left: -150px;
+    width: 400px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(82,67,195,0.12) 0%, transparent 70%);
+}
+.hero-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-badge {
+    display: inline-block; padding: 8px 20px; border-radius: 50px;
+    background: rgba(0,128,255,0.15); border: 1px solid rgba(0,128,255,0.3);
+    color: #6db8ff; font-size: 0.85rem; font-weight: 700; margin-bottom: 24px;
+}
+.hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 16px; line-height: 1.2; }
+.hero p { font-size: 1.15rem; color: rgba(255,255,255,0.7); max-width: 600px; margin: 0 auto 48px; }
+
+/* Stats row */
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 48px; }
+.stat-card {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius); padding: 24px 16px; text-align: center;
+}
+.stat-number { font-size: 2.2rem; font-weight: 800; color: var(--orange); }
+.stat-label { font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: 4px; }
+
+/* ── Cards grid ── */
+.cards-grid { display: grid; gap: 20px; }
+.cards-2 { grid-template-columns: repeat(2, 1fr); }
+.cards-3 { grid-template-columns: repeat(3, 1fr); }
+.cards-4 { grid-template-columns: repeat(4, 1fr); }
+.card {
+    background: var(--white); border-radius: var(--radius); padding: 28px;
+    border: 1px solid #E2E8F0; transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.card-icon { font-size: 2rem; margin-bottom: 12px; }
+.card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+.card-text { font-size: 0.9rem; color: var(--gray); }
+.card-accent { border-left: 4px solid; }
+.card-accent.blue { border-color: var(--blue); }
+.card-accent.green { border-color: var(--green); }
+.card-accent.orange { border-color: var(--orange); }
+.card-accent.purple { border-color: var(--purple); }
+
+/* ── Tree diagram ── */
+.tree { text-align: center; }
+.tree-root {
+    display: inline-block; padding: 16px 32px; border-radius: 12px;
+    background: var(--blue); color: white; font-weight: 700; font-size: 1.2rem;
+    margin-bottom: 0;
+}
+.tree-connector { width: 3px; height: 40px; background: var(--blue); margin: 0 auto; }
+.tree-branches { display: flex; justify-content: center; gap: 32px; position: relative; }
+.tree-branches::before {
+    content: ''; position: absolute; top: 0; left: 16.66%; right: 16.66%;
+    height: 3px; background: #CBD5E1;
+}
+.tree-branch {
+    flex: 1; max-width: 320px; text-align: center; position: relative; padding-top: 40px;
+}
+.tree-branch::before {
+    content: ''; position: absolute; top: 0; left: 50%;
+    width: 3px; height: 40px; background: #CBD5E1;
+}
+.branch-head {
+    padding: 12px 20px; border-radius: 10px; font-weight: 700;
+    margin-bottom: 12px; font-size: 0.95rem;
+}
+.branch-body { font-size: 0.85rem; color: var(--gray); margin-bottom: 12px; }
+.branch-examples { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.branch-tag {
+    padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600;
+    background: #F1F5F9; color: var(--dark);
+}
+
+/* ── Comparison ── */
+.comparison { display: grid; grid-template-columns: 1fr 80px 1fr; gap: 0; align-items: start; }
+.comp-col { padding: 32px; border-radius: var(--radius); }
+.comp-col h3 { font-size: 1.3rem; margin-bottom: 16px; }
+.comp-vs {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; font-weight: 800; color: var(--gray-light);
+}
+.comp-list { list-style: none; }
+.comp-list li { padding: 8px 0; border-bottom: 1px solid #F1F5F9; font-size: 0.95rem; }
+.comp-list li:last-child { border: none; }
+
+/* ── Flowchart ── */
+.flowchart { display: flex; flex-direction: column; align-items: center; gap: 0; }
+.flow-box {
+    padding: 14px 24px; border-radius: 10px; font-weight: 600;
+    text-align: center; max-width: 400px; font-size: 0.9rem;
+}
+.flow-arrow {
+    width: 3px; height: 32px; background: #CBD5E1; position: relative;
+}
+.flow-arrow::after {
+    content: ''; position: absolute; bottom: 0; left: -4px;
+    border-left: 5px solid transparent; border-right: 5px solid transparent;
+    border-top: 8px solid #CBD5E1;
+}
+
+/* ── Timeline horizontal ── */
+.timeline-h { display: flex; justify-content: space-between; position: relative; padding: 0 40px; margin: 48px 0; }
+.timeline-h::before {
+    content: ''; position: absolute; top: 24px; left: 60px; right: 60px;
+    height: 4px; background: linear-gradient(90deg, var(--blue), var(--purple));
+    border-radius: 2px;
+}
+.tl-step { text-align: center; flex: 1; position: relative; }
+.tl-dot {
+    width: 48px; height: 48px; border-radius: 50%; margin: 0 auto 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; color: white; font-size: 1.1rem; position: relative; z-index: 1;
+}
+.tl-title { font-weight: 700; margin-bottom: 4px; }
+.tl-desc { font-size: 0.85rem; color: var(--gray); max-width: 200px; margin: 0 auto; }
+
+/* ── Steps ── */
+.steps { display: flex; flex-direction: column; gap: 0; }
+.step {
+    display: grid; grid-template-columns: 80px 1fr; gap: 24px;
+    padding: 32px 0; border-bottom: 1px solid #E2E8F0;
+}
+.step:last-child { border: none; }
+.step-num {
+    width: 56px; height: 56px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; font-weight: 800; color: white;
+}
+.step-content h3 { font-size: 1.15rem; margin-bottom: 8px; }
+.step-content p { font-size: 0.95rem; color: var(--gray); }
+.step-visual {
+    margin-top: 16px; padding: 20px; background: #F8FAFC;
+    border-radius: 12px; font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+}
+
+/* ── Table ── */
+.styled-table { width: 100%; border-collapse: separate; border-spacing: 0; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+.styled-table th { background: var(--blue); color: white; padding: 16px 20px; text-align: left; font-weight: 700; }
+.styled-table td { padding: 14px 20px; border-bottom: 1px solid #E2E8F0; font-size: 0.9rem; }
+.styled-table tr:nth-child(even) td { background: var(--bg); }
+.styled-table tr:last-child td { border-bottom: none; }
+
+/* ── CTA / highlight block ── */
+.cta-block {
+    text-align: center; padding: 80px 24px;
+    background: linear-gradient(135deg, var(--blue-light) 0%, var(--purple-light) 100%);
+    border-radius: var(--radius);
+}
+.cta-block h2 { font-size: 2rem; margin-bottom: 12px; }
+.cta-block p { color: var(--gray); margin-bottom: 32px; }
+
+/* ── Framework card (special) ── */
+.fw-card {
+    background: var(--white); border-radius: var(--radius); padding: 32px;
+    border: 1px solid #E2E8F0; margin-bottom: 24px;
+}
+.fw-card h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; }
+.fw-card .fw-sub { font-size: 0.95rem; color: var(--gray); margin-bottom: 20px; }
+.fw-letters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.fw-letter {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 16px; border-radius: 10px; font-weight: 700; font-size: 0.9rem;
+}
+.fw-example {
+    background: var(--bg); border-radius: 12px; padding: 20px;
+    font-size: 0.9rem; line-height: 1.8; border-left: 4px solid var(--blue);
+}
+.fw-example .label { font-weight: 700; color: var(--blue); }
+
+/* ── Good/Bad comparison ── */
+.good-bad { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.good-box, .bad-box {
+    border-radius: var(--radius); padding: 24px; font-size: 0.9rem;
+}
+.bad-box { background: var(--red-light); border: 1px solid #FECACA; }
+.bad-box .gb-label { color: var(--red); font-weight: 800; margin-bottom: 8px; }
+.good-box { background: var(--green-light); border: 1px solid #A7F3D0; }
+.good-box .gb-label { color: var(--green); font-weight: 800; margin-bottom: 8px; }
+
+/* ── Technique card ── */
+.tech-card {
+    background: var(--white); border-radius: var(--radius); padding: 28px;
+    border: 1px solid #E2E8F0; transition: transform 0.2s, box-shadow 0.2s;
+}
+.tech-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.tech-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; border-radius: 10px; font-weight: 800; color: white;
+    font-size: 0.9rem; margin-bottom: 12px;
+}
+.tech-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; }
+.tech-name-en { font-size: 0.8rem; color: var(--gray); margin-bottom: 8px; }
+.tech-desc { font-size: 0.85rem; color: var(--gray); margin-bottom: 12px; }
+.tech-example {
+    background: var(--bg); border-radius: 8px; padding: 12px 16px;
+    font-size: 0.82rem; font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── Utility ── */
+.text-blue { color: var(--blue); }
+.text-green { color: var(--green); }
+.text-orange { color: var(--orange); }
+.text-purple { color: var(--purple); }
+.bg-blue-light { background: var(--blue-light); }
+.bg-green-light { background: var(--green-light); }
+.bg-orange-light { background: var(--orange-light); }
+.bg-purple-light { background: var(--purple-light); }
+.mb-16 { margin-bottom: 16px; }
+.mb-24 { margin-bottom: 24px; }
+.mb-48 { margin-bottom: 48px; }
+.mt-48 { margin-top: 48px; }
+.bold { font-weight: 700; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .hero h1 { font-size: 2rem; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .cards-3, .cards-4 { grid-template-columns: 1fr; }
+    .cards-2 { grid-template-columns: 1fr; }
+    .comparison { grid-template-columns: 1fr; }
+    .comp-vs { padding: 16px 0; }
+    .good-bad { grid-template-columns: 1fr; }
+    .tree-branches { flex-direction: column; align-items: center; }
+    .tree-branches::before { display: none; }
+    .tree-branch::before { display: none; }
+    .tree-branch { padding-top: 16px; }
+    .timeline-h { flex-direction: column; gap: 24px; padding: 0; }
+    .timeline-h::before { display: none; }
+    .step { grid-template-columns: 56px 1fr; }
+    .nav-links { display: none; }
+    .section { padding: 60px 16px; }
+    .section-title { font-size: 1.6rem; }
+    .fw-letters { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ PASSWORD GATE ═══ -->
+<div id="pw-gate" style="display:flex; align-items:center; justify-content:center; min-height:100vh; background:var(--bg); position:fixed; inset:0; z-index:9999;">
+    <div style="text-align:center; max-width:380px; padding:48px 32px; background:white; border-radius:20px; box-shadow:0 8px 32px rgba(0,0,0,0.08);">
+        <div style="font-size:2.5rem; margin-bottom:16px;">&#x1f512;</div>
+        <h2 style="font-size:1.3rem; margin-bottom:8px;">Материалы курса</h2>
+        <p style="color:var(--gray); font-size:0.9rem; margin-bottom:24px;">Введите пароль, полученный от преподавателя</p>
+        <input id="pw-input" type="password" placeholder="Пароль" autocomplete="off"
+            style="width:100%; padding:12px 16px; border:2px solid #E2E8F0; border-radius:10px; font-size:1rem; font-family:Nunito,sans-serif; outline:none; transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='#E2E8F0'">
+        <div id="pw-error" style="color:#EF4444; font-size:0.8rem; margin-top:8px; min-height:1.2em;"></div>
+        <button id="pw-btn" style="width:100%; margin-top:12px; padding:12px; background:var(--blue); color:white; border:none; border-radius:10px; font-size:1rem; font-weight:700; font-family:Nunito,sans-serif; cursor:pointer;">
+            Войти
+        </button>
+    </div>
+</div>
+<script>
+(function(){
+    var params = new URLSearchParams(window.location.search);
+    var gate = document.getElementById('pw-gate');
+    if (params.get('embed') === 'true') { gate.style.display = 'none'; return; }
+    var HASH = '4d14366ce43d6a20cf0576ec17e3973b1afc4fdb98df73a9dc0a6791b6fcb030';
+    var STORAGE_KEY = 'practico_pw_ok';
+    if (sessionStorage.getItem(STORAGE_KEY) === '1') { gate.style.display = 'none'; return; }
+    async function sha256(str) {
+        var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+        return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0')}).join('');
+    }
+    async function check() {
+        var val = document.getElementById('pw-input').value.trim();
+        if (!val) return;
+        var h = await sha256(val);
+        if (h === HASH) { sessionStorage.setItem(STORAGE_KEY, '1'); gate.style.display = 'none'; }
+        else { document.getElementById('pw-error').textContent = 'Неверный пароль'; document.getElementById('pw-input').style.borderColor = '#EF4444'; }
+    }
+    document.getElementById('pw-btn').addEventListener('click', check);
+    document.getElementById('pw-input').addEventListener('keydown', function(e){ if (e.key === 'Enter') check(); });
+})();
+</script>
+
+<!-- ═══ NAV ═══ -->
+<nav class="top-nav">
+    <div class="nav-inner">
+        <div class="nav-logo">Practico.ai</div>
+        <div class="nav-links">
+            <a href="#intro">Введение</a>
+            <a href="#prompt-elements">Элементы</a>
+            <a href="#best-practices">Практики</a>
+            <a href="#frameworks">Фреймворки</a>
+            <a href="#techniques">Техники</a>
+            <a href="#chatgpt-tools">ChatGPT</a>
+            <a href="#platforms">Платформы</a>
+        </div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="hero">
+    <div class="hero-inner">
+        <div class="hero-badge">Урок 2 из 26</div>
+        <h1>Промпт-инжиниринг</h1>
+        <p>Освойте искусство создания эффективных промптов: от базовых элементов до продвинутых техник и фреймворков.</p>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-number">8</div>
+                <div class="stat-label">техник промптинга</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">5</div>
+                <div class="stat-label">фреймворков</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4</div>
+                <div class="stat-label">элемента хорошего промпта</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">$2M+</div>
+                <div class="stat-label">оборот маркетплейсов промптов</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ 1. INTRO — План занятия + Основы ═══ -->
+<section class="section" id="intro">
+    <div class="section-inner">
+        <div class="section-badge bg-blue-light text-blue">01 &mdash; Введение</div>
+        <h2 class="section-title">План занятия и основы промптинга</h2>
+        <p class="section-subtitle">Что такое промпт, почему он важен и какие ошибки допускают новички.</p>
+
+        <!-- Lesson plan -->
+        <div class="cards-grid cards-3 mb-48">
+            <div class="card" style="border-top:4px solid var(--blue); text-align:center;">
+                <div style="font-size:2.5rem; margin-bottom:8px;">&#x1f4dd;</div>
+                <div class="card-title text-blue">Основы промптинга</div>
+                <div class="card-text">Типы промптов, элементы, лучшие практики и контекст</div>
+            </div>
+            <div class="card" style="border-top:4px solid var(--purple); text-align:center;">
+                <div style="font-size:2.5rem; margin-bottom:8px;">&#x1f9e9;</div>
+                <div class="card-title text-purple">Фреймворки и техники</div>
+                <div class="card-text">AUTOMAT, TAG, RISE, BAB, RTF и 8 техник промптинга</div>
+            </div>
+            <div class="card" style="border-top:4px solid var(--green); text-align:center;">
+                <div style="font-size:2.5rem; margin-bottom:8px;">&#x1f6e0;&#xfe0f;</div>
+                <div class="card-title text-green">Инструменты ChatGPT</div>
+                <div class="card-text">CustomGPT, Canvas, агентный режим, настройки приватности</div>
+            </div>
+        </div>
+
+        <!-- What is a prompt -->
+        <div style="background: linear-gradient(135deg, var(--blue-light), var(--purple-light)); border-radius:var(--radius); padding:40px; margin-bottom:40px;">
+            <h3 style="font-size:1.5rem; font-weight:800; margin-bottom:12px;">&#x1f4a1; Что такое промпт?</h3>
+            <p style="font-size:1.1rem; margin-bottom:24px;"><strong>Промпт</strong> &mdash; это входные данные, которые вы передаёте модели для получения желаемого результата.</p>
+            <p style="font-size:0.95rem; color:var(--gray);">Качество промпта напрямую определяет качество ответа. Хороший промпт &mdash; это чёткий, контекстуальный и структурированный запрос.</p>
+        </div>
+
+        <!-- 3 common mistakes -->
+        <h3 style="text-align:center; margin-bottom:24px;">&#x26a0;&#xfe0f; 3 распространённые ошибки</h3>
+        <div class="cards-grid cards-3">
+            <div class="card card-accent" style="border-left-color: var(--red);">
+                <div class="card-icon">&#x1f32b;&#xfe0f;</div>
+                <div class="card-title">Размытая формулировка</div>
+                <div class="card-text">Нечёткие запросы без конкретных деталей. Модель не понимает, что именно от неё нужно.</div>
+                <div style="margin-top:12px; padding:10px; background:var(--red-light); border-radius:8px; font-size:0.82rem;">
+                    <strong style="color:var(--red);">Пример:</strong> &laquo;Расскажи про маркетинг&raquo;
+                </div>
+            </div>
+            <div class="card card-accent" style="border-left-color: var(--red);">
+                <div class="card-icon">&#x1f4e6;</div>
+                <div class="card-title">Перегрузка информацией</div>
+                <div class="card-text">Слишком много несвязанных деталей сбивают модель и ухудшают результат.</div>
+                <div style="margin-top:12px; padding:10px; background:var(--red-light); border-radius:8px; font-size:0.82rem;">
+                    <strong style="color:var(--red);">Пример:</strong> &laquo;Напиши про маркетинг, финансы, IT и HR сразу&raquo;
+                </div>
+            </div>
+            <div class="card card-accent" style="border-left-color: var(--red);">
+                <div class="card-icon">&#x1f6ab;</div>
+                <div class="card-title">Нет примеров и контекста</div>
+                <div class="card-text">Без примеров и контекста модель вынуждена угадывать формат и стиль ответа.</div>
+                <div style="margin-top:12px; padding:10px; background:var(--red-light); border-radius:8px; font-size:0.82rem;">
+                    <strong style="color:var(--red);">Пример:</strong> &laquo;Сделай таблицу&raquo; (без данных и формата)
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ 2. ТИПЫ ПРОМПТОВ ═══ -->
+<section class="section" id="prompt-types">
+    <div class="section-inner">
+        <div class="section-badge bg-purple-light text-purple">02 &mdash; Классификация</div>
+        <h2 class="section-title">Типы промптов</h2>
+        <p class="section-subtitle">Промпты различаются по функции, контексту и области применения.</p>
+
+        <!-- By function -->
+        <h3 class="mb-24">По функции</h3>
+        <div class="cards-grid cards-3 mb-48">
+            <div class="card" style="border-top:4px solid var(--blue);">
+                <div class="card-icon">&#x2699;&#xfe0f;</div>
+                <div class="card-title text-blue">Системные промпты</div>
+                <div class="card-text mb-24">Настраивают AI на определённую роль и поведение. Задают контекст для всего диалога.</div>
+                <div style="background:var(--blue-light); border-radius:8px; padding:12px; font-size:0.82rem; font-family:'JetBrains Mono',monospace;">
+                    &laquo;Ты &mdash; опытный HR-менеджер. Отвечай кратко, профессионально.&raquo;
+                </div>
+            </div>
+            <div class="card" style="border-top:4px solid var(--green);">
+                <div class="card-icon">&#x1f500;</div>
+                <div class="card-title text-green">Условные промпты</div>
+                <div class="card-text mb-24">Содержат логику &laquo;если/то&raquo;. Позволяют модели адаптировать ответ в зависимости от условий.</div>
+                <div style="background:var(--green-light); border-radius:8px; padding:12px; font-size:0.82rem; font-family:'JetBrains Mono',monospace;">
+                    &laquo;Если вопрос про возврат &mdash; предложи форму. Если про доставку &mdash; дай трекинг.&raquo;
+                </div>
+            </div>
+            <div class="card" style="border-top:4px solid var(--orange);">
+                <div class="card-icon">&#x1f4ac;</div>
+                <div class="card-title text-orange">Промпты на ест. языке</div>
+                <div class="card-text mb-24">Обычные запросы в свободной форме. Самый простой тип, используемый в повседневном общении с AI.</div>
+                <div style="background:var(--orange-light); border-radius:8px; padding:12px; font-size:0.82rem; font-family:'JetBrains Mono',monospace;">
+                    &laquo;Помоги мне составить план презентации по продажам.&raquo;
+                </div>
+            </div>
+        </div>
+
+        <!-- By context/style -->
+        <h3 class="mb-24">По контексту и стилю</h3>
+        <div class="cards-grid cards-3 mb-48">
+            <div class="card" style="background:var(--blue-light);">
+                <div style="font-size:2rem; margin-bottom:8px;">&#x1f3af;</div>
+                <div class="card-title">Эксплицитные (Explicit)</div>
+                <div class="card-text">Высокая специфичность. Чёткое описание задачи, формата и ограничений. Минимум пространства для интерпретации.</div>
+            </div>
+            <div class="card" style="background:var(--purple-light);">
+                <div style="font-size:2rem; margin-bottom:8px;">&#x1f300;</div>
+                <div class="card-title">Имплицитные (Implicit)</div>
+                <div class="card-text">Оставляют пространство для интерпретации. Модель сама решает, как лучше подойти к задаче.</div>
+            </div>
+            <div class="card" style="background:var(--orange-light);">
+                <div style="font-size:2rem; margin-bottom:8px;">&#x1f3a8;</div>
+                <div class="card-title">Креативные (Creative)</div>
+                <div class="card-text">Направлены на генерацию оригинальных идей. Поощряют нестандартное мышление и эксперименты.</div>
+            </div>
+        </div>
+
+        <!-- By application area -->
+        <h3 class="mb-24">По области применения</h3>
+        <div class="cards-grid cards-4">
+            <div class="card" style="text-align:center; padding:20px;">
+                <div style="font-size:1.8rem; margin-bottom:8px;">&#x1f4da;</div>
+                <div style="font-weight:700; font-size:0.9rem;">Информационные</div>
+                <div style="font-size:0.78rem; color:var(--gray);">Поиск фактов и данных</div>
+            </div>
+            <div class="card" style="text-align:center; padding:20px;">
+                <div style="font-size:1.8rem; margin-bottom:8px;">&#x270f;&#xfe0f;</div>
+                <div style="font-weight:700; font-size:0.9rem;">Креативные</div>
+                <div style="font-size:0.78rem; color:var(--gray);">Генерация идей и контента</div>
+            </div>
+            <div class="card" style="text-align:center; padding:20px;">
+                <div style="font-size:1.8rem; margin-bottom:8px;">&#x1f4cb;</div>
+                <div style="font-weight:700; font-size:0.9rem;">Инструктивные</div>
+                <div style="font-size:0.78rem; color:var(--gray);">Пошаговые инструкции</div>
+            </div>
+            <div class="card" style="text-align:center; padding:20px;">
+                <div style="font-size:1.8rem; margin-bottom:8px;">&#x2753;</div>
+                <div style="font-weight:700; font-size:0.9rem;">Уточняющие</div>
+                <div style="font-size:0.78rem; color:var(--gray);">Разъяснение концепций</div>
+            </div>
+            <div class="card" style="text-align:center; padding:20px;">
+                <div style="font-size:1.8rem; margin-bottom:8px;">&#x2696;&#xfe0f;</div>
+                <div style="font-weight:700; font-size:0.9rem;">Сравнительные</div>
+                <div style="font-size:0.78rem; color:var(--gray);">Анализ альтернатив</div>
+            </div>
+            <div class="card" style="text-align:center; padding:20px;">
+                <div style="font-size:1.8rem; margin-bottom:8px;">&#x1f52e;</div>
+                <div style="font-weight:700; font-size:0.9rem;">Гипотетические</div>
+                <div style="font-size:0.78rem; color:var(--gray);">&laquo;Что если&raquo; сценарии</div>
+            </div>
+            <div class="card" style="text-align:center; padding:20px;">
+                <div style="font-size:1.8rem; margin-bottom:8px;">&#x1f4ca;</div>
+                <div style="font-weight:700; font-size:0.9rem;">Аналитические</div>
+                <div style="font-size:0.78rem; color:var(--gray);">Глубокий анализ данных</div>
+            </div>
+            <div class="card" style="text-align:center; padding:20px;">
+                <div style="font-size:1.8rem; margin-bottom:8px;">&#x1f4ac;</div>
+                <div style="font-weight:700; font-size:0.9rem;">Мнение-ориентированные</div>
+                <div style="font-size:0.78rem; color:var(--gray);">Оценка и рекомендации</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ 3. ЭЛЕМЕНТЫ ХОРОШЕГО ПРОМПТА ═══ -->
+<section class="section" id="prompt-elements">
+    <div class="section-inner">
+        <div class="section-badge bg-green-light text-green">03 &mdash; Структура</div>
+        <h2 class="section-title">Элементы хорошего промпта</h2>
+        <p class="section-subtitle">Четыре ключевых компонента, из которых строится эффективный промпт.</p>
+
+        <div class="cards-grid cards-2 mb-48">
+            <!-- Instructions -->
+            <div class="card" style="border-top:4px solid var(--blue);">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                    <div style="width:48px; height:48px; border-radius:12px; background:var(--blue); color:white; display:flex; align-items:center; justify-content:center; font-size:1.3rem; font-weight:800;">1</div>
+                    <div>
+                        <div class="card-title" style="margin-bottom:0;">Инструкция</div>
+                        <div style="font-size:0.8rem; color:var(--gray);">Instructions</div>
+                    </div>
+                </div>
+                <p class="card-text mb-16">Что именно модель должна сделать. Чёткое действие или задача.</p>
+                <div class="good-bad">
+                    <div class="bad-box">
+                        <div class="gb-label">&#x274c; Плохо</div>
+                        <div>&laquo;Что-нибудь про маркетинг&raquo;</div>
+                    </div>
+                    <div class="good-box">
+                        <div class="gb-label">&#x2705; Хорошо</div>
+                        <div>&laquo;Составь план контент-маркетинга на Q1&raquo;</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Context -->
+            <div class="card" style="border-top:4px solid var(--green);">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                    <div style="width:48px; height:48px; border-radius:12px; background:var(--green); color:white; display:flex; align-items:center; justify-content:center; font-size:1.3rem; font-weight:800;">2</div>
+                    <div>
+                        <div class="card-title" style="margin-bottom:0;">Контекст</div>
+                        <div style="font-size:0.8rem; color:var(--gray);">Context</div>
+                    </div>
+                </div>
+                <p class="card-text mb-16">Фоновая информация, которая помогает модели понять ситуацию.</p>
+                <div class="good-bad">
+                    <div class="bad-box">
+                        <div class="gb-label">&#x274c; Плохо</div>
+                        <div>&laquo;Напиши письмо&raquo;</div>
+                    </div>
+                    <div class="good-box">
+                        <div class="gb-label">&#x2705; Хорошо</div>
+                        <div>&laquo;Напиши письмо клиенту B2B SaaS, который не продлил подписку&raquo;</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Data -->
+            <div class="card" style="border-top:4px solid var(--orange);">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                    <div style="width:48px; height:48px; border-radius:12px; background:var(--orange); color:white; display:flex; align-items:center; justify-content:center; font-size:1.3rem; font-weight:800;">3</div>
+                    <div>
+                        <div class="card-title" style="margin-bottom:0;">Входные данные</div>
+                        <div style="font-size:0.8rem; color:var(--gray);">Input Data</div>
+                    </div>
+                </div>
+                <p class="card-text mb-16">Конкретные данные для обработки: текст, числа, примеры.</p>
+                <div class="good-bad">
+                    <div class="bad-box">
+                        <div class="gb-label">&#x274c; Плохо</div>
+                        <div>&laquo;Проанализируй продажи&raquo;</div>
+                    </div>
+                    <div class="good-box">
+                        <div class="gb-label">&#x2705; Хорошо</div>
+                        <div>&laquo;Проанализируй: Q1=$120K, Q2=$95K, Q3=$140K&raquo;</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Output Indicator -->
+            <div class="card" style="border-top:4px solid var(--purple);">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                    <div style="width:48px; height:48px; border-radius:12px; background:var(--purple); color:white; display:flex; align-items:center; justify-content:center; font-size:1.3rem; font-weight:800;">4</div>
+                    <div>
+                        <div class="card-title" style="margin-bottom:0;">Индикатор вывода</div>
+                        <div style="font-size:0.8rem; color:var(--gray);">Output Indicator</div>
+                    </div>
+                </div>
+                <p class="card-text mb-16">Желаемый формат, стиль, длина и структура ответа.</p>
+                <div class="good-bad">
+                    <div class="bad-box">
+                        <div class="gb-label">&#x274c; Плохо</div>
+                        <div>&laquo;Дай ответ&raquo;</div>
+                    </div>
+                    <div class="good-box">
+                        <div class="gb-label">&#x2705; Хорошо</div>
+                        <div>&laquo;Ответ в виде таблицы: столбцы Метрика, Q1, Q2, Изменение %&raquo;</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visual formula -->
+        <div style="background:linear-gradient(135deg, var(--blue-light), var(--purple-light)); border-radius:var(--radius); padding:40px; text-align:center;">
+            <h3 style="margin-bottom:16px;">Формула хорошего промпта</h3>
+            <div style="display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap; font-size:1.1rem; font-weight:700;">
+                <span style="background:var(--blue); color:white; padding:10px 20px; border-radius:10px;">Инструкция</span>
+                <span style="font-size:1.5rem;">+</span>
+                <span style="background:var(--green); color:white; padding:10px 20px; border-radius:10px;">Контекст</span>
+                <span style="font-size:1.5rem;">+</span>
+                <span style="background:var(--orange); color:white; padding:10px 20px; border-radius:10px;">Данные</span>
+                <span style="font-size:1.5rem;">+</span>
+                <span style="background:var(--purple); color:white; padding:10px 20px; border-radius:10px;">Формат вывода</span>
+                <span style="font-size:1.5rem;">=</span>
+                <span style="background:var(--dark); color:white; padding:10px 20px; border-radius:10px;">&#x2728; Отличный результат</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ INTERACTIVE: Конструктор промпта ═══ -->
+<section class="section" id="prompt-builder-demo">
+    <div class="section-inner">
+        <div class="section-badge bg-blue-light text-blue">&#x1f3ae; Интерактив</div>
+        <h2 class="section-title">Конструктор промпта</h2>
+        <p class="section-subtitle">Включайте элементы и наблюдайте, как промпт становится лучше.</p>
+        <div class="prompt-builder" data-config='{
+            "base": "Напиши текст для рекламы пекарни.",
+            "elements": [
+                {"id": "role", "label": "Роль", "color": "#5243c3", "icon": "🎭", "text": "Ты — опытный копирайтер, специализирующийся на рекламе ресторанов и кафе."},
+                {"id": "context", "label": "Контекст", "color": "#0080ff", "icon": "📋", "text": "Пекарня «Хлеб и Кофе» открылась в центре Москвы. Специализация — свежий хлеб на закваске и кофе. Целевая аудитория — молодые профессионалы 25-35 лет."},
+                {"id": "instructions", "label": "Инструкция", "color": "#2e8749", "icon": "📝", "text": "Создай рекламный текст для Instagram-поста, который привлечёт первых клиентов. Используй эмоциональный стиль, подчеркни свежесть и ремесленный подход."},
+                {"id": "input", "label": "Входные данные", "color": "#ff6805", "icon": "📊", "text": "УТП: хлеб выпекается каждое утро в 6:00, только натуральные ингредиенты, 3 вида зерновой закваски. Акция: первый кофе бесплатно при покупке хлеба."},
+                {"id": "format", "label": "Формат вывода", "color": "#1e1e1e", "icon": "📐", "text": "Формат: текст до 150 слов, 2-3 абзаца, с эмодзи, с призывом к действию. Не использовать восклицательные знаки более 2 раз."}
+            ]
+        }'></div>
+    </div>
+</section>
+
+<!-- ═══ 4. ПРОМПТ-ИНЖИНИРИНГ ═══ -->
+<section class="section" id="prompt-engineering">
+    <div class="section-inner">
+        <div class="section-badge bg-orange-light text-orange">04 &mdash; Процесс</div>
+        <h2 class="section-title">Промпт-инжиниринг</h2>
+        <p class="section-subtitle">Процесс создания и оптимизации запросов для получения максимально точных результатов от LLM.</p>
+
+        <!-- Definition + 3 aspects -->
+        <div class="cards-grid cards-3 mb-48">
+            <div class="card" style="border-top:4px solid var(--blue); text-align:center;">
+                <div style="font-size:2.5rem; margin-bottom:8px;">&#x1f9ea;</div>
+                <div class="card-title text-blue">Эксперименты</div>
+                <div class="card-text">Тестирование различных формулировок, структур и подходов к одной задаче</div>
+            </div>
+            <div class="card" style="border-top:4px solid var(--green); text-align:center;">
+                <div style="font-size:2.5rem; margin-bottom:8px;">&#x1f4cf;</div>
+                <div class="card-title text-green">Оптимизация длины</div>
+                <div class="card-text">Баланс между детальностью и краткостью &mdash; минимум токенов, максимум качества</div>
+            </div>
+            <div class="card" style="border-top:4px solid var(--purple); text-align:center;">
+                <div style="font-size:2.5rem; margin-bottom:8px;">&#x1f50d;</div>
+                <div class="card-title text-purple">Оценка стиля</div>
+                <div class="card-text">Анализ стиля и структуры ответов, подбор оптимального формата</div>
+            </div>
+        </div>
+
+        <!-- Language rules -->
+        <div style="background:var(--blue-light); border-radius:var(--radius); padding:32px; margin-bottom:40px;">
+            <h3 style="margin-bottom:16px;">&#x1f30d; Выбор языка</h3>
+            <div class="cards-grid cards-2">
+                <div style="background:white; border-radius:12px; padding:20px; border-left:4px solid var(--blue);">
+                    <div class="bold text-blue mb-16">&#x1f1ec;&#x1f1e7; Английский &mdash; приоритет</div>
+                    <p style="font-size:0.9rem; color:var(--gray);">Большинство LLM обучены преимущественно на англоязычных данных. Промпты на английском дают более точные и развёрнутые ответы.</p>
+                </div>
+                <div style="background:white; border-radius:12px; padding:20px; border-left:4px solid var(--orange);">
+                    <div class="bold text-orange mb-16">&#x1f1f7;&#x1f1fa; Русский &mdash; fallback</div>
+                    <p style="font-size:0.9rem; color:var(--gray);">Используйте русский, когда нужен ответ на русском языке, работаете с русскоязычным контекстом или аудиторией.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5-stage iterative process -->
+        <h3 style="text-align:center; margin-bottom:16px;">Итеративный процесс (5 этапов)</h3>
+        <p style="text-align:center; color:var(--gray); margin-bottom:32px; font-size:0.95rem;">Промпт-инжиниринг &mdash; это цикл, а не одноразовое действие</p>
+
+        <div class="timeline-h">
+            <div class="tl-step">
+                <div class="tl-dot" style="background:var(--blue);">1</div>
+                <div class="tl-title">Определить цель</div>
+                <div class="tl-desc">Чётко сформулируйте, что вы хотите получить от модели</div>
+            </div>
+            <div class="tl-step">
+                <div class="tl-dot" style="background:var(--green);">2</div>
+                <div class="tl-title">Создать промпт</div>
+                <div class="tl-desc">Составьте первую версию с учётом 4 элементов</div>
+            </div>
+            <div class="tl-step">
+                <div class="tl-dot" style="background:var(--orange);">3</div>
+                <div class="tl-title">Протестировать</div>
+                <div class="tl-desc">Отправьте промпт модели и получите ответ</div>
+            </div>
+            <div class="tl-step">
+                <div class="tl-dot" style="background:var(--purple);">4</div>
+                <div class="tl-title">Проанализировать</div>
+                <div class="tl-desc">Оцените качество, точность и формат ответа</div>
+            </div>
+            <div class="tl-step">
+                <div class="tl-dot" style="background:var(--dark);">5</div>
+                <div class="tl-title">Итерировать</div>
+                <div class="tl-desc">Улучшите промпт и повторите цикл</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ 5. ЛУЧШИЕ ПРАКТИКИ ═══ -->
+<section class="section" id="best-practices">
+    <div class="section-inner">
+        <div class="section-badge bg-green-light text-green">05 &mdash; Практики</div>
+        <h2 class="section-title">Лучшие практики промптинга</h2>
+        <p class="section-subtitle">Четыре правила, которые сразу повышают качество ответов.</p>
+
+        <!-- Practice 1: Task Clarity -->
+        <div class="fw-card">
+            <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px;">
+                <div style="width:56px; height:56px; border-radius:14px; background:var(--blue); color:white; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">&#x1f3af;</div>
+                <div>
+                    <h3 style="margin-bottom:0;">Чёткость задачи</h3>
+                    <div style="font-size:0.85rem; color:var(--gray);">Task Clarity</div>
+                </div>
+            </div>
+            <p style="font-size:0.95rem; color:var(--gray); margin-bottom:20px;">Определите конкретное действие, которое должна выполнить модель. Избегайте абстракций.</p>
+            <div class="good-bad">
+                <div class="bad-box">
+                    <div class="gb-label">&#x274c; Плохо</div>
+                    <div>&laquo;Помоги с наймом&raquo;</div>
+                </div>
+                <div class="good-box">
+                    <div class="gb-label">&#x2705; Хорошо</div>
+                    <div>&laquo;Составь описание вакансии Senior Python Developer для финтех-стартапа с опытом от 5 лет&raquo;</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice 2: Context -->
+        <div class="fw-card">
+            <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px;">
+                <div style="width:56px; height:56px; border-radius:14px; background:var(--green); color:white; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">&#x1f4d6;</div>
+                <div>
+                    <h3 style="margin-bottom:0;">Контекст</h3>
+                    <div style="font-size:0.85rem; color:var(--gray);">Context</div>
+                </div>
+            </div>
+            <p style="font-size:0.95rem; color:var(--gray); margin-bottom:20px;">Добавьте информацию о ситуации, компании, аудитории. Чем больше контекста &mdash; тем лучше результат.</p>
+            <div class="good-bad">
+                <div class="bad-box">
+                    <div class="gb-label">&#x274c; Плохо</div>
+                    <div>&laquo;Напиши вопросы для интервью&raquo;</div>
+                </div>
+                <div class="good-box">
+                    <div class="gb-label">&#x2705; Хорошо</div>
+                    <div>&laquo;Напиши 10 поведенческих вопросов для интервью на позицию Product Manager в B2B SaaS компании, фокус на data-driven подход&raquo;</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice 3: Precision -->
+        <div class="fw-card">
+            <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px;">
+                <div style="width:56px; height:56px; border-radius:14px; background:var(--orange); color:white; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">&#x1f4cf;</div>
+                <div>
+                    <h3 style="margin-bottom:0;">Точность</h3>
+                    <div style="font-size:0.85rem; color:var(--gray);">Precision</div>
+                </div>
+            </div>
+            <p style="font-size:0.95rem; color:var(--gray); margin-bottom:20px;">Укажите конкретные параметры: количество пунктов, длину, формат, ограничения.</p>
+            <div class="good-bad">
+                <div class="bad-box">
+                    <div class="gb-label">&#x274c; Плохо</div>
+                    <div>&laquo;Расскажи про onboarding&raquo;</div>
+                </div>
+                <div class="good-box">
+                    <div class="gb-label">&#x2705; Хорошо</div>
+                    <div>&laquo;Создай чеклист onboarding из 15 пунктов для нового разработчика: первая неделя, с таймингами и ответственными&raquo;</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice 4: Role Play -->
+        <div class="fw-card">
+            <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px;">
+                <div style="width:56px; height:56px; border-radius:14px; background:var(--purple); color:white; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">&#x1f3ad;</div>
+                <div>
+                    <h3 style="margin-bottom:0;">Ролевая игра</h3>
+                    <div style="font-size:0.85rem; color:var(--gray);">Role Play</div>
+                </div>
+            </div>
+            <p style="font-size:0.95rem; color:var(--gray); margin-bottom:20px;">Задайте модели роль эксперта &mdash; это активирует соответствующие знания и стиль.</p>
+            <div class="good-bad">
+                <div class="bad-box">
+                    <div class="gb-label">&#x274c; Плохо</div>
+                    <div>&laquo;Оцени резюме&raquo;</div>
+                </div>
+                <div class="good-box">
+                    <div class="gb-label">&#x2705; Хорошо</div>
+                    <div>&laquo;Ты &mdash; HR-директор с 15-летним опытом в IT. Оцени это резюме по критериям: релевантность, soft skills, потенциал роста&raquo;</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ INTERACTIVE: Улучши промпт ═══ -->
+<section class="section" id="improver-demo">
+    <div class="section-inner">
+        <div class="section-badge bg-green-light text-green">&#x1f3ae; Интерактив</div>
+        <h2 class="section-title">Плохой &rarr; Хороший промпт</h2>
+        <p class="section-subtitle">Сравните «до» и «после» — нажмите чтобы увидеть улучшения.</p>
+        <div class="prompt-improver" data-config='{
+            "bad": "Напиши письмо кандидату после собеседования.",
+            "good": "Ты — HR-менеджер IT-компании.\n\nНапиши письмо кандидату Алексею после первого технического интервью.\n\nВ письме:\n- Поблагодари за участие\n- Сообщи, что решение будет в течение 5 рабочих дней\n- Пожелай успехов\n\nСтиль: деловой, но тёплый. До 120 слов.",
+            "highlights": [
+                {"label": "🎭 Роль", "color": "#5243c3", "match": "Ты — HR-менеджер IT-компании."},
+                {"label": "📋 Контекст", "color": "#0080ff", "match": "кандидату Алексею после первого технического интервью"},
+                {"label": "📝 Чёткая структура", "color": "#2e8749", "match": "- Поблагодари за участие"},
+                {"label": "📐 Формат", "color": "#ff6805", "match": "деловой, но тёплый. До 120 слов."}
+            ]
+        }'></div>
+    </div>
+</section>
+
+<!-- ═══ QUIZ: Основы промптинга ═══ -->
+<section class="section" id="qa-basics">
+    <div class="section-inner">
+        <div class="section-badge bg-blue-light text-blue">&#x1f9e0; Проверь себя</div>
+        <h2 class="section-title">Мини-тест: Основы промптинга</h2>
+        <div class="inline-quiz" data-quiz='[
+            {"question": "Какие 4 ключевых элемента хорошего промпта?", "options": ["Текст, картинка, ссылка, эмодзи", "Инструкция, контекст, входные данные, формат вывода", "Роль, задача, время, бюджет", "Вопрос, ответ, комментарий, оценка"], "correct": 1, "explanation": "4 элемента: Инструкция (что делать), Контекст (фон задачи), Входные данные (информация), Формат вывода (как должен выглядеть результат)."},
+            {"question": "Промпт-инжиниринг — это итеративный процесс. Сколько этапов?", "options": ["3 этапа", "5 этапов", "7 этапов", "10 этапов"], "correct": 1, "explanation": "5 этапов: Определить цель → Создать промпт → Протестировать → Проанализировать → Уточнить и повторить."},
+            {"question": "На каком языке лучше писать промпты, если есть возможность?", "options": ["Всегда на русском", "На английском", "На любом, разницы нет", "На языке модели"], "correct": 1, "explanation": "Английский предпочтительнее — модели обучены преимущественно на английских текстах и дают более точные результаты."}
+        ]'></div>
+    </div>
+</section>
+
+<!-- ═══ 6. КОНТЕКСТ ═══ -->
+<section class="section" id="context">
+    <div class="section-inner">
+        <div class="section-badge bg-purple-light text-purple">06 &mdash; Контекст</div>
+        <h2 class="section-title">Контекст и контекстное окно</h2>
+        <p class="section-subtitle">Как модель &laquo;помнит&raquo; разговор и почему это важно для промптинга.</p>
+
+        <!-- 3 parts of context -->
+        <div class="cards-grid cards-3 mb-48">
+            <div class="card" style="border-top:4px solid var(--blue);">
+                <div class="card-icon">&#x1f4ac;</div>
+                <div class="card-title text-blue">История диалога</div>
+                <div class="card-text">Все предыдущие сообщения в текущем чате. Модель учитывает их при генерации ответа.</div>
+            </div>
+            <div class="card" style="border-top:4px solid var(--green);">
+                <div class="card-icon">&#x2699;&#xfe0f;</div>
+                <div class="card-title text-green">Системный промпт</div>
+                <div class="card-text">Скрытые инструкции, которые задают роль и поведение модели (Custom Instructions, system message).</div>
+            </div>
+            <div class="card" style="border-top:4px solid var(--orange);">
+                <div class="card-icon">&#x1f4c2;</div>
+                <div class="card-title text-orange">Загруженные данные</div>
+                <div class="card-text">Файлы, документы, изображения, которые вы прикрепляете к диалогу (RAG, вложения).</div>
+            </div>
+        </div>
+
+        <!-- Context window -->
+        <div style="background:linear-gradient(135deg, var(--purple-light), var(--blue-light)); border-radius:var(--radius); padding:40px; margin-bottom:40px;">
+            <h3 style="margin-bottom:16px;">&#x1f4e6; Контекстное окно (Context Window)</h3>
+            <p style="font-size:0.95rem; margin-bottom:24px;">Максимальный объём текста, который модель может &laquo;видеть&raquo; одновременно. Измеряется в <strong>токенах</strong>.</p>
+
+            <div class="cards-grid cards-2">
+                <div style="background:white; border-radius:12px; padding:20px;">
+                    <div class="bold mb-16">Что такое токен?</div>
+                    <p style="font-size:0.9rem; color:var(--gray); margin-bottom:12px;">Токен &mdash; это фрагмент текста (слово, часть слова или символ). В среднем:</p>
+                    <ul style="font-size:0.85rem; color:var(--gray); list-style:none;">
+                        <li>&#x1f1ec;&#x1f1e7; 1 токен &asymp; 0.75 слова (английский)</li>
+                        <li>&#x1f1f7;&#x1f1fa; 1 токен &asymp; 0.5 слова (русский)</li>
+                        <li>&#x1f4d6; 1000 токенов &asymp; 600 слов на русском</li>
+                    </ul>
+                </div>
+                <div style="background:white; border-radius:12px; padding:20px;">
+                    <div class="bold mb-16">Размеры окна (2024-2025)</div>
+                    <ul style="font-size:0.85rem; list-style:none; line-height:2;">
+                        <li><strong style="color:var(--green);">GPT-4o</strong> &mdash; 128K токенов</li>
+                        <li><strong style="color:var(--purple);">Claude 3.5</strong> &mdash; 200K токенов</li>
+                        <li><strong style="color:var(--blue);">Gemini 1.5 Pro</strong> &mdash; 1M токенов</li>
+                        <li><strong style="color:var(--orange);">GPT-4 Turbo</strong> &mdash; 128K токенов</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Why context matters -->
+        <h3 style="text-align:center; margin-bottom:24px;">Почему контекст важен для промптинга?</h3>
+        <div class="cards-grid cards-3">
+            <div class="card" style="text-align:center;">
+                <div style="font-size:2rem; margin-bottom:8px;">&#x1f3af;</div>
+                <div class="card-title">Точность ответов</div>
+                <div class="card-text">Больше контекста = более релевантный и точный ответ</div>
+            </div>
+            <div class="card" style="text-align:center;">
+                <div style="font-size:2rem; margin-bottom:8px;">&#x1f4b0;</div>
+                <div class="card-title">Экономия токенов</div>
+                <div class="card-text">Управление контекстом снижает стоимость API-запросов</div>
+            </div>
+            <div class="card" style="text-align:center;">
+                <div style="font-size:2rem; margin-bottom:8px;">&#x26a1;</div>
+                <div class="card-title">Скорость работы</div>
+                <div class="card-text">Меньше итераций = быстрее достигается нужный результат</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ 7. ФРЕЙМВОРКИ (обзор) ═══ -->
+<section class="section" id="frameworks">
+    <div class="section-inner">
+        <div class="section-badge bg-blue-light text-blue">07 &mdash; Фреймворки</div>
+        <h2 class="section-title">Фреймворки промптинга</h2>
+        <p class="section-subtitle">Готовые шаблоны для структурирования промптов. Используйте их как отправную точку.</p>
+
+        <div class="cards-grid cards-3 mb-48">
+            <div class="card" style="border-top:4px solid var(--blue); text-align:center;">
+                <div style="font-size:2rem; margin-bottom:8px; font-weight:800; color:var(--blue);">TAG</div>
+                <div class="card-title">Task &bull; Action &bull; Goal</div>
+                <div class="card-text">Простой фреймворк для быстрых задач</div>
+            </div>
+            <div class="card" style="border-top:4px solid var(--green); text-align:center;">
+                <div style="font-size:2rem; margin-bottom:8px; font-weight:800; color:var(--green);">RISE</div>
+                <div class="card-title">Role &bull; Input &bull; Steps &bull; Expectation</div>
+                <div class="card-text">Для задач с чёткими шагами</div>
+            </div>
+            <div class="card" style="border-top:4px solid var(--orange); text-align:center;">
+                <div style="font-size:2rem; margin-bottom:8px; font-weight:800; color:var(--orange);">BAB</div>
+                <div class="card-title">Before &bull; After &bull; Bridge</div>
+                <div class="card-text">Для трансформации и улучшения</div>
+            </div>
+            <div class="card" style="border-top:4px solid var(--purple); text-align:center;">
+                <div style="font-size:2rem; margin-bottom:8px; font-weight:800; color:var(--purple);">RTF</div>
+                <div class="card-title">Role &bull; Task &bull; Format</div>
+                <div class="card-text">Универсальный, для контента</div>
+            </div>
+            <div class="card" style="border-top:4px solid var(--dark); text-align:center; grid-column: span 1;">
+                <div style="font-size:2rem; margin-bottom:8px; font-weight:800; color:var(--dark);">AUTOMAT</div>
+                <div class="card-title">7 компонентов</div>
+                <div class="card-text">Максимально детальный фреймворк для сложных задач</div>
+            </div>
+            <div class="card" style="background:var(--bg); border:2px dashed #CBD5E1; text-align:center;">
+                <div style="font-size:2rem; margin-bottom:8px;">&#x1f4a1;</div>
+                <div class="card-title">Когда использовать?</div>
+                <div class="card-text">Фреймворки &mdash; не догма. Выбирайте подходящий под задачу или комбинируйте элементы.</div>
+            </div>
+        </div>
+
+        <!-- When to use roles -->
+        <div class="cards-grid cards-2">
+            <div style="background:var(--green-light); border-radius:var(--radius); padding:28px;">
+                <h3 style="margin-bottom:16px;">&#x2705; Когда использовать роли</h3>
+                <ul style="list-style:none; font-size:0.9rem; line-height:2;">
+                    <li>&#x1f3ad; Нужна экспертиза в конкретной области</li>
+                    <li>&#x1f4dd; Важен определённый стиль или тон</li>
+                    <li>&#x1f3af; Требуется специфический формат ответа</li>
+                    <li>&#x1f4bc; Моделируете рабочую ситуацию</li>
+                </ul>
+            </div>
+            <div style="background:var(--red-light); border-radius:var(--radius); padding:28px;">
+                <h3 style="margin-bottom:16px;">&#x274c; Когда роли не нужны</h3>
+                <ul style="list-style:none; font-size:0.9rem; line-height:2;">
+                    <li>&#x1f4e2; Простой фактический вопрос</li>
+                    <li>&#x1f4dd; Базовая генерация текста</li>
+                    <li>&#x1f522; Арифметические или логические задачи</li>
+                    <li>&#x1f50d; Поиск информации без аналитики</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ 8. ДЕТАЛИ ФРЕЙМВОРКОВ ═══ -->
+<section class="section" id="framework-details">
+    <div class="section-inner">
+        <div class="section-badge bg-purple-light text-purple">08 &mdash; Детали</div>
+        <h2 class="section-title">TAG, RISE, BAB, RTF</h2>
+        <p class="section-subtitle">Подробный разбор каждого фреймворка с примерами промптов.</p>
+
+        <!-- TAG -->
+        <div class="fw-card" style="border-left:4px solid var(--blue);">
+            <h3><span class="text-blue">TAG</span> &mdash; Task, Action, Goal</h3>
+            <div class="fw-sub">Простой и быстрый. Идеален для рутинных задач.</div>
+            <div class="fw-letters">
+                <div class="fw-letter" style="background:var(--blue-light); color:var(--blue);"><strong>T</strong> ask &mdash; Задача</div>
+                <div class="fw-letter" style="background:var(--blue-light); color:var(--blue);"><strong>A</strong> ction &mdash; Действие</div>
+                <div class="fw-letter" style="background:var(--blue-light); color:var(--blue);"><strong>G</strong> oal &mdash; Цель</div>
+            </div>
+            <div class="fw-example">
+                <div class="label">Пример:</div>
+                <strong>Task:</strong> Написать email клиенту<br>
+                <strong>Action:</strong> Составь вежливое письмо с напоминанием об оплате счёта<br>
+                <strong>Goal:</strong> Клиент оплачивает счёт в течение 3 дней
+            </div>
+        </div>
+
+        <!-- RISE -->
+        <div class="fw-card" style="border-left:4px solid var(--green);">
+            <h3><span class="text-green">RISE</span> &mdash; Role, Input, Steps, Expectation</h3>
+            <div class="fw-sub">Для задач, где важна последовательность шагов и экспертная роль.</div>
+            <div class="fw-letters">
+                <div class="fw-letter" style="background:var(--green-light); color:var(--green);"><strong>R</strong> ole &mdash; Роль</div>
+                <div class="fw-letter" style="background:var(--green-light); color:var(--green);"><strong>I</strong> nput &mdash; Вход</div>
+                <div class="fw-letter" style="background:var(--green-light); color:var(--green);"><strong>S</strong> teps &mdash; Шаги</div>
+                <div class="fw-letter" style="background:var(--green-light); color:var(--green);"><strong>E</strong> xpectation &mdash; Ожидание</div>
+            </div>
+            <div class="fw-example">
+                <div class="label" style="color:var(--green);">Пример:</div>
+                <strong>Role:</strong> Ты &mdash; бизнес-аналитик с опытом в e-commerce<br>
+                <strong>Input:</strong> Данные о продажах за Q1-Q3 и отзывы клиентов<br>
+                <strong>Steps:</strong> 1) Проанализируй тренды продаж 2) Выдели проблемные категории 3) Сопоставь с отзывами<br>
+                <strong>Expectation:</strong> Отчёт с 5 ключевыми выводами и рекомендациями
+            </div>
+        </div>
+
+        <!-- BAB -->
+        <div class="fw-card" style="border-left:4px solid var(--orange);">
+            <h3><span class="text-orange">BAB</span> &mdash; Before, After, Bridge</h3>
+            <div class="fw-sub">Фреймворк трансформации. Опишите текущее состояние, желаемое и путь между ними.</div>
+            <div class="fw-letters">
+                <div class="fw-letter" style="background:var(--orange-light); color:var(--orange);"><strong>B</strong> efore &mdash; До</div>
+                <div class="fw-letter" style="background:var(--orange-light); color:var(--orange);"><strong>A</strong> fter &mdash; После</div>
+                <div class="fw-letter" style="background:var(--orange-light); color:var(--orange);"><strong>B</strong> ridge &mdash; Мост</div>
+            </div>
+            <div class="fw-example">
+                <div class="label" style="color:var(--orange);">Пример:</div>
+                <strong>Before:</strong> Наш onboarding занимает 2 недели, 40% новичков уходят в первый месяц<br>
+                <strong>After:</strong> Onboarding за 5 дней, удержание 90% сотрудников<br>
+                <strong>Bridge:</strong> Предложи план трансформации onboarding-процесса с конкретными шагами и таймингами
+            </div>
+        </div>
+
+        <!-- RTF -->
+        <div class="fw-card" style="border-left:4px solid var(--purple);">
+            <h3><span class="text-purple">RTF</span> &mdash; Role, Task, Format</h3>
+            <div class="fw-sub">Универсальный фреймворк для генерации контента с заданным форматом.</div>
+            <div class="fw-letters">
+                <div class="fw-letter" style="background:var(--purple-light); color:var(--purple);"><strong>R</strong> ole &mdash; Роль</div>
+                <div class="fw-letter" style="background:var(--purple-light); color:var(--purple);"><strong>T</strong> ask &mdash; Задача</div>
+                <div class="fw-letter" style="background:var(--purple-light); color:var(--purple);"><strong>F</strong> ormat &mdash; Формат</div>
+            </div>
+            <div class="fw-example">
+                <div class="label" style="color:var(--purple);">Пример:</div>
+                <strong>Role:</strong> Ты &mdash; SMM-менеджер для IT-компании<br>
+                <strong>Task:</strong> Напиши серию из 5 постов для LinkedIn о запуске нового продукта<br>
+                <strong>Format:</strong> Каждый пост: заголовок (до 10 слов), тело (до 150 слов), 3 хештега, CTA
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ INTERACTIVE: Выбери фреймворк ═══ -->
+<section class="section" id="fw-picker-demo">
+    <div class="section-inner">
+        <div class="section-badge bg-purple-light text-purple">&#x1f3ae; Интерактив</div>
+        <h2 class="section-title">Выбери фреймворк для задачи</h2>
+        <p class="section-subtitle">Одна задача — 4 разных подхода. Выберите фреймворк и увидите результат.</p>
+        <div class="framework-picker" data-config='{
+            "task": "Нужно написать инструкцию по онбордингу нового сотрудника в IT-компании",
+            "frameworks": [
+                {"id": "tag", "name": "TAG", "shortDesc": "Task-Action-Goal", "color": "#0080ff", "prompt": "Task: Разработка инструкции по онбордингу нового разработчика в IT-компании.\n\nAction: Опиши 10 ключевых шагов первой недели, включая настройку рабочего места, знакомство с командой и первые задачи.\n\nGoal: Новый сотрудник через 5 дней может самостоятельно брать задачи из спринта."},
+                {"id": "rise", "name": "RISE", "shortDesc": "Role-Input-Steps-Expectation", "color": "#5243c3", "prompt": "Role: Ты — HR-менеджер с 5-летним опытом онбординга в IT.\n\nInput: Компания из 50 человек, стек: React + Node.js, Jira для задач, Slack для общения.\n\nSteps:\n1. Проанализируй типичные проблемы первой недели\n2. Составь чек-лист по дням (день 1-5)\n3. Добавь метрики успеха для каждого дня\n\nExpectation: Структурированный документ с чек-листом, ответственными и KPI."},
+                {"id": "bab", "name": "BAB", "shortDesc": "Before-After-Bridge", "color": "#2e8749", "prompt": "Before: Новый разработчик приходит в компанию и первую неделю не понимает, что делать. Нет чёткого плана, ментора нет, доступы выдают на 3-й день.\n\nAfter: К концу первой недели сотрудник настроил окружение, познакомился с командой, понимает процессы и взял первую задачу.\n\nBridge: Опиши конкретные шаги и ответственных, которые обеспечат такой переход."},
+                {"id": "rtf", "name": "RTF", "shortDesc": "Role-Task-Format", "color": "#ff6805", "prompt": "Role: HR-директор IT-компании.\n\nTask: Создай пошаговую инструкцию онбординга для нового разработчика на первые 5 рабочих дней.\n\nFormat: Таблица с колонками: День | Активность | Ответственный | Результат. Максимум 15 строк. Деловой стиль."}
+            ]
+        }'></div>
+    </div>
+</section>
+
+<!-- ═══ QUIZ: Фреймворки ═══ -->
+<section class="section" id="qa-frameworks">
+    <div class="section-inner">
+        <div class="section-badge bg-green-light text-green">&#x1f9e0; Проверь себя</div>
+        <h2 class="section-title">Мини-тест: Фреймворки</h2>
+        <div class="inline-quiz" data-quiz='[
+            {"question": "Фреймворк BAB расшифровывается как:", "options": ["Build-Analyze-Build", "Before-After-Bridge", "Base-Action-Benefit", "Brief-Aim-Benchmark"], "correct": 1, "explanation": "BAB = Before (текущее состояние) → After (желаемое состояние) → Bridge (шаги перехода). Особенно полезен для UX, маркетинга, HR."},
+            {"question": "Когда НЕ нужно указывать роль в промпте?", "options": ["Никогда — роль нужна всегда", "Когда задача тривиальная (перевод, формула, исправление ошибок)", "Когда промпт длинный", "Когда используете ChatGPT"], "correct": 1, "explanation": "Роль можно пропустить для простых задач: перевод текста, вычисление формулы, исправление опечаток — контекста задачи уже достаточно."},
+            {"question": "Какой фреймворк содержит 7 компонентов (A-U-T-O-M-A-T)?", "options": ["RISE", "TAG", "AUTOMAT", "RTF"], "correct": 2, "explanation": "AUTOMAT: Act (роль), User (аудитория), Target (цель), Output (формат), Model (модель), Additional (ограничения), Tone (стиль)."}
+        ]'></div>
+    </div>
+</section>
+
+<!-- ═══ 9. AUTOMAT ═══ -->
+<section class="section" id="automat">
+    <div class="section-inner">
+        <div class="section-badge bg-orange-light text-orange">09 &mdash; AUTOMAT</div>
+        <h2 class="section-title">Фреймворк AUTOMAT</h2>
+        <p class="section-subtitle">Самый детальный фреймворк из 7 компонентов. Для сложных, многослойных задач.</p>
+
+        <div style="display:grid; grid-template-columns:80px 1fr; gap:0;">
+            <!-- A -->
+            <div style="display:flex; flex-direction:column; align-items:center;">
+                <div style="width:56px; height:56px; border-radius:14px; background:var(--blue); color:white; display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:800;">A</div>
+                <div style="width:3px; flex:1; background:#E2E8F0;"></div>
+            </div>
+            <div style="padding:8px 0 32px 16px;">
+                <div class="bold" style="font-size:1.1rem;">Act &mdash; Роль</div>
+                <div style="font-size:0.9rem; color:var(--gray);">Определите, кем должна быть модель. Задайте экспертизу и опыт.</div>
+                <div style="margin-top:8px; background:var(--blue-light); border-radius:8px; padding:10px 14px; font-size:0.85rem;">
+                    &laquo;Ты &mdash; маркетинг-директор с 10-летним опытом в SaaS&raquo;
+                </div>
+            </div>
+
+            <!-- U -->
+            <div style="display:flex; flex-direction:column; align-items:center;">
+                <div style="width:56px; height:56px; border-radius:14px; background:var(--green); color:white; display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:800;">U</div>
+                <div style="width:3px; flex:1; background:#E2E8F0;"></div>
+            </div>
+            <div style="padding:8px 0 32px 16px;">
+                <div class="bold" style="font-size:1.1rem;">User &mdash; Аудитория</div>
+                <div style="font-size:0.9rem; color:var(--gray);">Для кого предназначен результат? Уровень знаний аудитории.</div>
+                <div style="margin-top:8px; background:var(--green-light); border-radius:8px; padding:10px 14px; font-size:0.85rem;">
+                    &laquo;Для CEO стартапов без технического бэкграунда&raquo;
+                </div>
+            </div>
+
+            <!-- T -->
+            <div style="display:flex; flex-direction:column; align-items:center;">
+                <div style="width:56px; height:56px; border-radius:14px; background:var(--orange); color:white; display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:800;">T</div>
+                <div style="width:3px; flex:1; background:#E2E8F0;"></div>
+            </div>
+            <div style="padding:8px 0 32px 16px;">
+                <div class="bold" style="font-size:1.1rem;">Target &mdash; Трансформация</div>
+                <div style="font-size:0.9rem; color:var(--gray);">Какое изменение должен произвести результат? Из точки A в точку B.</div>
+                <div style="margin-top:8px; background:var(--orange-light); border-radius:8px; padding:10px 14px; font-size:0.85rem;">
+                    &laquo;Превратить хаотичный маркетинг в системную стратегию&raquo;
+                </div>
+            </div>
+
+            <!-- O -->
+            <div style="display:flex; flex-direction:column; align-items:center;">
+                <div style="width:56px; height:56px; border-radius:14px; background:var(--purple); color:white; display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:800;">O</div>
+                <div style="width:3px; flex:1; background:#E2E8F0;"></div>
+            </div>
+            <div style="padding:8px 0 32px 16px;">
+                <div class="bold" style="font-size:1.1rem;">Output &mdash; Формат вывода</div>
+                <div style="font-size:0.9rem; color:var(--gray);">В каком формате нужен ответ: таблица, список, отчёт, код.</div>
+                <div style="margin-top:8px; background:var(--purple-light); border-radius:8px; padding:10px 14px; font-size:0.85rem;">
+                    &laquo;Таблица с колонками: Канал, Бюджет, KPI, Срок&raquo;
+                </div>
+            </div>
+
+            <!-- M -->
+            <div style="display:flex; flex-direction:column; align-items:center;">
+                <div style="width:56px; height:56px; border-radius:14px; background:#0EA5E9; color:white; display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:800;">M</div>
+                <div style="width:3px; flex:1; background:#E2E8F0;"></div>
+            </div>
+            <div style="padding:8px 0 32px 16px;">
+                <div class="bold" style="font-size:1.1rem;">Model &mdash; Модель</div>
+                <div style="font-size:0.9rem; color:var(--gray);">Укажите пример или эталон, на который нужно ориентироваться.</div>
+                <div style="margin-top:8px; background:#E0F2FE; border-radius:8px; padding:10px 14px; font-size:0.85rem;">
+                    &laquo;По модели McKinsey 7S framework&raquo;
+                </div>
+            </div>
+
+            <!-- A2 -->
+            <div style="display:flex; flex-direction:column; align-items:center;">
+                <div style="width:56px; height:56px; border-radius:14px; background:#F59E0B; color:white; display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:800;">A</div>
+                <div style="width:3px; flex:1; background:#E2E8F0;"></div>
+            </div>
+            <div style="padding:8px 0 32px 16px;">
+                <div class="bold" style="font-size:1.1rem;">Additional &mdash; Ограничения</div>
+                <div style="font-size:0.9rem; color:var(--gray);">Дополнительные условия: длина, язык, что исключить.</div>
+                <div style="margin-top:8px; background:#FEF3C7; border-radius:8px; padding:10px 14px; font-size:0.85rem;">
+                    &laquo;Не более 2 страниц. Без технического жаргона. На русском языке.&raquo;
+                </div>
+            </div>
+
+            <!-- T2 -->
+            <div style="display:flex; flex-direction:column; align-items:center;">
+                <div style="width:56px; height:56px; border-radius:14px; background:var(--dark); color:white; display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:800;">T</div>
+            </div>
+            <div style="padding:8px 0 32px 16px;">
+                <div class="bold" style="font-size:1.1rem;">Tone &mdash; Тон</div>
+                <div style="font-size:0.9rem; color:var(--gray);">Стиль коммуникации: формальный, дружественный, академический.</div>
+                <div style="margin-top:8px; background:#F1F5F9; border-radius:8px; padding:10px 14px; font-size:0.85rem;">
+                    &laquo;Профессиональный, но доступный. Без канцеляризмов.&raquo;
+                </div>
+            </div>
+        </div>
+
+        <!-- Full example -->
+        <div style="background:linear-gradient(135deg, var(--blue-light), var(--orange-light)); border-radius:var(--radius); padding:32px; margin-top:32px;">
+            <h3 style="margin-bottom:16px;">&#x1f4dd; Полный пример AUTOMAT</h3>
+            <div style="background:white; border-radius:12px; padding:24px; font-size:0.9rem; line-height:1.9;">
+                <strong style="color:var(--blue);">A (Act):</strong> Ты &mdash; маркетинг-директор с 10-летним опытом в SaaS<br>
+                <strong style="color:var(--green);">U (User):</strong> Для CEO стартапов без технического бэкграунда<br>
+                <strong style="color:var(--orange);">T (Target):</strong> Создать стратегию выхода на новый рынок<br>
+                <strong style="color:var(--purple);">O (Output):</strong> Таблица с колонками: Канал, Бюджет, KPI, Срок<br>
+                <strong style="color:#0EA5E9;">M (Model):</strong> По модели Go-to-Market Strategy<br>
+                <strong style="color:#F59E0B;">A (Additional):</strong> Бюджет до $50K, фокус на B2B, рынок EU<br>
+                <strong style="color:var(--dark);">T (Tone):</strong> Профессиональный, с конкретными цифрами
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ 10. ТЕХНИКИ ПРОМПТИНГА ═══ -->
+<section class="section" id="techniques">
+    <div class="section-inner">
+        <div class="section-badge bg-blue-light text-blue">10 &mdash; Техники</div>
+        <h2 class="section-title">Техники промптинга</h2>
+        <p class="section-subtitle">Восемь продвинутых техник, которые значительно улучшают качество ответов AI.</p>
+
+        <div class="cards-grid cards-2">
+            <!-- 1. Zero-shot -->
+            <div class="tech-card">
+                <div class="tech-num" style="background:var(--blue);">1</div>
+                <div class="tech-name">Zero-shot</div>
+                <div class="tech-name-en">Без примеров</div>
+                <div class="tech-desc">Прямая инструкция без примеров. Модель опирается только на свои знания. Подходит для простых задач.</div>
+                <div class="tech-example">
+                    &laquo;Классифицируй отзыв как позитивный, негативный или нейтральный: "Товар пришёл вовремя, но упаковка помята"&raquo;
+                </div>
+            </div>
+
+            <!-- 2. Few-shot -->
+            <div class="tech-card">
+                <div class="tech-num" style="background:var(--green);">2</div>
+                <div class="tech-name">Few-shot</div>
+                <div class="tech-name-en">Несколько примеров</div>
+                <div class="tech-desc">Даёте 2-5 примеров перед задачей. Модель учится формату из примеров. Важна консистентность формата.</div>
+                <div class="tech-example">
+                    Отзыв: "Отличное качество!" &rarr; Позитивный<br>
+                    Отзыв: "Не рекомендую" &rarr; Негативный<br>
+                    Отзыв: "Нормально, ничего особенного" &rarr; ?
+                </div>
+            </div>
+
+            <!-- 3. Chain-of-Thought -->
+            <div class="tech-card">
+                <div class="tech-num" style="background:var(--orange);">3</div>
+                <div class="tech-name">Chain-of-Thought (CoT)</div>
+                <div class="tech-name-en">Цепочка рассуждений</div>
+                <div class="tech-desc">Просите модель рассуждать шаг за шагом. Значительно повышает точность в сложных задачах.</div>
+                <div class="tech-example">
+                    &laquo;Давай решим эту задачу шаг за шагом. Сначала определим ключевые переменные, затем выстроим логику...&raquo;
+                </div>
+            </div>
+
+            <!-- 4. Tree of Thoughts -->
+            <div class="tech-card">
+                <div class="tech-num" style="background:var(--purple);">4</div>
+                <div class="tech-name">Tree of Thoughts (ToT)</div>
+                <div class="tech-name-en">Дерево мыслей</div>
+                <div class="tech-desc">Модель рассматривает несколько путей рассуждения параллельно и выбирает лучший. Для сложных решений.</div>
+                <div class="tech-example">
+                    &laquo;Рассмотри 3 варианта решения этой проблемы. Для каждого: опиши плюсы, минусы, риски. Выбери лучший.&raquo;
+                </div>
+            </div>
+
+            <!-- 5. Self-Criticism -->
+            <div class="tech-card">
+                <div class="tech-num" style="background:#EF4444;">5</div>
+                <div class="tech-name">Self-Criticism</div>
+                <div class="tech-name-en">Самокритика</div>
+                <div class="tech-desc">Цикл: генерация &rarr; критика &rarr; улучшение. Модель сама находит и исправляет ошибки в своём ответе.</div>
+                <div class="tech-example">
+                    &laquo;Сгенерируй ответ, затем найди в нём 3 слабых места и перепиши с учётом критики.&raquo;
+                </div>
+            </div>
+
+            <!-- 6. Step-back -->
+            <div class="tech-card">
+                <div class="tech-num" style="background:#0EA5E9;">6</div>
+                <div class="tech-name">Step-back Prompting</div>
+                <div class="tech-name-en">Шаг назад</div>
+                <div class="tech-desc">Сначала задаёте общий вопрос для контекста, затем конкретный. Помогает модели увидеть полную картину.</div>
+                <div class="tech-example">
+                    Шаг 1: &laquo;Какие основные принципы ценообразования в SaaS?&raquo;<br>
+                    Шаг 2: &laquo;Исходя из этого, как нам оценить наш продукт для рынка SMB?&raquo;
+                </div>
+            </div>
+
+            <!-- 7. Re-Reading (Re2) -->
+            <div class="tech-card">
+                <div class="tech-num" style="background:#8B5CF6;">7</div>
+                <div class="tech-name">Re-Reading (Re2)</div>
+                <div class="tech-name-en">Перечитывание</div>
+                <div class="tech-desc">Повторяете ключевую часть запроса для акцента. Помогает модели сфокусироваться на важном.</div>
+                <div class="tech-example">
+                    &laquo;Проанализируй данные о продажах. Обрати особое внимание на сезонность. Повторяю: ключевой фокус &mdash; сезонные паттерны.&raquo;
+                </div>
+            </div>
+
+            <!-- 8. RaR -->
+            <div class="tech-card">
+                <div class="tech-num" style="background:#EC4899;">8</div>
+                <div class="tech-name">Rephrase and Respond (RaR)</div>
+                <div class="tech-name-en">Перефразируй и ответь</div>
+                <div class="tech-desc">Просите модель сначала перефразировать вопрос своими словами, потом ответить. Улучшает понимание задачи.</div>
+                <div class="tech-example">
+                    &laquo;Сначала перефразируй мой вопрос своими словами, чтобы убедиться что ты правильно понял, затем дай ответ.&raquo;
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary visual -->
+        <div style="background:linear-gradient(135deg, var(--blue-light), var(--purple-light)); border-radius:var(--radius); padding:32px; margin-top:40px; text-align:center;">
+            <h3 style="margin-bottom:20px;">Как выбрать технику?</h3>
+            <div style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center;">
+                <div style="background:white; border-radius:10px; padding:12px 20px; font-size:0.85rem;">
+                    <strong>Простая задача</strong> &rarr; Zero-shot
+                </div>
+                <div style="background:white; border-radius:10px; padding:12px 20px; font-size:0.85rem;">
+                    <strong>Нужен формат</strong> &rarr; Few-shot
+                </div>
+                <div style="background:white; border-radius:10px; padding:12px 20px; font-size:0.85rem;">
+                    <strong>Сложная логика</strong> &rarr; CoT
+                </div>
+                <div style="background:white; border-radius:10px; padding:12px 20px; font-size:0.85rem;">
+                    <strong>Выбор из вариантов</strong> &rarr; ToT
+                </div>
+                <div style="background:white; border-radius:10px; padding:12px 20px; font-size:0.85rem;">
+                    <strong>Высокое качество</strong> &rarr; Self-Criticism
+                </div>
+                <div style="background:white; border-radius:10px; padding:12px 20px; font-size:0.85rem;">
+                    <strong>Нужен контекст</strong> &rarr; Step-back
+                </div>
+                <div style="background:white; border-radius:10px; padding:12px 20px; font-size:0.85rem;">
+                    <strong>Фокус на деталях</strong> &rarr; Re2
+                </div>
+                <div style="background:white; border-radius:10px; padding:12px 20px; font-size:0.85rem;">
+                    <strong>Проверка понимания</strong> &rarr; RaR
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ INTERACTIVE: Self-Criticism в действии ═══ -->
+<section class="section" id="self-criticism-demo">
+    <div class="section-inner">
+        <div class="section-badge bg-orange-light text-orange">&#x1f3ae; Интерактив</div>
+        <h2 class="section-title">Self-Criticism в действии</h2>
+        <p class="section-subtitle">Посмотрите, как техника самокритики улучшает промпт шаг за шагом.</p>
+        <div class="cot-stepper" data-config='{
+            "question": "Задача: написать email о брошенной корзине для интернет-магазина",
+            "steps": [
+                "📝 <strong>Шаг 1 — Первый вариант:</strong> \"Здравствуйте! Вы оставили товары в корзине. Вернитесь и завершите покупку! У нас быстрая доставка и отличный сервис.\"",
+                "🔍 <strong>Шаг 2 — Самокритика:</strong> Проблемы: слишком общий текст, нет персонализации, не указаны конкретные товары, «бесплатная доставка» может не применяться ко всем заказам, нет срочности, CTA размытый.",
+                "✨ <strong>Шаг 3 — Улучшение:</strong> \"Алексей, вы забыли кое-что 😊 В вашей корзине: Nike Air Max 90 (размер 42) — 12 990 ₽. Они пользуются спросом — осталось 3 пары. Оформите заказ до пятницы и получите бесплатную доставку. [Вернуться к корзине →]\"",
+                "📊 <strong>Что изменилось:</strong> ✅ Персонализация (имя), ✅ Конкретный товар и цена, ✅ Срочность (осталось 3 пары), ✅ Ограниченное предложение (до пятницы), ✅ Чёткий CTA с кнопкой"
+            ],
+            "answer": "Техника Self-Criticism: генерируем → критикуем → улучшаем. Каждая итерация делает промпт конкретнее и эффективнее."
+        }'></div>
+    </div>
+</section>
+
+<!-- ═══ QUIZ: Техники промптинга ═══ -->
+<section class="section" id="qa-techniques">
+    <div class="section-inner">
+        <div class="section-badge bg-purple-light text-purple">&#x1f9e0; Проверь себя</div>
+        <h2 class="section-title">Финальный тест: Техники</h2>
+        <div class="inline-quiz" data-quiz='[
+            {"question": "Zero-shot prompting — это когда:", "options": ["Модель обучается с нуля", "Задача даётся без примеров, только инструкция", "Используется нулевая температура", "Промпт пустой"], "correct": 1, "explanation": "Zero-shot = модель получает задачу без примеров, опираясь только на свои знания. Например: «Определи тональность текста: позитивная, негативная или нейтральная.»"},
+            {"question": "В Few-shot prompting важно, чтобы примеры:", "options": ["Были как можно длиннее", "Чередовали классы и имели единый формат", "Содержали только позитивные случаи", "Были на английском языке"], "correct": 1, "explanation": "Правильный порядок (чередование классов) и единый формат примеров критически важны — LLM угадывают по паттернам, а не по логике."},
+            {"question": "Chain-of-Thought (CoT) помогает, когда:", "options": ["Нужен краткий ответ «да/нет»", "Задача требует многошагового рассуждения", "Нужно сгенерировать картинку", "Задача тривиальная"], "correct": 1, "explanation": "CoT эффективен для сложных задач: расчёты, логические цепочки, принятие решений. Для простых задач он избыточен."},
+            {"question": "Техника Self-Criticism состоит из:", "options": ["Одного шага", "Двух шагов: вопрос и ответ", "Трёх шагов: генерация → самокритика → улучшение", "Пяти шагов"], "correct": 2, "explanation": "Self-Criticism: 1) Генерируем ответ → 2) Просим модель покритиковать его → 3) Улучшаем на основе критики. Итеративный процесс."},
+            {"question": "Step-back prompting — это:", "options": ["Возврат к предыдущему промпту", "Сначала общий вопрос, потом конкретный", "Удаление последнего шага", "Техника для работы с изображениями"], "correct": 1, "explanation": "Step-back: сначала задаём общий/абстрактный вопрос, получаем принципы, затем применяем их к конкретной задаче."}
+        ]'></div>
+    </div>
+</section>
+
+<!-- ═══ 11. ИНСТРУМЕНТЫ CHATGPT ═══ -->
+<section class="section" id="chatgpt-tools">
+    <div class="section-inner">
+        <div class="section-badge bg-green-light text-green">11 &mdash; Инструменты</div>
+        <h2 class="section-title">Инструменты ChatGPT</h2>
+        <p class="section-subtitle">Ключевые возможности платформы ChatGPT для эффективной работы.</p>
+
+        <div class="cards-grid cards-3 mb-48">
+            <!-- CustomGPT -->
+            <div class="card" style="border-top:4px solid var(--blue);">
+                <div class="card-icon">&#x1f916;</div>
+                <div class="card-title text-blue">CustomGPT (GPTs)</div>
+                <div class="card-text mb-16">Персональные AI-ассистенты с заданной ролью, знаниями и инструкциями. Маркетплейс с тысячами готовых GPT.</div>
+                <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                    <span class="branch-tag">Маркетинг</span>
+                    <span class="branch-tag">Код</span>
+                    <span class="branch-tag">Аналитика</span>
+                    <span class="branch-tag">Дизайн</span>
+                </div>
+            </div>
+
+            <!-- Web Search -->
+            <div class="card" style="border-top:4px solid var(--green);">
+                <div class="card-icon">&#x1f310;</div>
+                <div class="card-title text-green">Поиск в интернете</div>
+                <div class="card-text mb-16">ChatGPT может искать актуальную информацию в интернете, цитировать источники и давать свежие данные.</div>
+                <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                    <span class="branch-tag">Актуальные данные</span>
+                    <span class="branch-tag">Источники</span>
+                    <span class="branch-tag">Факт-чекинг</span>
+                </div>
+            </div>
+
+            <!-- Canvas -->
+            <div class="card" style="border-top:4px solid var(--orange);">
+                <div class="card-icon">&#x1f3a8;</div>
+                <div class="card-title text-orange">Canvas</div>
+                <div class="card-text mb-16">Режим совместного редактирования текста и кода. Работайте с AI как с коллегой в одном документе.</div>
+                <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                    <span class="branch-tag">Тексты</span>
+                    <span class="branch-tag">Код</span>
+                    <span class="branch-tag">Редактирование</span>
+                </div>
+            </div>
+
+            <!-- Agent Mode -->
+            <div class="card" style="border-top:4px solid var(--purple);">
+                <div class="card-icon">&#x1f9e0;</div>
+                <div class="card-title text-purple">Агентный режим</div>
+                <div class="card-text mb-16">AI самостоятельно планирует и выполняет многошаговые задачи: поиск, анализ, создание контента.</div>
+                <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                    <span class="branch-tag">Планирование</span>
+                    <span class="branch-tag">Многошаговость</span>
+                    <span class="branch-tag">Автономность</span>
+                </div>
+            </div>
+
+            <!-- Deep Research -->
+            <div class="card" style="border-top:4px solid #0EA5E9;">
+                <div class="card-icon">&#x1f50e;</div>
+                <div class="card-title" style="color:#0EA5E9;">Deep Research</div>
+                <div class="card-text mb-16">Глубокий анализ темы с множественными источниками. Создаёт структурированный отчёт с цитатами.</div>
+                <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                    <span class="branch-tag">Исследования</span>
+                    <span class="branch-tag">Отчёты</span>
+                    <span class="branch-tag">Источники</span>
+                </div>
+            </div>
+
+            <!-- Work Modes -->
+            <div class="card" style="border-top:4px solid #8B5CF6;">
+                <div class="card-icon">&#x1f504;</div>
+                <div class="card-title" style="color:#8B5CF6;">Режимы работы</div>
+                <div class="card-text mb-16">Переключение между моделями (GPT-4o, o1, o1-mini) для разных задач: скорость vs глубина.</div>
+                <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                    <span class="branch-tag">GPT-4o</span>
+                    <span class="branch-tag">o1</span>
+                    <span class="branch-tag">o1-mini</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ 12. НАСТРОЙКА CHATGPT ═══ -->
+<section class="section" id="chatgpt-setup">
+    <div class="section-inner">
+        <div class="section-badge bg-orange-light text-orange">12 &mdash; Настройка</div>
+        <h2 class="section-title">Настройка ChatGPT</h2>
+        <p class="section-subtitle">Приватность, Custom Instructions и создание собственных GPT.</p>
+
+        <!-- Privacy settings -->
+        <div style="background:var(--red-light); border:1px solid #FECACA; border-radius:var(--radius); padding:32px; margin-bottom:32px;">
+            <h3 style="margin-bottom:16px; color:var(--red);">&#x1f512; Настройки приватности</h3>
+            <p style="font-size:0.95rem; margin-bottom:16px;">По умолчанию ChatGPT может использовать ваши данные для обучения. Важно настроить приватность:</p>
+            <div class="cards-grid cards-3">
+                <div style="background:white; border-radius:12px; padding:16px;">
+                    <div class="bold mb-16">1. Отключить обучение</div>
+                    <p style="font-size:0.85rem; color:var(--gray);">Settings &rarr; Data Controls &rarr; Improve the model &rarr; Off</p>
+                </div>
+                <div style="background:white; border-radius:12px; padding:16px;">
+                    <div class="bold mb-16">2. Временные чаты</div>
+                    <p style="font-size:0.85rem; color:var(--gray);">Используйте Temporary Chat для конфиденциальных данных &mdash; они не сохраняются</p>
+                </div>
+                <div style="background:white; border-radius:12px; padding:16px;">
+                    <div class="bold mb-16">3. Team/Enterprise</div>
+                    <p style="font-size:0.85rem; color:var(--gray);">Для бизнеса: данные не используются для обучения по умолчанию</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Creating CustomGPT -->
+        <h3 class="mb-24">Создание CustomGPT</h3>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num" style="background:var(--blue);">1</div>
+                <div class="step-content">
+                    <h3>Определите задачу</h3>
+                    <p>Опишите, для чего нужен ваш GPT: роль, аудитория, типичные запросы.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num" style="background:var(--green);">2</div>
+                <div class="step-content">
+                    <h3>Напишите Instructions</h3>
+                    <p>Системный промпт, определяющий поведение. Используйте фреймворк AUTOMAT.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num" style="background:var(--orange);">3</div>
+                <div class="step-content">
+                    <h3>Загрузите знания</h3>
+                    <p>Добавьте файлы (PDF, DOCX, CSV) &mdash; GPT будет использовать их как базу знаний (RAG).</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num" style="background:var(--purple);">4</div>
+                <div class="step-content">
+                    <h3>Настройте и протестируйте</h3>
+                    <p>Выберите capabilities (Web, DALL-E, Code), протестируйте с типичными запросами, итерируйте.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ 13. ПЛАТФОРМЫ И РЫНОК ═══ -->
+<section class="section" id="platforms">
+    <div class="section-inner">
+        <div class="section-badge bg-purple-light text-purple">13 &mdash; Платформы</div>
+        <h2 class="section-title">Платформы и рынок промптов</h2>
+        <p class="section-subtitle">Маркетплейсы промптов &mdash; новый рынок, где качественные промпты продаются и покупаются.</p>
+
+        <div class="cards-grid cards-2 mb-48">
+            <div class="card" style="border-top:4px solid var(--blue);">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                    <div style="font-size:2rem;">&#x1f4b2;</div>
+                    <div>
+                        <div class="card-title text-blue" style="margin-bottom:0;">PromptBase</div>
+                        <div style="font-size:0.8rem; color:var(--gray);">promptbase.com</div>
+                    </div>
+                </div>
+                <div class="card-text">Крупнейший маркетплейс промптов. Продажа и покупка промптов для DALL-E, Midjourney, ChatGPT, Stable Diffusion.</div>
+            </div>
+            <div class="card" style="border-top:4px solid var(--green);">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                    <div style="font-size:2rem;">&#x1f3a8;</div>
+                    <div>
+                        <div class="card-title text-green" style="margin-bottom:0;">PromptHero</div>
+                        <div style="font-size:0.8rem; color:var(--gray);">prompthero.com</div>
+                    </div>
+                </div>
+                <div class="card-text">Поисковик по промптам для генерации изображений. Миллионы промптов с результатами и настройками.</div>
+            </div>
+            <div class="card" style="border-top:4px solid var(--orange);">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                    <div style="font-size:2rem;">&#x1f4ac;</div>
+                    <div>
+                        <div class="card-title text-orange" style="margin-bottom:0;">FlowGPT</div>
+                        <div style="font-size:0.8rem; color:var(--gray);">flowgpt.com</div>
+                    </div>
+                </div>
+                <div class="card-text">Сообщество и платформа для шеринга промптов. Категории по задачам: маркетинг, код, образование, творчество.</div>
+            </div>
+            <div class="card" style="border-top:4px solid var(--purple);">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                    <div style="font-size:2rem;">&#x1f4c8;</div>
+                    <div>
+                        <div class="card-title text-purple" style="margin-bottom:0;">Рынок в цифрах</div>
+                        <div style="font-size:0.8rem; color:var(--gray);">Market Stats</div>
+                    </div>
+                </div>
+                <div class="card-text">Промпт-инжиниринг &mdash; растущая профессия. Средняя цена промпта $2-$10. Появляются вакансии Prompt Engineer с зарплатой $100-300K в год.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ 14. РЕКОМЕНДАЦИИ ═══ -->
+<section class="section" id="books">
+    <div class="section-inner">
+        <div class="section-badge bg-green-light text-green">14 &mdash; Рекомендации</div>
+        <h2 class="section-title">Рекомендации</h2>
+        <p class="section-subtitle">Ресурсы для дальнейшего изучения промпт-инжиниринга.</p>
+
+        <div class="cards-grid cards-3">
+            <div class="card" style="text-align:center; border-top:4px solid var(--blue);">
+                <div style="font-size:2.5rem; margin-bottom:12px;">&#x1f4d6;</div>
+                <div class="card-title">Prompt Engineering Guide</div>
+                <div class="card-text">Самый полный открытый гайд по промпт-инжинирингу. Все техники с примерами.</div>
+                <div style="margin-top:12px; font-size:0.82rem; color:var(--blue);">promptingguide.ai</div>
+            </div>
+            <div class="card" style="text-align:center; border-top:4px solid var(--green);">
+                <div style="font-size:2.5rem; margin-bottom:12px;">&#x1f4da;</div>
+                <div class="card-title">OpenAI Cookbook</div>
+                <div class="card-text">Официальные примеры и best practices от OpenAI для работы с GPT моделями.</div>
+                <div style="margin-top:12px; font-size:0.82rem; color:var(--green);">cookbook.openai.com</div>
+            </div>
+            <div class="card" style="text-align:center; border-top:4px solid var(--purple);">
+                <div style="font-size:2.5rem; margin-bottom:12px;">&#x1f393;</div>
+                <div class="card-title">Learn Prompting</div>
+                <div class="card-text">Бесплатный курс по промптингу с интерактивными упражнениями и сертификатом.</div>
+                <div style="margin-top:12px; font-size:0.82rem; color:var(--purple);">learnprompting.org</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ Footer ═══ -->
+<footer style="text-align:center; padding:40px 24px; color:var(--gray); font-size:0.85rem;">
+    <p><strong>Practico.ai</strong> &mdash; AI для бизнеса</p>
+    <p style="margin-top:8px;">Урок 2 из 26 &bull; Промпт-инжиниринг</p>
+</footer>
+
+<script>
+// Progress bar on scroll
+window.addEventListener('scroll', () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = Math.min((window.scrollY / h) * 100, 100);
+    document.getElementById('progress').style.width = pct + '%';
+});
+
+// ═══ Embed mode: ?section=ID&embed=true — clean slide for Miro ═══
+// ═══ Section mode: ?section=ID — isolated section with nav ═══
+// ═══ Normal mode: full page with copy buttons ═══
+(function() {
+    var params = new URLSearchParams(window.location.search);
+    var sectionId = params.get('section');
+    var isEmbed = params.get('embed') === 'true';
+
+    if (sectionId) {
+        // Hide chrome
+        document.querySelector('nav').style.display = 'none';
+        document.querySelector('.hero').style.display = 'none';
+        document.getElementById('progress').style.display = 'none';
+        document.querySelector('footer').style.display = 'none';
+        // Hide all other sections
+        document.querySelectorAll('section.section').forEach(function(sec) {
+            if (sec.id !== sectionId) sec.style.display = 'none';
+        });
+        document.body.style.margin = '0';
+        document.body.style.padding = '0';
+    }
+
+    if (isEmbed) {
+        // Embed mode: hide password gate, no copy buttons
+        var gate = document.getElementById('pw-gate');
+        if (gate) gate.style.display = 'none';
+        return; // skip copy buttons
+    }
+
+    // ═══ Copy iframe buttons — only on normal/section mode (not embed) ═══
+    var baseUrl = window.location.origin + window.location.pathname;
+    var sections = document.querySelectorAll('section.section');
+
+    sections.forEach(function(sec) {
+        if (!sec.id) return;
+
+        var btn = document.createElement('button');
+        btn.textContent = '\u{1f4cb} Скопировать iframe';
+        btn.style.cssText = 'position:absolute; top:12px; right:12px; background:#1e1e1e; color:white; border:none; border-radius:8px; padding:6px 14px; font-size:0.75rem; font-family:Nunito,sans-serif; cursor:pointer; opacity:0; transition:opacity 0.2s; z-index:10;';
+        sec.style.position = 'relative';
+        sec.appendChild(btn);
+
+        sec.addEventListener('mouseenter', function() { btn.style.opacity = '1'; });
+        sec.addEventListener('mouseleave', function() { btn.style.opacity = '0'; });
+
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var embedUrl = baseUrl + '?section=' + sec.id + '&embed=true';
+            var iframeCode = '<iframe src="' + embedUrl + '" width="100%" height="800" frameborder="0" style="border:none; border-radius:12px;" allowfullscreen></iframe>';
+            navigator.clipboard.writeText(iframeCode).then(function() {
+                btn.textContent = '\u2705 Скопировано!';
+                btn.style.background = '#2e8749';
+                setTimeout(function() {
+                    btn.textContent = '\u{1f4cb} Скопировать iframe';
+                    btn.style.background = '#1e1e1e';
+                }, 2000);
+            });
+        });
+    });
+})();
+</script>
+<script src="interactive.js"></script>
+</body>
+</html>
