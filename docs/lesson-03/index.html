@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 3 — Основы веб-разработки и продвинутое использование AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+    --blue: #0080ff;
+    --blue-dark: #0060cc;
+    --blue-light: #e9f1fc;
+    --green: #2e8749;
+    --green-light: #e9fcf0;
+    --orange: #ff6805;
+    --orange-light: #ffebe1;
+    --purple: #5243c3;
+    --purple-light: #ebe9fc;
+    --dark: #1e1e1e;
+    --gray: #64748B;
+    --gray-light: #9CA3AF;
+    --bg: #F8FAFC;
+    --white: #FFFFFF;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito', sans-serif; color: var(--dark); line-height: 1.7; background: var(--white); }
+a { color: var(--blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Password Gate ── */
+#password-gate {
+    position: fixed; inset: 0; z-index: 9999;
+    background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d2b 100%);
+    display: flex; align-items: center; justify-content: center;
+}
+#password-gate.hidden { display: none; }
+.gate-box {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius); padding: 48px; text-align: center; max-width: 400px; width: 90%;
+}
+.gate-box h2 { color: white; font-size: 1.5rem; margin-bottom: 8px; }
+.gate-box p { color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-bottom: 24px; }
+.gate-input {
+    width: 100%; padding: 14px 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.08); color: white; font-size: 1rem; font-family: inherit;
+    outline: none; transition: border-color 0.3s;
+}
+.gate-input:focus { border-color: var(--blue); }
+.gate-input.error { border-color: #ef4444; animation: shake 0.4s; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+.gate-btn {
+    width: 100%; padding: 14px; border-radius: 10px; border: none; margin-top: 12px;
+    background: var(--blue); color: white; font-size: 1rem; font-weight: 700;
+    cursor: pointer; font-family: inherit; transition: background 0.3s;
+}
+.gate-btn:hover { background: var(--blue-dark); }
+
+/* ── Nav ── */
+.top-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+    border-bottom: 1px solid #E2E8F0;
+}
+.nav-inner {
+    max-width: 1200px; margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { font-weight: 800; font-size: 1.1rem; color: var(--blue); white-space: nowrap; }
+.nav-links { display: flex; gap: 20px; font-size: 0.82rem; font-weight: 600; color: var(--gray); flex-wrap: wrap; justify-content: flex-end; }
+.nav-links a { color: var(--gray); transition: color 0.2s; white-space: nowrap; }
+.nav-links a:hover { color: var(--blue); text-decoration: none; }
+.progress-track { height: 3px; background: #E2E8F0; }
+.progress-fill { height: 3px; background: linear-gradient(90deg, var(--blue), var(--purple)); width: 0%; transition: width 0.3s; }
+
+/* ── Section base ── */
+.section { padding: 80px 24px; position: relative; }
+.section:nth-child(odd) { background: var(--white); }
+.section:nth-child(even) { background: var(--bg); }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+.section-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 16px; border-radius: 50px;
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px;
+    margin-bottom: 16px;
+}
+.section-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 12px; line-height: 1.3; }
+.section-subtitle { font-size: 1.05rem; color: var(--gray); margin-bottom: 40px; max-width: 700px; }
+
+/* ── Copy iframe button ── */
+.copy-iframe-btn {
+    position: absolute; top: 16px; right: 16px; opacity: 0; transition: opacity 0.3s;
+    padding: 6px 14px; border-radius: 8px; border: 1px solid #E2E8F0;
+    background: white; color: var(--gray); font-size: 0.75rem; font-weight: 600;
+    cursor: pointer; font-family: inherit; z-index: 10;
+}
+.section:hover .copy-iframe-btn { opacity: 1; }
+.copy-iframe-btn:hover { background: var(--blue-light); color: var(--blue); }
+.copy-iframe-btn.copied { background: var(--green-light); color: var(--green); border-color: var(--green); }
+
+/* ── Hero ── */
+.hero {
+    background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d2b 100%);
+    color: white; padding: 140px 24px 80px; text-align: center;
+    position: relative; overflow: hidden;
+}
+.hero::before {
+    content: ''; position: absolute; top: -200px; right: -200px;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,128,255,0.15) 0%, transparent 70%);
+}
+.hero::after {
+    content: ''; position: absolute; bottom: -150px; left: -150px;
+    width: 400px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(82,67,195,0.12) 0%, transparent 70%);
+}
+.hero-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-badge {
+    display: inline-block; padding: 8px 20px; border-radius: 50px;
+    background: rgba(0,128,255,0.15); border: 1px solid rgba(0,128,255,0.3);
+    color: #6db8ff; font-size: 0.85rem; font-weight: 700; margin-bottom: 24px;
+}
+.hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 16px; line-height: 1.2; }
+.hero p { font-size: 1.1rem; color: rgba(255,255,255,0.7); max-width: 650px; margin: 0 auto 48px; }
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 48px; }
+.stat-card {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius); padding: 24px 16px; text-align: center;
+}
+.stat-number { font-size: 2rem; font-weight: 800; color: var(--orange); }
+.stat-label { font-size: 0.82rem; color: rgba(255,255,255,0.6); margin-top: 4px; }
+
+/* ── Cards ── */
+.cards-grid { display: grid; gap: 20px; }
+.cards-2 { grid-template-columns: repeat(2, 1fr); }
+.cards-3 { grid-template-columns: repeat(3, 1fr); }
+.cards-4 { grid-template-columns: repeat(4, 1fr); }
+.card {
+    background: var(--white); border-radius: var(--radius); padding: 28px;
+    border: 1px solid #E2E8F0; transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.card-icon { font-size: 2rem; margin-bottom: 12px; }
+.card-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+.card-text { font-size: 0.9rem; color: var(--gray); line-height: 1.6; }
+.card-accent { border-left: 4px solid; }
+.card-accent.blue { border-color: var(--blue); }
+.card-accent.green { border-color: var(--green); }
+.card-accent.orange { border-color: var(--orange); }
+.card-accent.purple { border-color: var(--purple); }
+
+/* ── Diagram: Architecture ── */
+.arch-diagram { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 40px 0; }
+.arch-layer {
+    width: 100%; max-width: 700px; padding: 24px 32px; border-radius: 14px;
+    text-align: center; font-weight: 700; font-size: 1.1rem; position: relative;
+}
+.arch-arrow { font-size: 1.5rem; color: var(--gray); margin: 4px 0; }
+.arch-frontend { background: var(--blue-light); color: var(--blue); border: 2px solid var(--blue); }
+.arch-api { background: var(--orange-light); color: var(--orange); border: 2px dashed var(--orange); }
+.arch-backend { background: var(--purple-light); color: var(--purple); border: 2px solid var(--purple); }
+.arch-db { background: var(--green-light); color: var(--green); border: 2px solid var(--green); }
+.arch-desc { font-size: 0.85rem; font-weight: 400; margin-top: 6px; opacity: 0.8; }
+
+/* ── Flow diagram ── */
+.flow { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 32px 0; }
+.flow-step {
+    padding: 14px 20px; border-radius: 12px; font-weight: 700; font-size: 0.9rem;
+    text-align: center; min-width: 120px;
+}
+.flow-arrow { font-size: 1.3rem; color: var(--gray); }
+
+/* ── Code block ── */
+.code-block {
+    background: #1e1e2e; color: #cdd6f4; border-radius: 12px; padding: 24px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+    line-height: 1.8; overflow-x: auto; margin: 24px 0;
+}
+.code-block .key { color: #89b4fa; }
+.code-block .str { color: #a6e3a1; }
+.code-block .num { color: #fab387; }
+.code-block .comment { color: #6c7086; }
+
+/* ── Table ── */
+.data-table { width: 100%; border-collapse: collapse; margin: 24px 0; border-radius: 12px; overflow: hidden; }
+.data-table th {
+    background: var(--blue); color: white; padding: 14px 20px;
+    text-align: left; font-weight: 700; font-size: 0.9rem;
+}
+.data-table td {
+    padding: 12px 20px; border-bottom: 1px solid #E2E8F0; font-size: 0.9rem;
+}
+.data-table tr:nth-child(even) { background: var(--bg); }
+.data-table tr:hover { background: var(--blue-light); }
+
+/* ── Steps ── */
+.steps { display: flex; flex-direction: column; gap: 16px; margin: 32px 0; }
+.step {
+    display: flex; gap: 20px; align-items: flex-start; padding: 20px 24px;
+    border-radius: 12px; background: var(--white); border: 1px solid #E2E8F0;
+}
+.step-num {
+    min-width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 1.1rem; color: white; background: var(--blue); flex-shrink: 0;
+}
+.step-content h4 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+.step-content p { font-size: 0.9rem; color: var(--gray); }
+
+/* ── Comparison ── */
+.comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 32px 0; }
+.comp-col { padding: 28px; border-radius: var(--radius); }
+.comp-col h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; }
+.comp-col ul { list-style: none; padding: 0; }
+.comp-col li { padding: 6px 0; font-size: 0.9rem; }
+.comp-vs { background: var(--blue-light); }
+.comp-vs2 { background: var(--purple-light); }
+
+/* ── Quiz ── */
+.quiz-block { background: var(--white); border: 2px solid var(--blue-light); border-radius: var(--radius); padding: 28px; margin: 32px 0; }
+.quiz-block h4 { color: var(--blue); font-size: 1.05rem; margin-bottom: 16px; }
+.quiz-option {
+    display: flex; align-items: center; gap: 12px; padding: 12px 16px; margin: 6px 0;
+    border-radius: 10px; border: 2px solid #E2E8F0; cursor: pointer; transition: all 0.2s;
+    font-size: 0.9rem;
+}
+.quiz-option:hover { border-color: var(--blue); background: var(--blue-light); }
+.quiz-option input { display: none; }
+.quiz-radio {
+    width: 20px; height: 20px; border-radius: 50%; border: 2px solid #CBD5E1;
+    flex-shrink: 0; transition: all 0.2s; position: relative;
+}
+.quiz-option.selected .quiz-radio { border-color: var(--blue); background: var(--blue); }
+.quiz-option.selected .quiz-radio::after {
+    content: ''; position: absolute; top: 4px; left: 4px;
+    width: 8px; height: 8px; border-radius: 50%; background: white;
+}
+.quiz-option.correct { border-color: var(--green); background: var(--green-light); }
+.quiz-option.incorrect { border-color: #ef4444; background: #fef2f2; }
+.quiz-check {
+    margin-top: 16px; padding: 12px 28px; border-radius: 10px; border: none;
+    background: var(--blue); color: white; font-weight: 700; font-size: 0.9rem;
+    cursor: pointer; font-family: inherit; transition: background 0.3s;
+}
+.quiz-check:hover { background: var(--blue-dark); }
+.quiz-check:disabled { background: #CBD5E1; cursor: not-allowed; }
+.quiz-explanation {
+    margin-top: 16px; padding: 16px; border-radius: 10px;
+    font-size: 0.9rem; display: none;
+}
+.quiz-explanation.show { display: block; }
+.quiz-explanation.correct { background: var(--green-light); color: var(--green); }
+.quiz-explanation.incorrect { background: #fef2f2; color: #dc2626; }
+
+/* ── Drag-and-drop ── */
+.dnd-container { margin: 32px 0; }
+.dnd-sources { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; min-height: 56px; padding: 12px; background: var(--bg); border-radius: 12px; }
+.dnd-item {
+    padding: 10px 18px; border-radius: 10px; font-weight: 700; font-size: 0.85rem;
+    cursor: grab; user-select: none; transition: transform 0.15s, box-shadow 0.15s;
+    border: 2px solid transparent;
+}
+.dnd-item:active { cursor: grabbing; transform: scale(1.05); }
+.dnd-item.blue-bg { background: var(--blue-light); color: var(--blue); }
+.dnd-item.purple-bg { background: var(--purple-light); color: var(--purple); }
+.dnd-item.green-bg { background: var(--green-light); color: var(--green); }
+.dnd-targets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.dnd-target {
+    min-height: 120px; border: 2px dashed #CBD5E1; border-radius: 12px; padding: 16px;
+    text-align: center; transition: all 0.2s;
+}
+.dnd-target h5 { font-size: 0.9rem; margin-bottom: 8px; color: var(--gray); }
+.dnd-target.over { border-color: var(--blue); background: var(--blue-light); }
+.dnd-target .dnd-item { margin: 4px; }
+.dnd-target.correct-drop { border-color: var(--green); background: var(--green-light); }
+.dnd-target.incorrect-drop { border-color: #ef4444; background: #fef2f2; }
+.dnd-check { margin-top: 16px; }
+.dnd-result { margin-top: 12px; padding: 12px 16px; border-radius: 10px; font-weight: 600; font-size: 0.9rem; display: none; }
+
+/* ── Live JSON formatter ── */
+.json-formatter { margin: 24px 0; }
+.json-input {
+    width: 100%; min-height: 120px; padding: 16px; border-radius: 12px;
+    border: 2px solid #E2E8F0; font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem; resize: vertical; outline: none; transition: border-color 0.3s;
+}
+.json-input:focus { border-color: var(--blue); }
+.json-output {
+    margin-top: 12px; padding: 16px; border-radius: 12px;
+    background: #1e1e2e; color: #cdd6f4; font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem; min-height: 60px; white-space: pre-wrap; word-break: break-all;
+}
+.json-valid { border-left: 4px solid var(--green); }
+.json-invalid { border-left: 4px solid #ef4444; }
+
+/* ── Lightbox ── */
+.zoomable { cursor: zoom-in; transition: transform 0.2s; border-radius: 10px; }
+.zoomable:hover { transform: scale(1.02); }
+.lightbox {
+    position: fixed; inset: 0; z-index: 10000; background: rgba(0,0,0,0.9);
+    display: none; align-items: center; justify-content: center; cursor: zoom-out;
+}
+.lightbox.active { display: flex; }
+.lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 8px; }
+
+/* ── Q&A Section ── */
+.qa-section { text-align: center; padding: 60px 24px; }
+.qa-section .section-title { color: var(--blue); }
+.qa-icon { font-size: 4rem; margin-bottom: 16px; }
+
+/* ── Books / Resources ── */
+.book-card { display: flex; gap: 20px; align-items: center; }
+.book-cover { width: 80px; height: 110px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: var(--blue-light); }
+.book-info h4 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+.book-info p { font-size: 0.85rem; color: var(--gray); }
+
+/* ── Spectrum ── */
+.spectrum { position: relative; margin: 48px 0; }
+.spectrum-bar {
+    height: 8px; border-radius: 4px; margin: 0 0 48px;
+    background: linear-gradient(90deg, var(--green), var(--blue), var(--purple), var(--orange));
+}
+.spectrum-items { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.spectrum-item { text-align: center; }
+.spectrum-dot {
+    width: 16px; height: 16px; border-radius: 50%; margin: 0 auto 12px;
+    border: 3px solid white; box-shadow: 0 0 0 2px var(--gray);
+}
+.spectrum-item h5 { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+.spectrum-item p { font-size: 0.8rem; color: var(--gray); }
+
+/* ── Footer ── */
+.footer {
+    background: var(--dark); color: rgba(255,255,255,0.5); padding: 40px 24px;
+    text-align: center; font-size: 0.85rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .hero h1 { font-size: 2rem; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .cards-2, .cards-3, .cards-4 { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .comparison { grid-template-columns: 1fr; }
+    .dnd-targets { grid-template-columns: 1fr; }
+    .spectrum-items { grid-template-columns: repeat(2, 1fr); }
+    .flow { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+}
+</style>
+</head>
+<body>
+
+<!-- Password Gate -->
+<div id="password-gate">
+    <div class="gate-box">
+        <h2>Practico AI</h2>
+        <p>Введите пароль для доступа к уроку</p>
+        <input type="password" class="gate-input" id="gate-pwd" placeholder="Пароль" autofocus>
+        <button class="gate-btn" onclick="checkPassword()">Войти</button>
+    </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" alt="">
+</div>
+
+<!-- Nav -->
+<nav class="top-nav" id="top-nav">
+    <div class="nav-inner">
+        <div class="nav-logo">Practico AI</div>
+        <div class="nav-links">
+            <a href="#plan">План</a>
+            <a href="#it-product">IT продукт</a>
+            <a href="#api-json">API и JSON</a>
+            <a href="#http-webhooks">HTTP</a>
+            <a href="#ai-connection">AI + Web</a>
+            <a href="#ai-problems">Проблемы AI</a>
+            <a href="#ai-agents">Агенты</a>
+            <a href="#rag">RAG</a>
+            <a href="#ai-ecosystem">Экосистема</a>
+            <a href="#gpt-assistant">Создание GPT</a>
+            <a href="#make-telegram">Make</a>
+        </div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" id="hero">
+    <div class="hero-inner">
+        <div class="hero-badge">Урок 3 из 26</div>
+        <h1>Основы веб-разработки и продвинутое использование AI</h1>
+        <p>От Frontend и Backend до AI-агентов и RAG. Все, что нужно знать для интеграции AI в бизнес-процессы.</p>
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-number">6</div>
+                <div class="stat-label">Ключевых тем</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Практических блока</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">RAG</div>
+                <div class="stat-label">Архитектура</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">GPT</div>
+                <div class="stat-label">Кастомный агент</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== PLAN ===================== -->
+<section class="section" id="plan">
+    <button class="copy-iframe-btn" onclick="copyIframe('plan')">Скопировать iframe</button>
+    <div class="section-inner">
+        <div class="section-badge" style="background:var(--blue-light);color:var(--blue);">ПЛАН ЗАНЯТИЯ</div>
+        <h2 class="section-title">Что мы изучим сегодня</h2>
+        <p class="section-subtitle">Структура урока: от основ веб-разработки до создания собственного AI-агента</p>
+        <div class="cards-grid cards-3">
+            <div class="card card-accent blue">
+                <div class="card-icon">🏗️</div>
+                <div class="card-title">Веб-разработка</div>
+                <div class="card-text">Frontend, Backend, базы данных — структура IT-продуктов и принципы их работы</div>
+            </div>
+            <div class="card card-accent orange">
+                <div class="card-icon">🔗</div>
+                <div class="card-title">API и интеграции</div>
+                <div class="card-text">API, JSON, HTTP/HTTPS, WebHooks — как системы общаются друг с другом</div>
+            </div>
+            <div class="card card-accent purple">
+                <div class="card-icon">🤖</div>
+                <div class="card-title">AI-агенты и RAG</div>
+                <div class="card-text">Проблемы GenAI, AI-агенты, RAG-архитектура и экосистема AI-решений</div>
+            </div>
+            <div class="card card-accent green">
+                <div class="card-icon">🛠️</div>
+                <div class="card-title">Практика: Custom GPT</div>
+                <div class="card-text">Создание кастомного GPT-агента в OpenAI — пошаговый разбор</div>
+            </div>
+            <div class="card card-accent orange">
+                <div class="card-icon">⚡</div>
+                <div class="card-title">No-code автоматизация</div>
+                <div class="card-text">Подключение AI через Make.com и интеграция с Telegram</div>
+            </div>
+            <div class="card card-accent blue">
+                <div class="card-icon">📚</div>
+                <div class="card-title">Ресурсы и книги</div>
+                <div class="card-text">Рекомендации для самостоятельного изучения и углубления знаний</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== IT PRODUCT ===================== -->
+<section class="section" id="it-product">
+    <button class="copy-iframe-btn" onclick="copyIframe('it-product')">Скопировать iframe</button>
+    <div class="section-inner">
+        <div class="section-badge" style="background:var(--blue-light);color:var(--blue);">ОСНОВЫ</div>
+        <h2 class="section-title">Из чего состоит IT-продукт?</h2>
+        <p class="section-subtitle">Как интегрировать AI в ваши системы? Для этого нужно понимать основы веб-разработки. Давайте разбираться.</p>
+
+        <!-- Architecture diagram -->
+        <div class="arch-diagram">
+            <div class="arch-layer arch-frontend">
+                👤 Frontend (Фронтенд)
+                <div class="arch-desc">Интерфейс, кнопки, формы — то, что видит пользователь</div>
+            </div>
+            <div class="arch-arrow">⇅</div>
+            <div class="arch-layer arch-api">
+                🔌 API (Интерфейс)
+                <div class="arch-desc">Способ общения между системами — запросы и ответы</div>
+            </div>
+            <div class="arch-arrow">⇅</div>
+            <div class="arch-layer arch-backend">
+                ⚙️ Backend (Бэкенд)
+                <div class="arch-desc">Логика, обработка данных — «мозг» приложения</div>
+            </div>
+            <div class="arch-arrow">⇅</div>
+            <div class="arch-layer arch-db">
+                🗄️ Database (База данных)
+                <div class="arch-desc">Хранение информации — «память» приложения</div>
+            </div>
+        </div>
+
+        <h3 style="font-size:1.4rem;font-weight:700;margin:48px 0 24px;">Frontend — что видит пользователь</h3>
+        <p style="margin-bottom:24px;color:var(--gray);">Фронтенд — часть веб-разработки, которая отвечает за то, что пользователь видит и с чем взаимодействует в браузере: интерфейс, дизайн, кнопки, формы, анимации.</p>
+
+        <div class="cards-grid cards-3">
+            <div class="card" style="border-top:4px solid #e34c26;">
+                <div class="card-icon">🦴</div>
+                <div class="card-title">HTML</div>
+                <div class="card-text"><strong>HyperText Markup Language</strong> — «скелет» веб-страницы. Отвечает за структуру: текст, заголовки, картинки, кнопки, таблицы.</div>
+            </div>
+            <div class="card" style="border-top:4px solid #264de4;">
+                <div class="card-icon">👗</div>
+                <div class="card-title">CSS</div>
+                <div class="card-text"><strong>Cascading Style Sheets</strong> — «одежда» для страницы. Добавляет цвета, меняет шрифты, выравнивает элементы, делает анимации.</div>
+            </div>
+            <div class="card" style="border-top:4px solid #f0db4f;">
+                <div class="card-icon">🧠</div>
+                <div class="card-title">JavaScript</div>
+                <div class="card-text"><strong>JS</strong> — «нервная система» страницы. Добавляет интерактивность: кнопки реагируют на нажатие, всплывающие окна, автозаполнение.</div>
+            </div>
+        </div>
+
+        <!-- Drag-and-drop exercise -->
+        <div class="dnd-container" style="margin-top:48px;">
+            <h3 style="font-size:1.2rem;font-weight:700;margin-bottom:16px;">🎯 Упражнение: Распределите компоненты</h3>
+            <p style="color:var(--gray);margin-bottom:16px;">Перетащите элементы в правильные категории.</p>
+            <div class="dnd-sources" id="dnd-sources">
+                <div class="dnd-item blue-bg" draggable="true" data-correct="frontend" id="dnd-1">Кнопки и формы</div>
+                <div class="dnd-item purple-bg" draggable="true" data-correct="backend" id="dnd-2">Обработка данных</div>
+                <div class="dnd-item green-bg" draggable="true" data-correct="database" id="dnd-3">Таблица пользователей</div>
+                <div class="dnd-item blue-bg" draggable="true" data-correct="frontend" id="dnd-4">CSS стили</div>
+                <div class="dnd-item purple-bg" draggable="true" data-correct="backend" id="dnd-5">Python / Java</div>
+                <div class="dnd-item green-bg" draggable="true" data-correct="database" id="dnd-6">SQL запросы</div>
+            </div>
+            <div class="dnd-targets">
+                <div class="dnd-target" data-category="frontend" id="target-frontend">
+                    <h5>🖥️ Frontend</h5>
+                </div>
+                <div class="dnd-target" data-category="backend" id="target-backend">
+                    <h5>⚙️ Backend</h5>
+                </div>
+                <div class="dnd-target" data-category="database" id="target-database">
+                    <h5>🗄️ Database</h5>
+                </div>
+            </div>
+            <button class="quiz-check dnd-check" onclick="checkDnD()">Проверить</button>
+            <div class="dnd-result" id="dnd-result"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== BACKEND & DB ===================== -->
+<section class="section" id="backend-db">
+    <button class="copy-iframe-btn" onclick="copyIframe('backend-db')">Скопировать iframe</button>
+    <div class="section-inner">
+        <div class="section-badge" style="background:var(--purple-light);color:var(--purple);">СЕРВЕРНАЯ ЧАСТЬ</div>
+        <h2 class="section-title">Backend и базы данных</h2>
+        <p class="section-subtitle">Невидимая часть IT-продукта, которая управляет данными и логикой.</p>
+
+        <div class="comparison">
+            <div class="comp-col comp-vs">
+                <h4>⚙️ Backend — «мозг» приложения</h4>
+                <p style="font-size:0.9rem;color:var(--gray);margin-bottom:16px;">Невидимая часть сайта или приложения, которая работает на сервере. Отвечает за обработку данных, логику работы и взаимодействие с базами данных.</p>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <span style="padding:6px 14px;border-radius:8px;background:var(--blue);color:white;font-size:0.8rem;font-weight:700;">Python</span>
+                    <span style="padding:6px 14px;border-radius:8px;background:var(--blue);color:white;font-size:0.8rem;font-weight:700;">Java</span>
+                    <span style="padding:6px 14px;border-radius:8px;background:var(--blue);color:white;font-size:0.8rem;font-weight:700;">C++</span>
+                    <span style="padding:6px 14px;border-radius:8px;background:var(--blue);color:white;font-size:0.8rem;font-weight:700;">PHP</span>
+                    <span style="padding:6px 14px;border-radius:8px;background:var(--gray);color:white;font-size:0.8rem;font-weight:700;">+ другие</span>
+                </div>
+            </div>
+            <div class="comp-col comp-vs2">
+                <h4>🗄️ База данных — «память» приложения</h4>
+                <p style="font-size:0.9rem;color:var(--gray);margin-bottom:16px;">Организованное хранилище данных для хранения, управления и быстрого доступа к информации.</p>
+                <p style="font-size:0.85rem;color:var(--gray);">Пример: личный кабинет курса. Фронтенд показывает страницу, бэкенд отправляет запрос в базу данных, база возвращает данные пользователя.</p>
+            </div>
+        </div>
+
+        <h3 style="font-size:1.2rem;font-weight:700;margin:32px 0 16px;">Пример таблицы базы данных курса</h3>
+        <table class="data-table">
+            <thead>
+                <tr><th>ID</th><th>Имя</th><th>Email</th><th>Курс</th><th>Статус</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>1</td><td>Иван</td><td>ivan@practico.ai</td><td>AI для бизнеса</td><td style="color:var(--green);font-weight:700;">Активен</td></tr>
+                <tr><td>2</td><td>Маша</td><td>masha@practico.ai</td><td>AI для бизнеса</td><td style="color:var(--green);font-weight:700;">Активен</td></tr>
+                <tr><td>3</td><td>Костя</td><td>kostya@practico.ai</td><td>AI для бизнеса</td><td style="color:var(--orange);font-weight:700;">Завершил</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ===================== API & JSON ===================== -->
+<section class="section" id="api-json">
+    <button class="copy-iframe-btn" onclick="copyIframe('api-json')">Скопировать iframe</button>
+    <div class="section-inner">
+        <div class="section-badge" style="background:var(--orange-light);color:var(--orange);">ИНТЕГРАЦИИ</div>
+        <h2 class="section-title">API и JSON</h2>
+        <p class="section-subtitle">Как программы общаются друг с другом и обмениваются данными.</p>
+
+        <h3 style="font-size:1.3rem;font-weight:700;margin-bottom:20px;">🔌 API — интерфейс для соединения сервисов</h3>
+        <p style="margin-bottom:24px;color:var(--gray);">API (Application Programming Interface) — способ, с помощью которого программы взаимодействуют друг с другом. Позволяет одной системе отправлять запросы другой и получать данные без необходимости знать, как та работает внутри.</p>
+
+        <div class="cards-grid cards-3" style="margin-bottom:32px;">
+            <div class="card card-accent blue">
+                <div class="card-icon">1️⃣</div>
+                <div class="card-title">Запрос</div>
+                <div class="card-text">Программа отправляет запрос (например: «Дай курс доллара к евро»)</div>
+            </div>
+            <div class="card card-accent orange">
+                <div class="card-icon">2️⃣</div>
+                <div class="card-title">Обработка</div>
+                <div class="card-text">API передает запрос в систему, которая ищет нужную информацию</div>
+            </div>
+            <div class="card card-accent green">
+                <div class="card-icon">3️⃣</div>
+                <div class="card-title">Ответ</div>
+                <div class="card-text">API возвращает данные (например: «1 USD = 0.92 EUR»)</div>
+            </div>
+        </div>
+
+        <div style="background:var(--blue-light);border-radius:var(--radius);padding:24px;margin-bottom:40px;">
+            <p style="font-size:1rem;"><strong>📚 Аналогия:</strong> API — это как библиотекарь. Вы спрашиваете: «Можно мне книгу про AI?» (запрос к API). Библиотекарь ищет книгу в каталоге и приносит ее вам (ответ API). Вы можете читать книгу, не зная, как устроен каталог!</p>
+        </div>
+
+        <h3 style="font-size:1.3rem;font-weight:700;margin-bottom:20px;">📦 JSON — язык общения сервисов</h3>
+        <p style="margin-bottom:16px;color:var(--gray);">JSON (JavaScript Object Notation) — формат хранения данных, который помогает программам обмениваться информацией.</p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;">
+            <div>
+                <h4 style="margin-bottom:8px;">📩 Запрос к API:</h4>
+                <p style="color:var(--gray);margin-bottom:16px;">«Скажи мне погоду в Берлине?»</p>
+                <h4 style="margin-bottom:8px;">📨 Ответ от API (JSON):</h4>
+                <div class="code-block">
+<span class="comment">// Ответ API погоды</span>
+{
+  <span class="key">"city"</span>: <span class="str">"Berlin"</span>,
+  <span class="key">"temperature"</span>: <span class="num">+5</span>,
+  <span class="key">"unit"</span>: <span class="str">"Celsius"</span>,
+  <span class="key">"weather"</span>: <span class="str">"cloudy"</span>
+}
+                </div>
+                <p style="margin-top:12px;font-size:0.95rem;">🌤️ Наше приложение читает JSON и показывает: <strong>«В Берлине сейчас +5°C, облачно.»</strong></p>
+            </div>
+            <div>
+                <h4 style="margin-bottom:12px;">🧪 Попробуйте сами — JSON форматтер</h4>
+                <div class="json-formatter">
+                    <textarea class="json-input" id="json-input" placeholder='Введите JSON, например: {"name": "Ivan", "age": 25}'></textarea>
+                    <div class="json-output" id="json-output">Результат появится здесь...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== HTTP & WEBHOOKS ===================== -->
+<section class="section" id="http-webhooks">
+    <button class="copy-iframe-btn" onclick="copyIframe('http-webhooks')">Скопировать iframe</button>
+    <div class="section-inner">
+        <div class="section-badge" style="background:var(--green-light);color:var(--green);">ПРОТОКОЛЫ</div>
+        <h2 class="section-title">HTTP, HTTPS и WebHooks</h2>
+        <p class="section-subtitle">Способы связи между клиентом и сервером.</p>
+
+        <div class="cards-grid cards-3" style="margin-bottom:40px;">
+            <div class="card card-accent green">
+                <div class="card-title">GET</div>
+                <div class="card-text"><strong>Получить данные.</strong> Только читает, ничего не изменяет. Примеры: получить курс валют, список товаров, профиль пользователя.</div>
+            </div>
+            <div class="card card-accent blue">
+                <div class="card-title">POST</div>
+                <div class="card-text"><strong>Создать / отправить данные.</strong> Создает новый ресурс или запускает действие. Примеры: оформить заказ, отправить форму.</div>
+            </div>
+            <div class="card card-accent orange">
+                <div class="card-title">DELETE</div>
+                <div class="card-text"><strong>Удалить данные.</strong> Удаляет ресурс на сервере. Пример: удалить запись из базы данных.</div>
+            </div>
+        </div>
+
+        <div style="background:var(--green-light);border-radius:var(--radius);padding:24px;margin-bottom:40px;">
+            <h4 style="margin-bottom:8px;">🔐 HTTPS защищает:</h4>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:0.9rem;">
+                <span>✅ Логины и пароли</span>
+                <span>✅ Платежные данные</span>
+                <span>✅ Персональные данные</span>
+                <span>✅ Весь обмен данными</span>
+            </div>
+        </div>
+
+        <h3 style="font-size:1.3rem;font-weight:700;margin-bottom:20px;">⚡ WebHook — обратный вызов</h3>
+        <div class="comparison">
+            <div class="comp-col" style="background:var(--orange-light);">
+                <h4>⏳ Обычный API</h4>
+                <p style="font-size:0.9rem;">Нужно <strong>самому</strong> отправить запрос, чтобы получить данные. Как если бы вы звонили в пиццерию каждые 5 минут: «Готова ли моя пицца?»</p>
+            </div>
+            <div class="comp-col" style="background:var(--green-light);">
+                <h4>⚡ Webhook</h4>
+                <p style="font-size:0.9rem;">Сервис <strong>сам</strong> отправит данные, как только что-то произошло. Как если бы пиццерия сама позвонила вам, когда пицца готова!</p>
+            </div>
+        </div>
+
+        <h3 style="font-size:1.2rem;font-weight:700;margin:32px 0 16px;">Пример: интернет-магазин с Webhook</h3>
+        <div class="flow">
+            <div class="flow-step" style="background:var(--blue-light);color:var(--blue);">1️⃣ Клиент покупает товар</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step" style="background:var(--orange-light);color:var(--orange);">2️⃣ Webhook отправляет данные</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step" style="background:var(--green-light);color:var(--green);">3️⃣ Вы видите заказ мгновенно</div>
+        </div>
+
+        <div style="background:var(--purple-light);border-radius:var(--radius);padding:24px;margin-top:32px;">
+            <h4 style="margin-bottom:12px;">🍕 Аналогия: Заказ пиццы</h4>
+            <div class="cards-grid cards-4" style="gap:12px;">
+                <div style="background:white;padding:14px;border-radius:10px;font-size:0.85rem;"><strong>API</strong> — звоним в пиццерию: «Какие пиццы есть?»</div>
+                <div style="background:white;padding:14px;border-radius:10px;font-size:0.85rem;"><strong>Webhook</strong> — пиццерия сама звонит, когда пицца готова</div>
+                <div style="background:white;padding:14px;border-radius:10px;font-size:0.85rem;"><strong>HTTPS</strong> — безопасный канал связи (телефон)</div>
+                <div style="background:white;padding:14px;border-radius:10px;font-size:0.85rem;"><strong>JSON</strong> — язык меню: { "Маргарита": 10€ }</div>
+            </div>
+        </div>
+
+        <!-- Quiz 1 -->
+        <div class="quiz-block" style="margin-top:40px;">
+            <h4>📝 Проверьте себя: Чем Webhook отличается от обычного API?</h4>
+            <div class="quiz-options" data-quiz="q3" data-correct="1">
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Webhook работает быстрее</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Webhook — «обратный вызов»: сервер сам отправляет данные при наступлении события</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Webhook используется только для безопасности</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Webhook не поддерживает JSON</div>
+            </div>
+            <button class="quiz-check" onclick="checkQuiz(this)">Проверить ответ</button>
+            <div class="quiz-explanation">Webhook — push-модель: сервер автоматически отправляет данные на указанный URL при наступлении события, а не клиент постоянно спрашивает.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== AI CONNECTION ===================== -->
+<section class="section" id="ai-connection">
+    <button class="copy-iframe-btn" onclick="copyIframe('ai-connection')">Скопировать iframe</button>
+    <div class="section-inner">
+        <div class="section-badge" style="background:var(--orange-light);color:var(--orange);">AI + WEB</div>
+        <h2 class="section-title">Как это связано с AI?</h2>
+        <p class="section-subtitle">Чтобы связать AI с вашим сайтом, приложением, сервисом или CRM — нужны API, Webhooks, HTTP/HTTPS, фронтенд, бэкенд и базы данных.</p>
+
+        <h3 style="font-size:1.2rem;font-weight:700;margin-bottom:20px;">Пример: AI-чат-бот для интернет-магазина</h3>
+        <div class="flow" style="margin-bottom:32px;">
+            <div class="flow-step" style="background:var(--blue-light);color:var(--blue);">👤 Клиент<br><small>«Какой самый популярный товар?»</small></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step" style="background:var(--orange-light);color:var(--orange);">⚙️ Backend<br><small>Webhook → HTTPS POST</small></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step" style="background:var(--green-light);color:var(--green);">🤖 AI (ChatGPT)<br><small>Обрабатывает запрос</small></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step" style="background:var(--purple-light);color:var(--purple);">🗄️ БД<br><small>Сохраняет ответ</small></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step" style="background:var(--blue-light);color:var(--blue);">👤 Клиент<br><small>«Смартфон X»</small></div>
+        </div>
+
+        <h3 style="font-size:1.2rem;font-weight:700;margin:32px 0 16px;">No-code vs Разработка</h3>
+        <div class="comparison">
+            <div class="comp-col" style="background:var(--green-light);">
+                <h4>✅ No-Low Code</h4>
+                <ul>
+                    <li>✅ Меньше времени на разработку</li>
+                    <li>✅ Быстрые результаты</li>
+                    <li>✅ Возможности интеграции</li>
+                    <li>❌ Ограниченная производительность на большом масштабе</li>
+                </ul>
+                <p style="margin-top:12px;font-size:0.85rem;color:var(--gray);"><strong>Подходит для:</strong> автоматизации процессов, AI-ассистентов, MVP-продуктов</p>
+            </div>
+            <div class="comp-col" style="background:var(--purple-light);">
+                <h4>💻 Разработка</h4>
+                <ul>
+                    <li>✅ Гибко настраиваемые модели</li>
+                    <li>❌ Затратно по времени</li>
+                    <li>❌ Дорого, требует разработчиков</li>
+                </ul>
+                <p style="margin-top:12px;font-size:0.85rem;color:var(--gray);"><strong>Подходит для:</strong> сложных алгоритмов, предсказательных моделей, компьютерного зрения, ML</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== QA-1 ===================== -->
+<section class="section qa-section" id="qa-1">
+    <button class="copy-iframe-btn" onclick="copyIframe('qa-1')">Скопировать iframe</button>
+    <div class="section-inner">
+        <div class="qa-icon">❓</div>
+        <h2 class="section-title">Ваши вопросы</h2>
+        <p style="color:var(--gray);font-size:1.1rem;">Перерыв для вопросов по первой части: веб-разработка, API, JSON, HTTP</p>
+
+        <!-- Quiz 2 -->
+        <div class="quiz-block" style="margin-top:32px;text-align:left;">
+            <h4>📝 Какие три основных компонента составляют веб-приложение?</h4>
+            <div class="quiz-options" data-quiz="q1" data-correct="1">
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>HTML, CSS, Python</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Frontend, Backend, База данных</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Браузер, Сервер, Домен</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>API, Webhook, JSON</div>
+            </div>
+            <button class="quiz-check" onclick="checkQuiz(this)">Проверить ответ</button>
+            <div class="quiz-explanation">Три основных слоя: Frontend (интерфейс пользователя), Backend (серверная логика) и База данных (хранение информации).</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== AI PROBLEMS ===================== -->
+<section class="section" id="ai-problems">
+    <button class="copy-iframe-btn" onclick="copyIframe('ai-problems')">Скопировать iframe</button>
+    <div class="section-inner">
+        <div class="section-badge" style="background:#fef2f2;color:#dc2626;">ПРОБЛЕМЫ</div>
+        <h2 class="section-title">Проблемы генеративного AI</h2>
+        <p class="section-subtitle">Основные ограничения, с которыми сталкиваются LLM-модели.</p>
+
+        <div class="cards-grid cards-4">
+            <div class="card" style="border-top:4px solid #ef4444;">
+                <div class="card-icon">🌫️</div>
+                <div class="card-title">Галлюцинации</div>
+                <div class="card-text">Модели могут выдавать правдоподобную, но фактически неверную или вымышленную информацию.</div>
+            </div>
+            <div class="card" style="border-top:4px solid #f59e0b;">
+                <div class="card-icon">📅</div>
+                <div class="card-title">Устаревание знаний</div>
+                <div class="card-text">Модели имеют фиксированную дату обучения — неподходящи для задач, требующих актуальной информации.</div>
+            </div>
+            <div class="card" style="border-top:4px solid #8b5cf6;">
+                <div class="card-icon">📏</div>
+                <div class="card-title">Ограниченный контекст</div>
+                <div class="card-text">С трудом работают с длинными текстами или задачами, требующими долгосрочной памяти.</div>
+            </div>
+            <div class="card" style="border-top:4px solid #6b7280;">
+                <div class="card-icon">🔍</div>
+                <div class="card-title">Отсутствие глубины</div>
+                <div class="card-text">Могут не предоставлять детальную и специализированную информацию для сложных запросов.</div>
+            </div>
+        </div>
+
+        <div style="background:#fef2f2;border-radius:var(--radius);padding:24px;margin-top:32px;">
+            <h4 style="margin-bottom:8px;">Пример проблемы:</h4>
+            <p style="font-size:0.95rem;"><strong>Запрос:</strong> «Что мне делать в оставшиеся дни в Санкт-Петербурге?»</p>
+            <p style="font-size:0.9rem;color:var(--gray);margin-top:8px;"><strong>Модель не знает:</strong> сколько дней осталось, какая погода, ваши предпочтения, когда вылет. Результат будет общим и неточным.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== AI AGENTS ===================== -->
+<section class="section" id="ai-agents">
+    <button class="copy-iframe-btn" onclick="copyIframe('ai-agents')">Скопировать iframe</button>
+    <div class="section-inner">
+        <div class="section-badge" style="background:var(--purple-light);color:var(--purple);">РЕШЕНИЕ</div>
+        <h2 class="section-title">AI агенты</h2>
+        <p class="section-subtitle">Система на основе генеративных моделей AI, способная не только генерировать ответы, но и выполнять сложные действия, взаимодействуя с инструментами и внешними данными.</p>
+
+        <h3 style="font-size:1.2rem;font-weight:700;margin-bottom:24px;">Как работают AI агенты</h3>
+
+        <!-- Agent cycle -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:40px;">
+            <div style="text-align:center;">
+                <div style="width:80px;height:80px;border-radius:50%;background:var(--blue);color:white;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 12px;">📩</div>
+                <h4 style="font-size:0.95rem;">Запрос</h4>
+                <p style="font-size:0.8rem;color:var(--gray);">Пользователь задает вопрос</p>
+            </div>
+            <div style="text-align:center;">
+                <div style="width:80px;height:80px;border-radius:50%;background:var(--purple);color:white;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 12px;">🧠</div>
+                <h4 style="font-size:0.95rem;">Plan / Think</h4>
+                <p style="font-size:0.8rem;color:var(--gray);">Анализирует задачу, выбирает инструменты</p>
+            </div>
+            <div style="text-align:center;">
+                <div style="width:80px;height:80px;border-radius:50%;background:var(--orange);color:white;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 12px;">⚡</div>
+                <h4 style="font-size:0.95rem;">Act</h4>
+                <p style="font-size:0.8rem;color:var(--gray);">Запрашивает данные, использует инструменты</p>
+            </div>
+            <div style="text-align:center;">
+                <div style="width:80px;height:80px;border-radius:50%;background:var(--green);color:white;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 12px;">✅</div>
+                <h4 style="font-size:0.95rem;">Answer</h4>
+                <p style="font-size:0.8rem;color:var(--gray);">Генерирует ответ на основе собранных данных</p>
+            </div>
+        </div>
+
+        <div style="background:var(--purple-light);border-radius:var(--radius);padding:24px;">
+            <h4 style="margin-bottom:12px;">Пример: «Что мне делать в Санкт-Петербурге?»</h4>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num" style="background:var(--purple);">1</div>
+                    <div class="step-content">
+                        <h4>Plan / Think</h4>
+                        <p>Агент понимает, что нужно: узнать погоду, проверить календарь, посмотреть достопримечательности</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num" style="background:var(--orange);">2</div>
+                    <div class="step-content">
+                        <h4>Act — Запрашивает погоду</h4>
+                        <p>Обращается к API погоды в Санкт-Петербурге</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num" style="background:var(--orange);">3</div>
+                    <div class="step-content">
+                        <h4>Act — Проверяет календарь</h4>
+                        <p>Смотрит сколько дней осталось и когда вылет</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num" style="background:var(--orange);">4</div>
+                    <div class="step-content">
+                        <h4>Act — Анализирует историю</h4>
+                        <p>Проверяет, какие достопримечательности вы уже посетили (по билетам на почте)</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num" style="background:var(--green);">5</div>
+                    <div class="step-content">
+                        <h4>Answer</h4>
+                        <p>Генерирует персонализированный план на основе всей собранной информации</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== RAG ===================== -->
+<section class="section" id="rag">
+    <button class="copy-iframe-btn" onclick="copyIframe('rag')">Скопировать iframe</button>
+    <div class="section-inner">
+        <div class="section-badge" style="background:var(--green-light);color:var(--green);">АРХИТЕКТУРА</div>
+        <h2 class="section-title">RAG — Retrieval Augmented Generation</h2>
+        <p class="section-subtitle">Генерация с дополнением извлеченной информацией. Многие AI-агенты используют RAG.</p>
+
+        <p style="margin-bottom:32px;color:var(--gray);">RAG — гибридный подход, который объединяет генеративные модели с методами извлечения данных из внешних источников.</p>
+
+        <!-- RAG 3-step process -->
+        <div class="cards-grid cards-3" style="margin-bottom:40px;">
+            <div class="card" style="border-top:4px solid var(--blue);text-align:center;">
+                <div style="width:64px;height:64px;border-radius:50%;background:var(--blue);color:white;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 16px;">🔍</div>
+                <div class="card-title">1. Извлечение (Retrieval)</div>
+                <div class="card-text">Модель ищет и извлекает релевантные документы из базы данных или корпуса. Используются алгоритмы или нейронные модели для нахождения подходящих фрагментов.</div>
+            </div>
+            <div class="card" style="border-top:4px solid var(--orange);text-align:center;">
+                <div style="width:64px;height:64px;border-radius:50%;background:var(--orange);color:white;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 16px;">➕</div>
+                <div class="card-title">2. Дополнение (Augmentation)</div>
+                <div class="card-text">Извлеченные данные дополняют исходный запрос, обеспечивая модель дополнительным контекстом для более точного ответа.</div>
+            </div>
+            <div class="card" style="border-top:4px solid var(--green);text-align:center;">
+                <div style="width:64px;height:64px;border-radius:50%;background:var(--green);color:white;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 16px;">✨</div>
+                <div class="card-title">3. Генерация (Generation)</div>
+                <div class="card-text">Модель создает ответ на основе оригинального запроса и извлеченной информации, обеспечивая фактическую обоснованность.</div>
+            </div>
+        </div>
+
+        <h3 style="font-size:1.2rem;font-weight:700;margin-bottom:16px;">Кейс: HR-агентство с RAG</h3>
+        <div class="flow" style="margin-bottom:24px;">
+            <div class="flow-step" style="background:var(--green-light);color:var(--green);">📩 Запрос: «Найди Senior Python-разработчика»</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step" style="background:var(--blue-light);color:var(--blue);">🤖 LLM анализирует запрос</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step" style="background:var(--purple-light);color:var(--purple);">🗄️ Поиск в базе кандидатов</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step" style="background:var(--green-light);color:var(--green);">✅ Ответ с релевантными кандидатами</div>
+        </div>
+
+        <h3 style="font-size:1.2rem;font-weight:700;margin:32px 0 16px;">Преимущества RAG</h3>
+        <div class="cards-grid cards-3">
+            <div class="card card-accent green">
+                <div class="card-title">Уменьшение галлюцинаций</div>
+                <div class="card-text">Извлечение данных позволяет использовать фактическую и актуальную информацию.</div>
+            </div>
+            <div class="card card-accent blue">
+                <div class="card-title">Актуальность данных</div>
+                <div class="card-text">Доступ к обновляемым базам и открытой информации.</div>
+            </div>
+            <div class="card card-accent purple">
+                <div class="card-title">Расширение контекста</div>
+                <div class="card-text">Увеличение «контекстного окна», связность при длительных взаимодействиях.</div>
+            </div>
+            <div class="card card-accent orange">
+                <div class="card-title">Углубление ответа</div>
+                <div class="card-text">Извлеченные данные добавляют детализацию и специфичность.</div>
+            </div>
+            <div class="card card-accent green">
+                <div class="card-title">Эффективность</div>
+                <div class="card-text">Сужение области поиска помогает модели сосредоточиться на релевантной информации.</div>
+            </div>
+            <div class="card card-accent blue">
+                <div class="card-title">Применение в бизнесе</div>
+                <div class="card-text">Q&A системы, генерация контента, клиентская поддержка из баз знаний.</div>
+            </div>
+        </div>
+
+        <!-- Quiz 3 -->
+        <div class="quiz-block" style="margin-top:32px;">
+            <h4>📝 Какую ключевую проблему LLM решает RAG-архитектура?</h4>
+            <div class="quiz-options" data-quiz="q7" data-correct="1">
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Скорость генерации ответов</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Галлюцинации и устаревшие знания — RAG позволяет модели опираться на актуальные данные</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Стоимость использования API</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Необходимость обучения модели с нуля</div>
+            </div>
+            <button class="quiz-check" onclick="checkQuiz(this)">Проверить ответ</button>
+            <div class="quiz-explanation">RAG решает проблему галлюцинаций и ограниченности знаний, давая модели доступ к актуальной базе знаний компании.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== AI ECOSYSTEM ===================== -->
+<section class="section" id="ai-ecosystem">
+    <button class="copy-iframe-btn" onclick="copyIframe('ai-ecosystem')">Скопировать iframe</button>
+    <div class="section-inner">
+        <div class="section-badge" style="background:var(--blue-light);color:var(--blue);">ЭКОСИСТЕМА</div>
+        <h2 class="section-title">Экосистема AI и диапазон сложности</h2>
+        <p class="section-subtitle">На базе чего создавать агентские системы? Проприетарные vs Open-source модели.</p>
+
+        <div class="comparison" style="margin-bottom:40px;">
+            <div class="comp-col" style="background:var(--blue-light);">
+                <h4>1. Проприетарные модели (Closed-source)</h4>
+                <p style="font-size:0.85rem;color:var(--gray);margin-bottom:12px;">OpenAI, Google, Claude — доступ только через облачные API.</p>
+                <ul style="font-size:0.85rem;list-style:none;padding:0;">
+                    <li>💳 <strong>Оплата:</strong> за токены (вход + выход)</li>
+                    <li>✅ Быстрый старт, высокая производительность</li>
+                    <li>✅ Доступ к свежим версиям моделей</li>
+                    <li>❌ Зависимость от провайдера</li>
+                    <li>❌ Стоимость растет при объемах</li>
+                </ul>
+            </div>
+            <div class="comp-col" style="background:var(--purple-light);">
+                <h4>2. Open-source модели</h4>
+                <p style="font-size:0.85rem;color:var(--gray);margin-bottom:12px;">LLaMA, Mistral, Falcon, Mixtral, Qwen — можно запускать локально.</p>
+                <ul style="font-size:0.85rem;list-style:none;padding:0;">
+                    <li>💻 <strong>Оплата:</strong> за ресурсы (GPU, CPU, RAM)</li>
+                    <li>✅ Полный контроль над моделью</li>
+                    <li>✅ Кастомизация и дообучение</li>
+                    <li>❌ Нужны DevOps-знания</li>
+                    <li>❌ Затраты на железо</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3 style="font-size:1.3rem;font-weight:700;margin-bottom:24px;">Диапазон сложности AI-систем</h3>
+        <div class="spectrum">
+            <div class="spectrum-bar"></div>
+            <div class="spectrum-items">
+                <div class="spectrum-item">
+                    <div class="spectrum-dot" style="box-shadow:0 0 0 2px var(--green);background:var(--green);"></div>
+                    <h5>LLM (без агента)</h5>
+                    <p>Работает изолированно, нет инструментов, памяти и доступа к данным. Отвечает на основе обученных знаний.</p>
+                </div>
+                <div class="spectrum-item">
+                    <div class="spectrum-dot" style="box-shadow:0 0 0 2px var(--blue);background:var(--blue);"></div>
+                    <h5>LLM воркфлоу</h5>
+                    <p>Подключаются инструменты и базы данных через API. Модель выполняет последовательность действий.</p>
+                </div>
+                <div class="spectrum-item">
+                    <div class="spectrum-dot" style="box-shadow:0 0 0 2px var(--purple);background:var(--purple);"></div>
+                    <h5>AI агент</h5>
+                    <p>Сам выбирает инструменты, строит многошаговые цепочки, улучшает свои промпты.</p>
+                </div>
+                <div class="spectrum-item">
+                    <div class="spectrum-dot" style="box-shadow:0 0 0 2px var(--orange);background:var(--orange);"></div>
+                    <h5>Мультиагентные системы</h5>
+                    <p>Команда агентов с распределенными ролями: один планирует, другой ищет, третий анализирует.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz 4 -->
+        <div class="quiz-block" style="margin-top:32px;">
+            <h4>📝 Что такое AI-агент?</h4>
+            <div class="quiz-options" data-quiz="q8" data-correct="1">
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Чат-бот с готовыми ответами</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Автономная AI-система, которая может планировать, использовать инструменты и принимать решения</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Человек, который управляет AI</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Плагин для браузера</div>
+            </div>
+            <button class="quiz-check" onclick="checkQuiz(this)">Проверить ответ</button>
+            <div class="quiz-explanation">AI-агент — система, способная самостоятельно планировать шаги, вызывать инструменты (API, базы, поиск) и адаптировать поведение для достижения цели.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== QA-2 ===================== -->
+<section class="section qa-section" id="qa-2">
+    <button class="copy-iframe-btn" onclick="copyIframe('qa-2')">Скопировать iframe</button>
+    <div class="section-inner">
+        <div class="qa-icon">💬</div>
+        <h2 class="section-title">Ваши вопросы</h2>
+        <p style="color:var(--gray);font-size:1.1rem;">Перерыв для вопросов по второй части: AI-агенты, RAG, экосистема</p>
+    </div>
+</section>
+
+<!-- ===================== GPT ASSISTANT ===================== -->
+<section class="section" id="gpt-assistant">
+    <button class="copy-iframe-btn" onclick="copyIframe('gpt-assistant')">Скопировать iframe</button>
+    <div class="section-inner">
+        <div class="section-badge" style="background:var(--green-light);color:var(--green);">ПРАКТИКА</div>
+        <h2 class="section-title">Создание кастомного GPT-агента</h2>
+        <p class="section-subtitle">Пошаговая инструкция по созданию своего AI-агента в OpenAI Platform.</p>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">0</div>
+                <div class="step-content">
+                    <h4>Регистрация в OpenAI Platform</h4>
+                    <p>Заходим на <a href="https://platform.openai.com/" target="_blank">platform.openai.com</a>. Если нет аккаунта — регистрируемся. Для работы необходим VPN и иностранный номер. Нажимаем Sign up и создаем учетную запись через Google почту.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <h4>Start Building</h4>
+                    <p>Нажимаем на верхней панели кнопку «Start Building» для начала создания проекта.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <h4>Создание организации</h4>
+                    <p>Заполняем поля: Organization name и «What best describes you» — выбираем «Not technical». Нажимаем «Create organization».</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <h4>Настройка API ключей</h4>
+                    <p>Переходим в раздел API Keys. Создаем новый секретный ключ — он понадобится для интеграций.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                    <h4>Создание Assistant</h4>
+                    <p>Переходим в раздел Assistants. Нажимаем «Create» и задаем имя, инструкции и выбираем модель (GPT-4o рекомендуется).</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">5</div>
+                <div class="step-content">
+                    <h4>Настройка инструкций</h4>
+                    <p>Пишем системный промпт: описываем роль, контекст, ограничения и стиль ответа агента. Это основа качества работы!</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">6</div>
+                <div class="step-content">
+                    <h4>Загрузка файлов (Knowledge Base)</h4>
+                    <p>Загружаем документы компании — FAQ, инструкции, каталоги. Агент будет использовать их через RAG для точных ответов.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">7</div>
+                <div class="step-content">
+                    <h4>Настройка параметров</h4>
+                    <p>Настраиваем Temperature (креативность), Max tokens (длина ответа), Top-p и другие параметры модели.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">8</div>
+                <div class="step-content">
+                    <h4>Подключение инструментов</h4>
+                    <p>Включаем Code Interpreter для анализа данных, File Search для поиска по документам, Function Calling для интеграций.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">9</div>
+                <div class="step-content">
+                    <h4>Тестирование</h4>
+                    <p>Используем Playground для тестирования агента. Проверяем качество ответов, точность, использование загруженных документов.</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="background:var(--green-light);border-radius:var(--radius);padding:24px;margin-top:32px;">
+            <h4 style="margin-bottom:8px;">💡 Ключевые советы</h4>
+            <ul style="font-size:0.9rem;color:var(--gray);list-style:none;padding:0;">
+                <li>✅ Чем подробнее системный промпт — тем лучше результат</li>
+                <li>✅ Загружайте актуальные документы для RAG</li>
+                <li>✅ Тестируйте разные значения Temperature (0.0-1.0)</li>
+                <li>✅ Используйте Function Calling для интеграций с внешними API</li>
+            </ul>
+        </div>
+
+        <!-- Images from slides -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px;">
+            <img src="images/img_028_image.png" alt="OpenAI Platform" class="zoomable" style="width:100%;border-radius:10px;border:1px solid #E2E8F0;" onclick="openLightbox(this)">
+            <img src="images/img_030_image.png" alt="Create Assistant" class="zoomable" style="width:100%;border-radius:10px;border:1px solid #E2E8F0;" onclick="openLightbox(this)">
+            <img src="images/img_032_image.png" alt="Configure Assistant" class="zoomable" style="width:100%;border-radius:10px;border:1px solid #E2E8F0;" onclick="openLightbox(this)">
+        </div>
+    </div>
+</section>
+
+<!-- ===================== MAKE + TELEGRAM ===================== -->
+<section class="section" id="make-telegram">
+    <button class="copy-iframe-btn" onclick="copyIframe('make-telegram')">Скопировать iframe</button>
+    <div class="section-inner">
+        <div class="section-badge" style="background:var(--orange-light);color:var(--orange);">АВТОМАТИЗАЦИЯ</div>
+        <h2 class="section-title">Make.com + Telegram: No-code AI бот</h2>
+        <p class="section-subtitle">Создание AI-бота в Telegram без программирования через Make.com.</p>
+
+        <div class="flow" style="margin-bottom:40px;">
+            <div class="flow-step" style="background:#e3f2fd;color:#1565c0;">📱 Telegram<br><small>Пользователь пишет</small></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step" style="background:var(--purple-light);color:var(--purple);">⚡ Make.com<br><small>Webhook принимает</small></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step" style="background:var(--green-light);color:var(--green);">🤖 OpenAI API<br><small>GPT обрабатывает</small></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step" style="background:#e3f2fd;color:#1565c0;">📱 Telegram<br><small>Ответ пользователю</small></div>
+        </div>
+
+        <div class="cards-grid cards-3" style="margin-bottom:32px;">
+            <div class="card card-accent blue">
+                <div class="card-icon">1️⃣</div>
+                <div class="card-title">Создаем бота в Telegram</div>
+                <div class="card-text">Через <a href="https://t.me/BotFather" target="_blank">@BotFather</a> создаем нового бота и получаем токен API.</div>
+            </div>
+            <div class="card card-accent purple">
+                <div class="card-icon">2️⃣</div>
+                <div class="card-title">Настраиваем Make.com</div>
+                <div class="card-text">Создаем сценарий: Telegram Webhook → OpenAI → Telegram Send Message.</div>
+            </div>
+            <div class="card card-accent green">
+                <div class="card-icon">3️⃣</div>
+                <div class="card-title">Подключаем OpenAI</div>
+                <div class="card-text">Добавляем модуль OpenAI с API ключом, настраиваем промпт и параметры модели.</div>
+            </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+            <div style="background:var(--blue-light);border-radius:var(--radius);padding:24px;">
+                <h4 style="margin-bottom:12px;">🔧 Что понадобится</h4>
+                <ul style="font-size:0.9rem;color:var(--gray);list-style:none;padding:0;">
+                    <li>✅ Аккаунт в <a href="https://www.make.com/" target="_blank">Make.com</a></li>
+                    <li>✅ Telegram бот (через BotFather)</li>
+                    <li>✅ API ключ OpenAI</li>
+                    <li>✅ Системный промпт для агента</li>
+                </ul>
+            </div>
+            <div style="background:var(--orange-light);border-radius:var(--radius);padding:24px;">
+                <h4 style="margin-bottom:12px;">💡 Возможности</h4>
+                <ul style="font-size:0.9rem;color:var(--gray);list-style:none;padding:0;">
+                    <li>🤖 AI-ассистент для клиентов</li>
+                    <li>📋 Автоматизация FAQ</li>
+                    <li>📊 Анализ запросов</li>
+                    <li>🔄 Интеграция с CRM</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="margin-top:24px;">
+            <img src="images/img_050_image.png" alt="Make.com scenario" class="zoomable" style="width:100%;max-width:800px;border-radius:10px;border:1px solid #E2E8F0;display:block;margin:0 auto;" onclick="openLightbox(this)">
+        </div>
+    </div>
+</section>
+
+<!-- ===================== BOOKS ===================== -->
+<section class="section" id="books">
+    <button class="copy-iframe-btn" onclick="copyIframe('books')">Скопировать iframe</button>
+    <div class="section-inner">
+        <div class="section-badge" style="background:var(--purple-light);color:var(--purple);">РЕСУРСЫ</div>
+        <h2 class="section-title">Рекомендации для изучения</h2>
+        <p class="section-subtitle">Полезные ресурсы для углубления знаний по теме урока.</p>
+
+        <div class="cards-grid cards-2">
+            <div class="card">
+                <div class="book-card">
+                    <div class="book-cover" style="display:flex;align-items:center;justify-content:center;font-size:2rem;">📘</div>
+                    <div class="book-info">
+                        <h4>OpenAI API Documentation</h4>
+                        <p>Официальная документация по API OpenAI — Assistants, Chat Completions, Function Calling</p>
+                        <a href="https://platform.openai.com/docs" target="_blank" style="font-size:0.85rem;">platform.openai.com/docs →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="book-card">
+                    <div class="book-cover" style="display:flex;align-items:center;justify-content:center;font-size:2rem;">📗</div>
+                    <div class="book-info">
+                        <h4>Make.com Academy</h4>
+                        <p>Бесплатные курсы по автоматизации и интеграциям — от базовых до продвинутых сценариев</p>
+                        <a href="https://www.make.com/en/academy" target="_blank" style="font-size:0.85rem;">make.com/academy →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="book-card">
+                    <div class="book-cover" style="display:flex;align-items:center;justify-content:center;font-size:2rem;">📙</div>
+                    <div class="book-info">
+                        <h4>RAG: Retrieval-Augmented Generation</h4>
+                        <p>Гайд от LangChain по построению RAG-систем — от простых до продвинутых архитектур</p>
+                        <a href="https://python.langchain.com/docs/tutorials/rag/" target="_blank" style="font-size:0.85rem;">langchain.com/docs →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="book-card">
+                    <div class="book-cover" style="display:flex;align-items:center;justify-content:center;font-size:2rem;">📕</div>
+                    <div class="book-info">
+                        <h4>Gartner: AI Agents Research</h4>
+                        <p>Аналитика по рынку AI-агентов — прогнозы, тренды, экономия $80 млрд для бизнеса</p>
+                        <a href="https://www.gartner.com/en/newsroom/press-releases/2022-08-31-gartner-predicts-conversational-ai-will-reduce-contac" target="_blank" style="font-size:0.85rem;">gartner.com →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer" id="footer">
+    <p>Practico AI — Урок 3 из 26 | Основы веб-разработки и продвинутое использование AI</p>
+</footer>
+
+<!-- ===================== SCRIPTS ===================== -->
+<script>
+// ── Password Gate ──
+const HASH = 'c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646';
+const params = new URLSearchParams(window.location.search);
+const sectionParam = params.get('section');
+const embedParam = params.get('embed');
+
+async function sha256(text) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function checkPassword() {
+    const pwd = document.getElementById('gate-pwd').value;
+    const hash = await sha256(pwd);
+    if (hash === HASH) {
+        sessionStorage.setItem('practico_auth', 'true');
+        document.getElementById('password-gate').classList.add('hidden');
+    } else {
+        document.getElementById('gate-pwd').classList.add('error');
+        setTimeout(() => document.getElementById('gate-pwd').classList.remove('error'), 400);
+    }
+}
+
+document.getElementById('gate-pwd').addEventListener('keydown', e => { if (e.key === 'Enter') checkPassword(); });
+
+// Init: check auth
+(function initGate() {
+    if (embedParam === 'true' || sessionStorage.getItem('practico_auth') === 'true') {
+        document.getElementById('password-gate').classList.add('hidden');
+    }
+})();
+
+// ── Section isolation ──
+if (sectionParam) {
+    document.querySelectorAll('.section, .hero, .footer').forEach(el => {
+        if (el.id !== sectionParam) el.style.display = 'none';
+    });
+    document.getElementById('top-nav').style.display = 'none';
+}
+
+// ── Progress bar ──
+window.addEventListener('scroll', () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+    document.getElementById('progress').style.width = pct + '%';
+});
+
+// ── Copy iframe ──
+function copyIframe(sectionId) {
+    const base = window.location.origin + window.location.pathname;
+    const url = base + '?section=' + sectionId + '&embed=true';
+    const iframe = '<iframe src="' + url + '" width="100%" height="600" frameborder="0" style="border-radius:12px;"></iframe>';
+    navigator.clipboard.writeText(iframe);
+    const btn = event.target;
+    btn.textContent = 'Скопировано!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Скопировать iframe'; btn.classList.remove('copied'); }, 2000);
+}
+
+// ── Lightbox ──
+function openLightbox(img) {
+    document.getElementById('lightbox-img').src = img.src;
+    document.getElementById('lightbox').classList.add('active');
+}
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+// ── Quiz logic ──
+function selectOption(el) {
+    const parent = el.closest('.quiz-options');
+    if (parent.dataset.answered) return;
+    parent.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+}
+
+function checkQuiz(btn) {
+    const block = btn.closest('.quiz-block');
+    const options = block.querySelector('.quiz-options');
+    if (options.dataset.answered) return;
+    const selected = options.querySelector('.quiz-option.selected');
+    if (!selected) return;
+
+    const correctIdx = parseInt(options.dataset.correct);
+    const allOpts = options.querySelectorAll('.quiz-option');
+    const selectedIdx = Array.from(allOpts).indexOf(selected);
+    const explanation = block.querySelector('.quiz-explanation');
+
+    options.dataset.answered = 'true';
+    btn.disabled = true;
+
+    if (selectedIdx === correctIdx) {
+        selected.classList.add('correct');
+        explanation.classList.add('show', 'correct');
+        explanation.innerHTML = '✅ Правильно! ' + explanation.textContent;
+    } else {
+        selected.classList.add('incorrect');
+        allOpts[correctIdx].classList.add('correct');
+        explanation.classList.add('show', 'incorrect');
+        explanation.innerHTML = '❌ Неправильно. ' + explanation.textContent;
+    }
+}
+
+// ── Drag and Drop ──
+let draggedItem = null;
+
+document.querySelectorAll('.dnd-item').forEach(item => {
+    item.addEventListener('dragstart', e => {
+        draggedItem = item;
+        item.style.opacity = '0.5';
+        e.dataTransfer.effectAllowed = 'move';
+    });
+    item.addEventListener('dragend', () => {
+        item.style.opacity = '1';
+        draggedItem = null;
+        document.querySelectorAll('.dnd-target').forEach(t => t.classList.remove('over'));
+    });
+});
+
+document.querySelectorAll('.dnd-target').forEach(target => {
+    target.addEventListener('dragover', e => { e.preventDefault(); target.classList.add('over'); });
+    target.addEventListener('dragleave', () => target.classList.remove('over'));
+    target.addEventListener('drop', e => {
+        e.preventDefault();
+        target.classList.remove('over');
+        if (draggedItem) target.appendChild(draggedItem);
+    });
+});
+
+document.getElementById('dnd-sources').addEventListener('dragover', e => e.preventDefault());
+document.getElementById('dnd-sources').addEventListener('drop', e => {
+    e.preventDefault();
+    if (draggedItem) document.getElementById('dnd-sources').appendChild(draggedItem);
+});
+
+function checkDnD() {
+    const result = document.getElementById('dnd-result');
+    let correct = 0, total = 0;
+
+    document.querySelectorAll('.dnd-target').forEach(target => {
+        const cat = target.dataset.category;
+        target.querySelectorAll('.dnd-item').forEach(item => {
+            total++;
+            if (item.dataset.correct === cat) {
+                correct++;
+                item.style.border = '2px solid var(--green)';
+            } else {
+                item.style.border = '2px solid #ef4444';
+            }
+        });
+    });
+
+    // Also count items still in sources
+    document.querySelectorAll('#dnd-sources .dnd-item').forEach(() => total++);
+
+    result.style.display = 'block';
+    if (correct === 6) {
+        result.textContent = '🎉 Отлично! Все 6 элементов распределены правильно!';
+        result.style.background = 'var(--green-light)';
+        result.style.color = 'var(--green)';
+    } else {
+        result.textContent = '🔄 Правильно: ' + correct + ' из 6. Попробуйте ещё раз!';
+        result.style.background = '#fef2f2';
+        result.style.color = '#dc2626';
+    }
+}
+
+// ── JSON Formatter ──
+const jsonInput = document.getElementById('json-input');
+const jsonOutput = document.getElementById('json-output');
+
+if (jsonInput) {
+    jsonInput.addEventListener('input', () => {
+        const val = jsonInput.value.trim();
+        if (!val) {
+            jsonOutput.textContent = 'Результат появится здесь...';
+            jsonOutput.className = 'json-output';
+            return;
+        }
+        try {
+            const parsed = JSON.parse(val);
+            jsonOutput.textContent = JSON.stringify(parsed, null, 2);
+            jsonOutput.className = 'json-output json-valid';
+        } catch (e) {
+            jsonOutput.textContent = '❌ Ошибка: ' + e.message;
+            jsonOutput.className = 'json-output json-invalid';
+        }
+    });
+}
+</script>
+</body>
+</html>
