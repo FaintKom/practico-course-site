@@ -1173,16 +1173,93 @@ a:hover { text-decoration: underline; }
             </div>
         </div>
 
-        <h3 style="font-size:1.2rem;font-weight:700;margin-bottom:16px;">Кейс: HR-агентство с RAG</h3>
-        <div class="flow" style="margin-bottom:24px;">
-            <div class="flow-step" style="background:var(--green-light);color:var(--green);">📩 Запрос: «Найди Senior Python-разработчика»</div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-step" style="background:var(--blue-light);color:var(--blue);">🤖 LLM анализирует запрос</div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-step" style="background:var(--purple-light);color:var(--purple);">🗄️ Поиск в базе кандидатов</div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-step" style="background:var(--green-light);color:var(--green);">✅ Ответ с релевантными кандидатами</div>
+        <h3 style="font-size:1.2rem;font-weight:700;margin-bottom:8px;">&#x1f3af; Кейс: HR-агентство с RAG</h3>
+        <p style="color:var(--gray);margin-bottom:20px;font-size:0.9rem;">Нажмите &laquo;Найти&raquo; и посмотрите, как RAG-система обрабатывает запрос пошагово.</p>
+
+        <div style="background:var(--bg);border-radius:16px;padding:28px;margin-bottom:32px;">
+            <div style="display:flex;gap:12px;margin-bottom:20px;">
+                <input id="rag-query" type="text" value="Найди Senior Python-разработчика с опытом ML" style="flex:1;padding:12px 16px;border:2px solid #E2E8F0;border-radius:10px;font-family:Nunito,sans-serif;font-size:0.95rem;" placeholder="Введите запрос...">
+                <button onclick="runRagDemo()" style="background:var(--blue);color:white;border:none;border-radius:10px;padding:12px 24px;font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;white-space:nowrap;">&#x1f50d; Найти</button>
+            </div>
+            <div id="rag-steps" style="display:none;">
+                <div id="rag-s1" style="display:none;margin-bottom:14px;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+                        <div style="width:32px;height:32px;border-radius:50%;background:var(--blue);color:white;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.8rem;">1</div>
+                        <span style="font-weight:700;font-size:0.95rem;">Анализ запроса</span>
+                        <span id="rag-sp1" style="width:14px;height:14px;border:2px solid #E2E8F0;border-top:2px solid var(--blue);border-radius:50%;display:inline-block;animation:ragspin 0.5s linear infinite;"></span>
+                    </div>
+                    <div style="background:white;border-radius:10px;padding:14px;border-left:4px solid var(--blue);font-size:0.85rem;">
+                        Ключевые слова: <span style="background:var(--blue-light);padding:2px 8px;border-radius:4px;color:var(--blue);font-weight:600;">Python</span>
+                        <span style="background:var(--purple-light);padding:2px 8px;border-radius:4px;color:var(--purple);font-weight:600;">Senior (5+ лет)</span>
+                        <span style="background:var(--green-light);padding:2px 8px;border-radius:4px;color:var(--green);font-weight:600;">ML</span>
+                    </div>
+                </div>
+                <div id="rag-s2" style="display:none;margin-bottom:14px;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+                        <div style="width:32px;height:32px;border-radius:50%;background:var(--purple);color:white;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.8rem;">2</div>
+                        <span style="font-weight:700;font-size:0.95rem;">Retrieval: поиск в базе</span>
+                        <span id="rag-sp2" style="width:14px;height:14px;border:2px solid #E2E8F0;border-top:2px solid var(--purple);border-radius:50%;display:inline-block;animation:ragspin 0.5s linear infinite;"></span>
+                    </div>
+                    <div style="background:white;border-radius:10px;padding:14px;border-left:4px solid var(--purple);font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--gray);">
+                        SELECT * FROM candidates<br>WHERE skills LIKE '%python%' AND experience >= 5 AND skills LIKE '%ml%'<br><span style="color:var(--green);">-- 847 кандидатов &rarr; Top 3 по cosine similarity</span>
+                    </div>
+                </div>
+                <div id="rag-s3" style="display:none;margin-bottom:14px;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+                        <div style="width:32px;height:32px;border-radius:50%;background:var(--orange);color:white;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.8rem;">3</div>
+                        <span style="font-weight:700;font-size:0.95rem;">Augmentation: дополнение контекста</span>
+                    </div>
+                    <div style="background:white;border-radius:10px;padding:14px;border-left:4px solid var(--orange);font-size:0.85rem;color:var(--gray);">
+                        Промпт: <em>&laquo;На основе запроса и 3 профилей из базы, составь рекомендации с указанием % соответствия...&raquo;</em>
+                    </div>
+                </div>
+                <div id="rag-s4" style="display:none;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                        <div style="width:32px;height:32px;border-radius:50%;background:var(--green);color:white;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.8rem;">4</div>
+                        <span style="font-weight:700;font-size:0.95rem;">Generation: результат</span>
+                    </div>
+                    <div class="cards-grid cards-3">
+                        <div class="card" style="border-top:4px solid var(--green);padding:18px;">
+                            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                                <div style="width:44px;height:44px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:1.2rem;">&#x1f468;&#x200d;&#x1f4bb;</div>
+                                <div><div style="font-weight:700;">Алексей М.</div><div style="font-size:0.78rem;color:var(--green);">&#x2b50; 95% match</div></div>
+                            </div>
+                            <div style="font-size:0.82rem;color:var(--gray);margin-bottom:8px;">7 лет Python, 3 года ML. TensorFlow, PyTorch. Production ML-пайплайны.</div>
+                            <div style="display:flex;flex-wrap:wrap;gap:4px;"><span style="background:var(--blue-light);color:var(--blue);padding:2px 8px;border-radius:4px;font-size:0.72rem;">Python</span><span style="background:var(--purple-light);color:var(--purple);padding:2px 8px;border-radius:4px;font-size:0.72rem;">TensorFlow</span><span style="background:var(--green-light);color:var(--green);padding:2px 8px;border-radius:4px;font-size:0.72rem;">MLOps</span></div>
+                        </div>
+                        <div class="card" style="border-top:4px solid var(--blue);padding:18px;">
+                            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                                <div style="width:44px;height:44px;border-radius:50%;background:var(--blue-light);display:flex;align-items:center;justify-content:center;font-size:1.2rem;">&#x1f469;&#x200d;&#x1f4bb;</div>
+                                <div><div style="font-weight:700;">Мария К.</div><div style="font-size:0.78rem;color:var(--blue);">&#x2b50; 91% match</div></div>
+                            </div>
+                            <div style="font-size:0.82rem;color:var(--gray);margin-bottom:8px;">5 лет Python, 2 года NLP. Spacy, HuggingFace. Fintech.</div>
+                            <div style="display:flex;flex-wrap:wrap;gap:4px;"><span style="background:var(--blue-light);color:var(--blue);padding:2px 8px;border-radius:4px;font-size:0.72rem;">Python</span><span style="background:var(--orange-light);color:var(--orange);padding:2px 8px;border-radius:4px;font-size:0.72rem;">NLP</span><span style="background:var(--purple-light);color:var(--purple);padding:2px 8px;border-radius:4px;font-size:0.72rem;">HuggingFace</span></div>
+                        </div>
+                        <div class="card" style="border-top:4px solid var(--purple);padding:18px;">
+                            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                                <div style="width:44px;height:44px;border-radius:50%;background:var(--purple-light);display:flex;align-items:center;justify-content:center;font-size:1.2rem;">&#x1f468;&#x200d;&#x1f4bb;</div>
+                                <div><div style="font-weight:700;">Дмитрий С.</div><div style="font-size:0.78rem;color:var(--purple);">&#x2b50; 87% match</div></div>
+                            </div>
+                            <div style="font-size:0.82rem;color:var(--gray);margin-bottom:8px;">6 лет Python, 4 года CV. OpenCV, YOLO. Промышленные проекты.</div>
+                            <div style="display:flex;flex-wrap:wrap;gap:4px;"><span style="background:var(--blue-light);color:var(--blue);padding:2px 8px;border-radius:4px;font-size:0.72rem;">Python</span><span style="background:var(--green-light);color:var(--green);padding:2px 8px;border-radius:4px;font-size:0.72rem;">CV</span><span style="background:var(--orange-light);color:var(--orange);padding:2px 8px;border-radius:4px;font-size:0.72rem;">YOLO</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        <style>@keyframes ragspin{to{transform:rotate(360deg);}}</style>
+        <script>
+        function runRagDemo(){
+            var s=document.getElementById('rag-steps');s.style.display='block';
+            ['rag-s1','rag-s2','rag-s3','rag-s4'].forEach(function(id){document.getElementById(id).style.display='none';});
+            var sp1=document.getElementById('rag-sp1'),sp2=document.getElementById('rag-sp2');
+            if(sp1)sp1.style.display='inline-block';if(sp2)sp2.style.display='inline-block';
+            setTimeout(function(){document.getElementById('rag-s1').style.display='block';},300);
+            setTimeout(function(){if(sp1)sp1.style.display='none';document.getElementById('rag-s2').style.display='block';},1500);
+            setTimeout(function(){if(sp2)sp2.style.display='none';document.getElementById('rag-s3').style.display='block';},2800);
+            setTimeout(function(){document.getElementById('rag-s4').style.display='block';},4000);
+        }
+        </script>
 
         <h3 style="font-size:1.2rem;font-weight:700;margin:32px 0 16px;">Преимущества RAG</h3>
         <div class="cards-grid cards-3">
