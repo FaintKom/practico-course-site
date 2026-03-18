@@ -293,6 +293,141 @@ a:hover { text-decoration: underline; }
 .json-valid { border-left: 4px solid var(--green); }
 .json-invalid { border-left: 4px solid #ef4444; }
 
+/* ── Interactive DB ── */
+.db-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.db-filter-btn {
+    padding: 8px 18px; border-radius: 8px; border: 2px solid #E2E8F0; background: white;
+    font-family: inherit; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.db-filter-btn:hover { border-color: var(--blue); background: var(--blue-light); }
+.db-filter-btn.active { border-color: var(--blue); background: var(--blue); color: white; }
+.data-table tr.hidden-row { display: none; }
+.data-table td .status-badge {
+    display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700;
+}
+
+/* ── HTTP Demo ── */
+.http-demo { margin: 32px 0; background: #1e1e2e; border-radius: var(--radius); overflow: hidden; }
+.http-demo-bar { display: flex; gap: 8px; padding: 16px 20px; background: #2a2a3e; }
+.http-demo-btn {
+    padding: 8px 20px; border-radius: 8px; border: none; font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all 0.2s; color: white;
+}
+.http-demo-btn.get { background: var(--green); }
+.http-demo-btn.post { background: var(--blue); }
+.http-demo-btn.delete { background: #ef4444; }
+.http-demo-btn:hover { opacity: 0.85; transform: scale(1.05); }
+.http-demo-btn.active { box-shadow: 0 0 0 3px rgba(255,255,255,0.3); }
+.http-demo-output { padding: 20px; color: #cdd6f4; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; line-height: 1.8; min-height: 120px; }
+.http-demo-output .method-tag { font-weight: 700; margin-right: 8px; }
+.http-demo-output .url-tag { color: #89b4fa; }
+.http-demo-output .status-ok { color: #a6e3a1; }
+.http-demo-output .status-err { color: #f38ba8; }
+
+/* ── Chatbot Simulator ── */
+.chatbot-sim { margin: 32px 0; border: 2px solid #E2E8F0; border-radius: var(--radius); overflow: hidden; }
+.chatbot-header { background: var(--blue); color: white; padding: 14px 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+.chatbot-body { padding: 20px; min-height: 200px; max-height: 400px; overflow-y: auto; background: var(--bg); }
+.chatbot-msg { display: flex; gap: 10px; margin-bottom: 12px; align-items: flex-start; }
+.chatbot-msg.user { flex-direction: row-reverse; }
+.chatbot-bubble { max-width: 75%; padding: 10px 16px; border-radius: 14px; font-size: 0.9rem; line-height: 1.5; }
+.chatbot-msg.user .chatbot-bubble { background: var(--blue); color: white; border-bottom-right-radius: 4px; }
+.chatbot-msg.bot .chatbot-bubble { background: white; border: 1px solid #E2E8F0; border-bottom-left-radius: 4px; }
+.chatbot-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+.chatbot-input-row { display: flex; gap: 8px; padding: 12px 20px; border-top: 1px solid #E2E8F0; background: white; }
+.chatbot-input { flex: 1; padding: 10px 16px; border: 1px solid #E2E8F0; border-radius: 10px; font-family: inherit; font-size: 0.9rem; outline: none; }
+.chatbot-input:focus { border-color: var(--blue); }
+.chatbot-send { padding: 10px 20px; border: none; border-radius: 10px; background: var(--blue); color: white; font-weight: 700; cursor: pointer; font-family: inherit; }
+.chatbot-flow-step { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; margin: 2px; }
+.chatbot-flow-step.active { animation: pulse-flow 0.6s ease-in-out; }
+@keyframes pulse-flow {
+    0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); }
+}
+
+/* ── Hallucination Detector ── */
+.halluc-cards { display: flex; flex-direction: column; gap: 16px; margin: 24px 0; }
+.halluc-card {
+    padding: 20px 24px; border-radius: 12px; border: 2px solid #E2E8F0; background: white; cursor: pointer; transition: all 0.2s;
+}
+.halluc-card:hover { border-color: var(--blue); box-shadow: var(--shadow); }
+.halluc-card .halluc-label { font-size: 0.8rem; font-weight: 700; margin-bottom: 6px; color: var(--gray); }
+.halluc-card .halluc-text { font-size: 0.95rem; line-height: 1.6; }
+.halluc-card.revealed-true { border-color: var(--green); background: var(--green-light); }
+.halluc-card.revealed-false { border-color: #ef4444; background: #fef2f2; }
+.halluc-card .halluc-verdict { margin-top: 10px; font-size: 0.85rem; font-weight: 700; display: none; }
+.halluc-card.revealed-true .halluc-verdict, .halluc-card.revealed-false .halluc-verdict { display: block; }
+
+/* ── Agent Step-Through ── */
+.agent-stepper { margin: 32px 0; }
+.agent-step-display {
+    min-height: 200px; padding: 28px; border-radius: var(--radius); border: 2px solid #E2E8F0; background: white; margin-bottom: 16px; position: relative;
+}
+.agent-step-indicator { display: flex; gap: 4px; margin-bottom: 20px; }
+.agent-step-dot { width: 100%; height: 6px; border-radius: 3px; background: #E2E8F0; transition: background 0.3s; }
+.agent-step-dot.done { background: var(--blue); }
+.agent-step-dot.current { background: var(--orange); }
+.agent-step-controls { display: flex; gap: 12px; align-items: center; }
+.agent-step-btn {
+    padding: 10px 24px; border-radius: 10px; border: none; font-family: inherit; font-weight: 700;
+    font-size: 0.9rem; cursor: pointer; transition: all 0.2s;
+}
+.agent-step-btn.primary { background: var(--blue); color: white; }
+.agent-step-btn.primary:hover { background: var(--blue-dark); }
+.agent-step-btn.secondary { background: #E2E8F0; color: var(--dark); }
+.agent-step-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── RAG Comparison ── */
+.rag-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 32px 0; }
+.rag-compare-col { padding: 24px; border-radius: var(--radius); border: 2px solid #E2E8F0; }
+.rag-compare-col h4 { margin-bottom: 12px; font-size: 1rem; }
+.rag-compare-col .rag-answer { font-size: 0.9rem; color: var(--gray); line-height: 1.7; min-height: 100px; }
+.rag-compare-col .rag-answer.typing { border-right: 2px solid var(--blue); animation: blink-cursor 0.7s step-end infinite; }
+@keyframes blink-cursor { 50% { border-color: transparent; } }
+.rag-question-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; }
+.rag-question-btn {
+    padding: 10px 20px; border-radius: 10px; border: 2px solid #E2E8F0; background: white;
+    font-family: inherit; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.rag-question-btn:hover { border-color: var(--blue); background: var(--blue-light); }
+.rag-question-btn.active { border-color: var(--green); background: var(--green-light); color: var(--green); }
+
+/* ── JSON API Demo ── */
+.json-api-demo { margin: 24px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.json-api-panel { border-radius: 12px; overflow: hidden; }
+.json-api-panel h4 { padding: 12px 16px; margin: 0; font-size: 0.9rem; }
+.json-api-panel .json-api-content { padding: 16px; font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; line-height: 1.7; min-height: 180px; }
+.json-api-editable { background: white; border: 2px solid #E2E8F0; }
+.json-api-editable h4 { background: var(--blue-light); color: var(--blue); }
+.json-api-result { background: #1e1e2e; }
+.json-api-result h4 { background: #2a2a3e; color: #cdd6f4; }
+.json-api-result .json-api-content { color: #cdd6f4; }
+.json-api-field { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.json-api-field label { font-weight: 600; color: var(--gray); min-width: 80px; font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; }
+.json-api-field input, .json-api-field select {
+    flex: 1; padding: 8px 12px; border: 1px solid #E2E8F0; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; outline: none;
+}
+.json-api-field input:focus, .json-api-field select:focus { border-color: var(--blue); }
+.json-api-send {
+    margin-top: 12px; padding: 10px 20px; border: none; border-radius: 8px; background: var(--blue); color: white;
+    font-weight: 700; font-family: inherit; cursor: pointer; font-size: 0.85rem; width: 100%;
+}
+.json-api-send:hover { background: var(--blue-dark); }
+
+/* ── Screenshot Grid ── */
+.screenshot-grid { display: grid; gap: 16px; margin-top: 24px; }
+.screenshot-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+.screenshot-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.screenshot-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+.screenshot-item { position: relative; }
+.screenshot-item img { width: 100%; border-radius: 10px; border: 1px solid #E2E8F0; }
+.screenshot-caption { font-size: 0.8rem; color: var(--gray); text-align: center; margin-top: 6px; }
+@media (max-width: 768px) {
+    .json-api-demo { grid-template-columns: 1fr; }
+    .rag-compare { grid-template-columns: 1fr; }
+    .screenshot-grid.cols-2, .screenshot-grid.cols-3, .screenshot-grid.cols-4 { grid-template-columns: 1fr; }
+    .http-demo-bar { flex-wrap: wrap; }
+}
+
 /* ── Lightbox ── */
 .zoomable { cursor: zoom-in; transition: transform 0.2s; border-radius: 10px; }
 .zoomable:hover { transform: scale(1.02); }
@@ -564,17 +699,36 @@ a:hover { text-decoration: underline; }
             </div>
         </div>
 
-        <h3 style="font-size:1.2rem;font-weight:700;margin:32px 0 16px;">Пример таблицы базы данных курса</h3>
-        <table class="data-table">
+        <h3 style="font-size:1.2rem;font-weight:700;margin:32px 0 16px;">🗄️ Интерактивная база данных курса</h3>
+        <p style="color:var(--gray);margin-bottom:16px;">Попробуйте фильтровать данные — как это делает Backend при запросе к базе данных:</p>
+        <div class="db-filters">
+            <button class="db-filter-btn active" onclick="filterDB('all', this)">Все студенты</button>
+            <button class="db-filter-btn" onclick="filterDB('active', this)">Активные</button>
+            <button class="db-filter-btn" onclick="filterDB('completed', this)">Завершили</button>
+            <button class="db-filter-btn" onclick="filterDB('paused', this)">На паузе</button>
+            <button class="db-filter-btn" onclick="filterDB('ai', this)">Курс: AI для бизнеса</button>
+            <button class="db-filter-btn" onclick="filterDB('nocode', this)">Курс: No-code</button>
+        </div>
+        <div style="overflow-x:auto;">
+        <table class="data-table" id="db-table">
             <thead>
-                <tr><th>ID</th><th>Имя</th><th>Email</th><th>Курс</th><th>Статус</th></tr>
+                <tr><th>ID</th><th>Имя</th><th>Email</th><th>Курс</th><th>Статус</th><th>Прогресс</th></tr>
             </thead>
             <tbody>
-                <tr><td>1</td><td>Иван</td><td>ivan@practico.ai</td><td>AI для бизнеса</td><td style="color:var(--green);font-weight:700;">Активен</td></tr>
-                <tr><td>2</td><td>Маша</td><td>masha@practico.ai</td><td>AI для бизнеса</td><td style="color:var(--green);font-weight:700;">Активен</td></tr>
-                <tr><td>3</td><td>Костя</td><td>kostya@practico.ai</td><td>AI для бизнеса</td><td style="color:var(--orange);font-weight:700;">Завершил</td></tr>
+                <tr data-status="active" data-course="ai"><td>1</td><td>Иван Петров</td><td>ivan@practico.ai</td><td>AI для бизнеса</td><td><span class="status-badge" style="background:var(--green-light);color:var(--green);">Активен</span></td><td>78%</td></tr>
+                <tr data-status="active" data-course="ai"><td>2</td><td>Маша Сидорова</td><td>masha@practico.ai</td><td>AI для бизнеса</td><td><span class="status-badge" style="background:var(--green-light);color:var(--green);">Активен</span></td><td>92%</td></tr>
+                <tr data-status="completed" data-course="ai"><td>3</td><td>Костя Иванов</td><td>kostya@practico.ai</td><td>AI для бизнеса</td><td><span class="status-badge" style="background:var(--orange-light);color:var(--orange);">Завершил</span></td><td>100%</td></tr>
+                <tr data-status="active" data-course="nocode"><td>4</td><td>Анна Козлова</td><td>anna@practico.ai</td><td>No-code автоматизация</td><td><span class="status-badge" style="background:var(--green-light);color:var(--green);">Активен</span></td><td>45%</td></tr>
+                <tr data-status="paused" data-course="ai"><td>5</td><td>Дмитрий Орлов</td><td>dmitry@practico.ai</td><td>AI для бизнеса</td><td><span class="status-badge" style="background:var(--purple-light);color:var(--purple);">На паузе</span></td><td>33%</td></tr>
+                <tr data-status="completed" data-course="nocode"><td>6</td><td>Елена Волкова</td><td>elena@practico.ai</td><td>No-code автоматизация</td><td><span class="status-badge" style="background:var(--orange-light);color:var(--orange);">Завершил</span></td><td>100%</td></tr>
+                <tr data-status="active" data-course="ai"><td>7</td><td>Олег Новиков</td><td>oleg@practico.ai</td><td>AI для бизнеса</td><td><span class="status-badge" style="background:var(--green-light);color:var(--green);">Активен</span></td><td>61%</td></tr>
+                <tr data-status="paused" data-course="nocode"><td>8</td><td>Наталья Белова</td><td>natalia@practico.ai</td><td>No-code автоматизация</td><td><span class="status-badge" style="background:var(--purple-light);color:var(--purple);">На паузе</span></td><td>20%</td></tr>
             </tbody>
         </table>
+        </div>
+        <div id="db-query-display" style="margin-top:12px;padding:12px 16px;background:#1e1e2e;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:0.82rem;color:#cdd6f4;">
+            <span style="color:#89b4fa;">SELECT</span> * <span style="color:#89b4fa;">FROM</span> students;  <span style="color:#6c7086;">-- Все записи</span>
+        </div>
     </div>
 </section>
 
@@ -614,30 +768,46 @@ a:hover { text-decoration: underline; }
         <h3 style="font-size:1.3rem;font-weight:700;margin-bottom:20px;">📦 JSON — язык общения сервисов</h3>
         <p style="margin-bottom:16px;color:var(--gray);">JSON (JavaScript Object Notation) — формат хранения данных, который помогает программам обмениваться информацией.</p>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;">
-            <div>
-                <h4 style="margin-bottom:8px;">📩 Запрос к API:</h4>
-                <p style="color:var(--gray);margin-bottom:16px;">«Скажи мне погоду в Берлине?»</p>
-                <h4 style="margin-bottom:8px;">📨 Ответ от API (JSON):</h4>
-                <div class="code-block">
-<span class="comment">// Ответ API погоды</span>
-{
-  <span class="key">"city"</span>: <span class="str">"Berlin"</span>,
-  <span class="key">"temperature"</span>: <span class="num">+5</span>,
-  <span class="key">"unit"</span>: <span class="str">"Celsius"</span>,
-  <span class="key">"weather"</span>: <span class="str">"cloudy"</span>
-}
+        <div style="background:var(--orange-light);border-radius:var(--radius);padding:20px;margin-bottom:24px;">
+            <p style="font-size:0.95rem;"><strong>📦 JSON — формат обмена данными.</strong> Программы отправляют запросы и получают ответы в этом формате. Попробуйте изменить значения и увидеть, как меняется ответ API.</p>
+        </div>
+
+        <h4 style="margin-bottom:16px;">🧪 Интерактивный API-запрос — попробуйте сами</h4>
+        <div class="json-api-demo">
+            <div class="json-api-panel json-api-editable">
+                <h4>📩 Запрос к API погоды</h4>
+                <div class="json-api-content">
+                    <div class="json-api-field">
+                        <label>city:</label>
+                        <input type="text" id="api-city" value="Berlin" placeholder="Город">
+                    </div>
+                    <div class="json-api-field">
+                        <label>units:</label>
+                        <select id="api-units">
+                            <option value="Celsius">Celsius</option>
+                            <option value="Fahrenheit">Fahrenheit</option>
+                            <option value="Kelvin">Kelvin</option>
+                        </select>
+                    </div>
+                    <div class="json-api-field">
+                        <label>lang:</label>
+                        <select id="api-lang">
+                            <option value="en">en (English)</option>
+                            <option value="ru">ru (Русский)</option>
+                            <option value="de">de (Deutsch)</option>
+                        </select>
+                    </div>
+                    <button class="json-api-send" onclick="sendApiDemo()">▶ Отправить запрос (GET)</button>
                 </div>
-                <p style="margin-top:12px;font-size:0.95rem;">🌤️ Наше приложение читает JSON и показывает: <strong>«В Берлине сейчас +5°C, облачно.»</strong></p>
             </div>
-            <div>
-                <h4 style="margin-bottom:12px;">🧪 Попробуйте сами — JSON форматтер</h4>
-                <div class="json-formatter">
-                    <textarea class="json-input" id="json-input" placeholder='Введите JSON, например: {"name": "Ivan", "age": 25}'></textarea>
-                    <div class="json-output" id="json-output">Результат появится здесь...</div>
+            <div class="json-api-panel json-api-result">
+                <h4>📨 Ответ от API (JSON)</h4>
+                <div class="json-api-content" id="api-response">
+<span style="color:#6c7086;">// Нажмите "Отправить запрос"...</span>
                 </div>
             </div>
         </div>
+        <div id="api-human-result" style="margin-top:12px;padding:14px 20px;background:var(--blue-light);border-radius:10px;font-size:0.95rem;display:none;"></div>
     </div>
 </section>
 
@@ -649,7 +819,7 @@ a:hover { text-decoration: underline; }
         <h2 class="section-title">HTTP, HTTPS и WebHooks</h2>
         <p class="section-subtitle">Способы связи между клиентом и сервером.</p>
 
-        <div class="cards-grid cards-3" style="margin-bottom:40px;">
+        <div class="cards-grid cards-3" style="margin-bottom:24px;">
             <div class="card card-accent green">
                 <div class="card-title">GET</div>
                 <div class="card-text"><strong>Получить данные.</strong> Только читает, ничего не изменяет. Примеры: получить курс валют, список товаров, профиль пользователя.</div>
@@ -661,6 +831,20 @@ a:hover { text-decoration: underline; }
             <div class="card card-accent orange">
                 <div class="card-title">DELETE</div>
                 <div class="card-text"><strong>Удалить данные.</strong> Удаляет ресурс на сервере. Пример: удалить запись из базы данных.</div>
+            </div>
+        </div>
+
+        <h4 style="margin-bottom:8px;">🧪 Попробуйте сами — HTTP методы в действии</h4>
+        <p style="color:var(--gray);margin-bottom:16px;font-size:0.9rem;">Нажмите на кнопку метода, чтобы увидеть запрос и ответ сервера:</p>
+        <div class="http-demo" id="http-demo">
+            <div class="http-demo-bar">
+                <button class="http-demo-btn get" onclick="httpDemo('GET')">GET</button>
+                <button class="http-demo-btn post" onclick="httpDemo('POST')">POST</button>
+                <button class="http-demo-btn delete" onclick="httpDemo('DELETE')">DELETE</button>
+                <span style="color:#6c7086;font-size:0.8rem;margin-left:auto;font-family:'JetBrains Mono',monospace;">api.practico.ai/users</span>
+            </div>
+            <div class="http-demo-output" id="http-demo-output">
+<span style="color:#6c7086;">// Нажмите на метод HTTP чтобы увидеть результат...</span>
             </div>
         </div>
 
@@ -739,6 +923,25 @@ a:hover { text-decoration: underline; }
             <div class="flow-step" style="background:var(--purple-light);color:var(--purple);">🗄️ БД<br><small>Сохраняет ответ</small></div>
             <div class="flow-arrow">→</div>
             <div class="flow-step" style="background:var(--blue-light);color:var(--blue);">👤 Клиент<br><small>«Смартфон X»</small></div>
+        </div>
+
+        <h3 style="font-size:1.2rem;font-weight:700;margin:32px 0 16px;">🤖 Симулятор AI чат-бота — попробуйте</h3>
+        <p style="color:var(--gray);margin-bottom:16px;font-size:0.9rem;">Введите вопрос и проследите, как он проходит через всю цепочку: Telegram → Make.com → OpenAI → Ответ.</p>
+        <div class="chatbot-sim" id="chatbot-sim">
+            <div class="chatbot-header">
+                <span>🤖</span> AI Магазин — чат-бот поддержки
+                <span id="chatbot-flow-tracker" style="margin-left:auto;display:flex;gap:4px;flex-wrap:wrap;"></span>
+            </div>
+            <div class="chatbot-body" id="chatbot-body">
+                <div class="chatbot-msg bot">
+                    <div class="chatbot-avatar" style="background:var(--blue-light);">🤖</div>
+                    <div class="chatbot-bubble">Привет! Я AI-ассистент магазина. Задайте вопрос о товарах, доставке или возврате.</div>
+                </div>
+            </div>
+            <div class="chatbot-input-row">
+                <input class="chatbot-input" id="chatbot-input" placeholder="Напишите вопрос, например: Какой самый популярный товар?" onkeydown="if(event.key==='Enter')sendChatbot()">
+                <button class="chatbot-send" onclick="sendChatbot()">→</button>
+            </div>
         </div>
 
         <h3 style="font-size:1.2rem;font-weight:700;margin:32px 0 16px;">No-code vs Разработка</h3>
@@ -825,6 +1028,30 @@ a:hover { text-decoration: underline; }
             <p style="font-size:0.95rem;"><strong>Запрос:</strong> «Что мне делать в оставшиеся дни в Санкт-Петербурге?»</p>
             <p style="font-size:0.9rem;color:var(--gray);margin-top:8px;"><strong>Модель не знает:</strong> сколько дней осталось, какая погода, ваши предпочтения, когда вылет. Результат будет общим и неточным.</p>
         </div>
+
+        <h3 style="font-size:1.2rem;font-weight:700;margin:40px 0 12px;">🔍 Детектор галлюцинаций — найдите ложь</h3>
+        <p style="color:var(--gray);margin-bottom:16px;font-size:0.9rem;">Одно из утверждений ниже — галлюцинация AI. Кликните на карточку, которая кажется вам ложной, затем нажмите «Проверить».</p>
+        <div class="halluc-cards" id="halluc-cards">
+            <div class="halluc-card" onclick="selectHalluc(this, 0)" data-idx="0">
+                <div class="halluc-label">Утверждение AI #1</div>
+                <div class="halluc-text">Python — один из самых популярных языков программирования, созданный Гвидо ван Россумом в 1991 году. Широко используется для AI, веб-разработки и анализа данных.</div>
+                <div class="halluc-verdict" style="color:var(--green);">✅ Правда — Python действительно создан ван Россумом в 1991 году.</div>
+            </div>
+            <div class="halluc-card" onclick="selectHalluc(this, 1)" data-idx="1">
+                <div class="halluc-label">Утверждение AI #2</div>
+                <div class="halluc-text">Компания OpenAI была основана в 2015 году Илоном Маском и Сэмом Альтманом. Первоначально GPT-4 был выпущен в январе 2022 года и сразу стал доступен бесплатно для всех пользователей.</div>
+                <div class="halluc-verdict" style="color:#ef4444;">❌ Галлюцинация! GPT-4 выпущен в марте 2023 года (не в январе 2022) и не был бесплатным. AI смешал правду (OpenAI, 2015) с выдуманными деталями.</div>
+            </div>
+            <div class="halluc-card" onclick="selectHalluc(this, 2)" data-idx="2">
+                <div class="halluc-label">Утверждение AI #3</div>
+                <div class="halluc-text">REST API — архитектурный стиль для проектирования сетевых приложений, основанный на HTTP-протоколе. Использует стандартные методы: GET, POST, PUT, DELETE для работы с ресурсами.</div>
+                <div class="halluc-verdict" style="color:var(--green);">✅ Правда — REST API действительно основан на HTTP и использует эти методы.</div>
+            </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;">
+            <button class="quiz-check" id="halluc-check-btn" onclick="checkHalluc()">Проверить</button>
+            <span id="halluc-result" style="font-size:0.9rem;font-weight:600;"></span>
+        </div>
     </div>
 </section>
 
@@ -862,7 +1089,19 @@ a:hover { text-decoration: underline; }
             </div>
         </div>
 
-        <div style="background:var(--purple-light);border-radius:var(--radius);padding:24px;">
+        <h3 style="font-size:1.2rem;font-weight:700;margin:40px 0 12px;">🎮 Пошаговый цикл агента — нажимайте «Дальше»</h3>
+        <p style="color:var(--gray);margin-bottom:16px;font-size:0.9rem;">Запрос: «Забронируй мне столик в лучшем итальянском ресторане на пятницу». Пройдите через все шаги агента:</p>
+        <div class="agent-stepper" id="agent-stepper">
+            <div class="agent-step-indicator" id="agent-step-indicator"></div>
+            <div class="agent-step-display" id="agent-step-display"></div>
+            <div class="agent-step-controls">
+                <button class="agent-step-btn secondary" id="agent-prev" onclick="agentStep(-1)" disabled>← Назад</button>
+                <button class="agent-step-btn primary" id="agent-next" onclick="agentStep(1)">Дальше →</button>
+                <span id="agent-step-counter" style="margin-left:auto;color:var(--gray);font-size:0.85rem;font-weight:600;"></span>
+            </div>
+        </div>
+
+        <div style="background:var(--purple-light);border-radius:var(--radius);padding:24px;margin-top:32px;">
             <h4 style="margin-bottom:12px;">Пример: «Что мне делать в Санкт-Петербурге?»</h4>
             <div class="steps">
                 <div class="step">
@@ -970,6 +1209,28 @@ a:hover { text-decoration: underline; }
             <div class="card card-accent blue">
                 <div class="card-title">Применение в бизнесе</div>
                 <div class="card-text">Q&A системы, генерация контента, клиентская поддержка из баз знаний.</div>
+            </div>
+        </div>
+
+        <h3 style="font-size:1.2rem;font-weight:700;margin:40px 0 12px;">🔬 Сравнение: с RAG и без RAG</h3>
+        <p style="color:var(--gray);margin-bottom:16px;font-size:0.9rem;">Выберите вопрос и посмотрите разницу в качестве ответа обычной LLM и LLM с RAG:</p>
+        <div class="rag-question-btns" id="rag-question-btns">
+            <button class="rag-question-btn" onclick="ragCompare(0, this)">Какая у вас политика возврата?</button>
+            <button class="rag-question-btn" onclick="ragCompare(1, this)">Сколько стоит доставка в Казань?</button>
+            <button class="rag-question-btn" onclick="ragCompare(2, this)">Какие есть вакансии в компании?</button>
+        </div>
+        <div class="rag-compare">
+            <div class="rag-compare-col" style="border-color:#ef4444;">
+                <h4 style="color:#ef4444;">❌ Без RAG (обычная LLM)</h4>
+                <div class="rag-answer" id="rag-no">
+                    <span style="color:var(--gray-light);font-style:italic;">Выберите вопрос выше...</span>
+                </div>
+            </div>
+            <div class="rag-compare-col" style="border-color:var(--green);">
+                <h4 style="color:var(--green);">✅ С RAG (LLM + база знаний)</h4>
+                <div class="rag-answer" id="rag-yes">
+                    <span style="color:var(--gray-light);font-style:italic;">Выберите вопрос выше...</span>
+                </div>
             </div>
         </div>
 
@@ -1087,69 +1348,87 @@ a:hover { text-decoration: underline; }
                 <div class="step-content">
                     <h4>Регистрация в OpenAI Platform</h4>
                     <p>Заходим на <a href="https://platform.openai.com/" target="_blank">platform.openai.com</a>. Если нет аккаунта — регистрируемся. Для работы необходим VPN и иностранный номер. Нажимаем Sign up и создаем учетную запись через Google почту.</p>
+                    <div class="screenshot-grid cols-2" style="margin-top:12px;">
+                        <div class="screenshot-item"><img src="images/img_019_image.png" alt="OpenAI Platform — регистрация" class="zoomable" onclick="openLightbox(this)"><div class="screenshot-caption">Страница регистрации</div></div>
+                        <div class="screenshot-item"><img src="images/img_020_image.png" alt="OpenAI Sign Up" class="zoomable" onclick="openLightbox(this)"><div class="screenshot-caption">Sign Up через Google</div></div>
+                    </div>
                 </div>
             </div>
             <div class="step">
                 <div class="step-num">1</div>
                 <div class="step-content">
-                    <h4>Start Building</h4>
-                    <p>Нажимаем на верхней панели кнопку «Start Building» для начала создания проекта.</p>
+                    <h4>Создание организации</h4>
+                    <p>Заполняем поля: Organization name и «What best describes you» — выбираем «Not technical». Нажимаем «Create organization».</p>
+                    <div class="screenshot-grid cols-2" style="margin-top:12px;">
+                        <div class="screenshot-item"><img src="images/img_021_image.png" alt="Создание организации" class="zoomable" onclick="openLightbox(this)"><div class="screenshot-caption">Настройка организации</div></div>
+                    </div>
                 </div>
             </div>
             <div class="step">
                 <div class="step-num">2</div>
                 <div class="step-content">
-                    <h4>Создание организации</h4>
-                    <p>Заполняем поля: Organization name и «What best describes you» — выбираем «Not technical». Нажимаем «Create organization».</p>
+                    <h4>Настройка API ключей</h4>
+                    <p>Переходим в раздел API Keys. Создаем новый секретный ключ — он понадобится для интеграций.</p>
+                    <div class="screenshot-grid cols-2" style="margin-top:12px;">
+                        <div class="screenshot-item"><img src="images/img_022_image.png" alt="API Keys раздел" class="zoomable" onclick="openLightbox(this)"><div class="screenshot-caption">Раздел API Keys</div></div>
+                        <div class="screenshot-item"><img src="images/img_023_image.png" alt="Создание ключа" class="zoomable" onclick="openLightbox(this)"><div class="screenshot-caption">Создание ключа</div></div>
+                        <div class="screenshot-item"><img src="images/img_024_image.png" alt="Настройка ключа" class="zoomable" onclick="openLightbox(this)"><div class="screenshot-caption">Настройка ключа</div></div>
+                        <div class="screenshot-item"><img src="images/img_025_image.png" alt="Секретный ключ" class="zoomable" onclick="openLightbox(this)"><div class="screenshot-caption">Сохраните ключ!</div></div>
+                    </div>
                 </div>
             </div>
             <div class="step">
                 <div class="step-num">3</div>
                 <div class="step-content">
-                    <h4>Настройка API ключей</h4>
-                    <p>Переходим в раздел API Keys. Создаем новый секретный ключ — он понадобится для интеграций.</p>
+                    <h4>Playground — тестовая среда</h4>
+                    <p>Переходим в раздел Playground для первого знакомства с API. Здесь можно тестировать запросы к модели.</p>
+                    <div class="screenshot-grid cols-2" style="margin-top:12px;">
+                        <div class="screenshot-item"><img src="images/img_027_image.png" alt="Playground" class="zoomable" onclick="openLightbox(this)"><div class="screenshot-caption">OpenAI Playground</div></div>
+                    </div>
                 </div>
             </div>
             <div class="step">
                 <div class="step-num">4</div>
                 <div class="step-content">
-                    <h4>Создание Assistant</h4>
-                    <p>Переходим в раздел Assistants. Нажимаем «Create» и задаем имя, инструкции и выбираем модель (GPT-4o рекомендуется).</p>
+                    <h4>Раздел Assistants</h4>
+                    <p>Переходим в раздел Assistants — здесь создаются кастомные AI-агенты.</p>
+                    <div class="screenshot-grid cols-2" style="margin-top:12px;">
+                        <div class="screenshot-item"><img src="images/img_028_image.png" alt="Assistants" class="zoomable" onclick="openLightbox(this)"><div class="screenshot-caption">Раздел Assistants</div></div>
+                    </div>
                 </div>
             </div>
             <div class="step">
                 <div class="step-num">5</div>
                 <div class="step-content">
-                    <h4>Настройка инструкций</h4>
-                    <p>Пишем системный промпт: описываем роль, контекст, ограничения и стиль ответа агента. Это основа качества работы!</p>
+                    <h4>Создание нового Assistant</h4>
+                    <p>Нажимаем «Create» и задаем имя, инструкции и выбираем модель (GPT-4o рекомендуется).</p>
+                    <div class="screenshot-grid cols-2" style="margin-top:12px;">
+                        <div class="screenshot-item"><img src="images/img_029_image.png" alt="New Assistant" class="zoomable" onclick="openLightbox(this)"><div class="screenshot-caption">Создание Assistant</div></div>
+                    </div>
                 </div>
             </div>
             <div class="step">
                 <div class="step-num">6</div>
                 <div class="step-content">
-                    <h4>Загрузка файлов (Knowledge Base)</h4>
-                    <p>Загружаем документы компании — FAQ, инструкции, каталоги. Агент будет использовать их через RAG для точных ответов.</p>
+                    <h4>Настройка инструкций и параметров</h4>
+                    <p>Пишем системный промпт: описываем роль, контекст, ограничения и стиль ответа агента. Настраиваем Temperature, загружаем файлы (Knowledge Base), подключаем инструменты.</p>
+                    <div class="screenshot-grid cols-3" style="margin-top:12px;">
+                        <div class="screenshot-item"><img src="images/img_030_image.png" alt="Настройка Assistant" class="zoomable" onclick="openLightbox(this)"><div class="screenshot-caption">Настройки</div></div>
+                        <div class="screenshot-item"><img src="images/img_032_image.png" alt="Системный промпт" class="zoomable" onclick="openLightbox(this)"><div class="screenshot-caption">Системный промпт</div></div>
+                        <div class="screenshot-item"><img src="images/img_033_image.png" alt="Параметры модели" class="zoomable" onclick="openLightbox(this)"><div class="screenshot-caption">Параметры модели</div></div>
+                        <div class="screenshot-item"><img src="images/img_037_image.png" alt="Knowledge Base" class="zoomable" onclick="openLightbox(this)"><div class="screenshot-caption">Knowledge Base</div></div>
+                        <div class="screenshot-item"><img src="images/img_040_image.png" alt="Инструменты" class="zoomable" onclick="openLightbox(this)"><div class="screenshot-caption">Инструменты</div></div>
+                    </div>
                 </div>
             </div>
             <div class="step">
                 <div class="step-num">7</div>
                 <div class="step-content">
-                    <h4>Настройка параметров</h4>
-                    <p>Настраиваем Temperature (креативность), Max tokens (длина ответа), Top-p и другие параметры модели.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-num">8</div>
-                <div class="step-content">
-                    <h4>Подключение инструментов</h4>
-                    <p>Включаем Code Interpreter для анализа данных, File Search для поиска по документам, Function Calling для интеграций.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-num">9</div>
-                <div class="step-content">
-                    <h4>Тестирование</h4>
+                    <h4>Тестирование и запуск</h4>
                     <p>Используем Playground для тестирования агента. Проверяем качество ответов, точность, использование загруженных документов.</p>
+                    <div class="screenshot-grid cols-2" style="margin-top:12px;">
+                        <div class="screenshot-item"><img src="images/img_041_image.png" alt="Тестирование" class="zoomable" onclick="openLightbox(this)"><div class="screenshot-caption">Тестирование в Playground</div></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1162,13 +1441,6 @@ a:hover { text-decoration: underline; }
                 <li>✅ Тестируйте разные значения Temperature (0.0-1.0)</li>
                 <li>✅ Используйте Function Calling для интеграций с внешними API</li>
             </ul>
-        </div>
-
-        <!-- Images from slides -->
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px;">
-            <img src="images/img_028_image.png" alt="OpenAI Platform" class="zoomable" style="width:100%;border-radius:10px;border:1px solid #E2E8F0;" onclick="openLightbox(this)">
-            <img src="images/img_030_image.png" alt="Create Assistant" class="zoomable" style="width:100%;border-radius:10px;border:1px solid #E2E8F0;" onclick="openLightbox(this)">
-            <img src="images/img_032_image.png" alt="Configure Assistant" class="zoomable" style="width:100%;border-radius:10px;border:1px solid #E2E8F0;" onclick="openLightbox(this)">
         </div>
     </div>
 </section>
@@ -1196,6 +1468,10 @@ a:hover { text-decoration: underline; }
                 <div class="card-icon">1️⃣</div>
                 <div class="card-title">Создаем бота в Telegram</div>
                 <div class="card-text">Через <a href="https://t.me/BotFather" target="_blank">@BotFather</a> создаем нового бота и получаем токен API.</div>
+                <div class="screenshot-grid cols-2" style="margin-top:12px;">
+                    <div class="screenshot-item"><img src="images/img_047_image.png" alt="BotFather профиль" class="zoomable" onclick="openLightbox(this)"><div class="screenshot-caption">BotFather в Telegram</div></div>
+                    <div class="screenshot-item"><img src="images/img_048_image.png" alt="BotFather чат" class="zoomable" onclick="openLightbox(this)"><div class="screenshot-caption">Создание бота</div></div>
+                </div>
             </div>
             <div class="card card-accent purple">
                 <div class="card-icon">2️⃣</div>
@@ -1230,8 +1506,15 @@ a:hover { text-decoration: underline; }
             </div>
         </div>
 
-        <div style="margin-top:24px;">
-            <img src="images/img_050_image.png" alt="Make.com scenario" class="zoomable" style="width:100%;max-width:800px;border-radius:10px;border:1px solid #E2E8F0;display:block;margin:0 auto;" onclick="openLightbox(this)">
+        <h4 style="margin-top:32px;margin-bottom:16px;">Сценарий Make.com: Telegram → OpenAI → Telegram</h4>
+        <div style="margin-bottom:16px;">
+            <img src="images/img_049_image.png" alt="Make.com scenario — Telegram→OpenAI→Telegram" class="zoomable" style="width:100%;max-width:800px;border-radius:10px;border:1px solid #E2E8F0;display:block;margin:0 auto;" onclick="openLightbox(this)">
+            <p style="text-align:center;color:var(--gray);font-size:0.82rem;margin-top:8px;">Сценарий: Telegram Watch → OpenAI Create Completion → Telegram Send Message</p>
+        </div>
+        <div class="screenshot-grid cols-3" style="margin-top:16px;">
+            <div class="screenshot-item"><img src="images/img_045_image.png" alt="Make.com шаг 1" class="zoomable" onclick="openLightbox(this)"><div class="screenshot-caption">Настройка Telegram модуля</div></div>
+            <div class="screenshot-item"><img src="images/img_046_image.png" alt="Make.com шаг 2" class="zoomable" onclick="openLightbox(this)"><div class="screenshot-caption">Настройка OpenAI модуля</div></div>
+            <div class="screenshot-item"><img src="images/img_050_image.png" alt="Make.com шаг 3" class="zoomable" onclick="openLightbox(this)"><div class="screenshot-caption">Настройка ответа</div></div>
         </div>
     </div>
 </section>
@@ -1464,27 +1747,328 @@ function checkDnD() {
     }
 }
 
-// ── JSON Formatter ──
-const jsonInput = document.getElementById('json-input');
-const jsonOutput = document.getElementById('json-output');
+// ── JSON API Demo ──
+const weatherData = {
+    'Berlin': { temp_c: 5, temp_f: 41, temp_k: 278, weather_en: 'cloudy', weather_ru: 'облачно', weather_de: 'bewölkt', humidity: 72, wind: 15 },
+    'Moscow': { temp_c: -3, temp_f: 27, temp_k: 270, weather_en: 'snowy', weather_ru: 'снег', weather_de: 'Schnee', humidity: 85, wind: 8 },
+    'Tokyo': { temp_c: 18, temp_f: 64, temp_k: 291, weather_en: 'sunny', weather_ru: 'солнечно', weather_de: 'sonnig', humidity: 45, wind: 12 },
+    'New York': { temp_c: 10, temp_f: 50, temp_k: 283, weather_en: 'rainy', weather_ru: 'дождь', weather_de: 'regnerisch', humidity: 90, wind: 22 },
+    'Dubai': { temp_c: 35, temp_f: 95, temp_k: 308, weather_en: 'sunny', weather_ru: 'солнечно', weather_de: 'sonnig', humidity: 30, wind: 5 },
+    'London': { temp_c: 8, temp_f: 46, temp_k: 281, weather_en: 'foggy', weather_ru: 'туман', weather_de: 'nebelig', humidity: 88, wind: 10 },
+};
+const weatherIcons = { 'cloudy': '☁️', 'snowy': '❄️', 'sunny': '☀️', 'rainy': '🌧️', 'foggy': '🌫️' };
 
-if (jsonInput) {
-    jsonInput.addEventListener('input', () => {
-        const val = jsonInput.value.trim();
-        if (!val) {
-            jsonOutput.textContent = 'Результат появится здесь...';
-            jsonOutput.className = 'json-output';
-            return;
-        }
-        try {
-            const parsed = JSON.parse(val);
-            jsonOutput.textContent = JSON.stringify(parsed, null, 2);
-            jsonOutput.className = 'json-output json-valid';
-        } catch (e) {
-            jsonOutput.textContent = '❌ Ошибка: ' + e.message;
-            jsonOutput.className = 'json-output json-invalid';
+function sendApiDemo() {
+    const city = document.getElementById('api-city').value.trim() || 'Berlin';
+    const units = document.getElementById('api-units').value;
+    const lang = document.getElementById('api-lang').value;
+    const out = document.getElementById('api-response');
+    const human = document.getElementById('api-human-result');
+
+    const data = weatherData[city] || weatherData[Object.keys(weatherData).find(k => k.toLowerCase() === city.toLowerCase())] || null;
+
+    if (!data) {
+        const cities = Object.keys(weatherData).join(', ');
+        out.innerHTML = '<span style="color:#f38ba8;">{\n  "error": "City not found",\n  "message": "Try: ' + cities + '"\n}</span>';
+        human.style.display = 'none';
+        return;
+    }
+
+    const temp = units === 'Celsius' ? data.temp_c : units === 'Fahrenheit' ? data.temp_f : data.temp_k;
+    const unitSymbol = units === 'Celsius' ? '°C' : units === 'Fahrenheit' ? '°F' : 'K';
+    const weather = lang === 'ru' ? data.weather_ru : lang === 'de' ? data.weather_de : data.weather_en;
+    const icon = weatherIcons[data.weather_en] || '🌡️';
+
+    out.innerHTML = '{\n' +
+        '  <span style="color:#89b4fa;">"city"</span>: <span style="color:#a6e3a1;">"' + city + '"</span>,\n' +
+        '  <span style="color:#89b4fa;">"temperature"</span>: <span style="color:#fab387;">' + temp + '</span>,\n' +
+        '  <span style="color:#89b4fa;">"unit"</span>: <span style="color:#a6e3a1;">"' + units + '"</span>,\n' +
+        '  <span style="color:#89b4fa;">"weather"</span>: <span style="color:#a6e3a1;">"' + weather + '"</span>,\n' +
+        '  <span style="color:#89b4fa;">"humidity"</span>: <span style="color:#fab387;">' + data.humidity + '</span>,\n' +
+        '  <span style="color:#89b4fa;">"wind_kph"</span>: <span style="color:#fab387;">' + data.wind + '</span>\n' +
+        '}';
+
+    human.style.display = 'block';
+    human.innerHTML = icon + ' Приложение читает JSON и показывает: <strong>«В ' + city + ' сейчас ' + (temp > 0 ? '+' : '') + temp + unitSymbol + ', ' + weather + '. Влажность: ' + data.humidity + '%, ветер: ' + data.wind + ' км/ч.»</strong>';
+}
+
+// ── DB Filter ──
+function filterDB(filter, btn) {
+    document.querySelectorAll('.db-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const rows = document.querySelectorAll('#db-table tbody tr');
+    const display = document.getElementById('db-query-display');
+    let query = '';
+
+    rows.forEach(row => {
+        const status = row.dataset.status;
+        const course = row.dataset.course;
+        let show = true;
+        if (filter === 'active') show = status === 'active';
+        else if (filter === 'completed') show = status === 'completed';
+        else if (filter === 'paused') show = status === 'paused';
+        else if (filter === 'ai') show = course === 'ai';
+        else if (filter === 'nocode') show = course === 'nocode';
+        row.style.display = show ? '' : 'none';
+    });
+
+    const queries = {
+        'all': '<span style="color:#89b4fa;">SELECT</span> * <span style="color:#89b4fa;">FROM</span> students;  <span style="color:#6c7086;">-- Все записи</span>',
+        'active': '<span style="color:#89b4fa;">SELECT</span> * <span style="color:#89b4fa;">FROM</span> students <span style="color:#89b4fa;">WHERE</span> status = <span style="color:#a6e3a1;">\'Активен\'</span>;',
+        'completed': '<span style="color:#89b4fa;">SELECT</span> * <span style="color:#89b4fa;">FROM</span> students <span style="color:#89b4fa;">WHERE</span> status = <span style="color:#a6e3a1;">\'Завершил\'</span>;',
+        'paused': '<span style="color:#89b4fa;">SELECT</span> * <span style="color:#89b4fa;">FROM</span> students <span style="color:#89b4fa;">WHERE</span> status = <span style="color:#a6e3a1;">\'На паузе\'</span>;',
+        'ai': '<span style="color:#89b4fa;">SELECT</span> * <span style="color:#89b4fa;">FROM</span> students <span style="color:#89b4fa;">WHERE</span> course = <span style="color:#a6e3a1;">\'AI для бизнеса\'</span>;',
+        'nocode': '<span style="color:#89b4fa;">SELECT</span> * <span style="color:#89b4fa;">FROM</span> students <span style="color:#89b4fa;">WHERE</span> course = <span style="color:#a6e3a1;">\'No-code\'</span>;'
+    };
+    display.innerHTML = queries[filter] || queries['all'];
+}
+
+// ── HTTP Demo ──
+const httpResponses = {
+    GET: {
+        request: '<span class="method-tag" style="color:#a6e3a1;">GET</span> <span class="url-tag">/api/users</span> HTTP/1.1\nHost: api.practico.ai\nAccept: application/json',
+        response: '<span class="status-ok">HTTP/1.1 200 OK</span>\nContent-Type: application/json\n\n[\n  { "id": 1, "name": "Иван", "role": "student" },\n  { "id": 2, "name": "Маша", "role": "student" },\n  { "id": 3, "name": "Костя", "role": "admin" }\n]',
+        desc: '📖 GET — получили список всех пользователей. Данные не изменились.'
+    },
+    POST: {
+        request: '<span class="method-tag" style="color:#89b4fa;">POST</span> <span class="url-tag">/api/users</span> HTTP/1.1\nHost: api.practico.ai\nContent-Type: application/json\n\n{ "name": "Анна", "role": "student" }',
+        response: '<span class="status-ok">HTTP/1.1 201 Created</span>\nContent-Type: application/json\n\n{ "id": 4, "name": "Анна", "role": "student", "created": "2024-01-15" }',
+        desc: '✅ POST — создали нового пользователя. Сервер вернул ID нового ресурса.'
+    },
+    DELETE: {
+        request: '<span class="method-tag" style="color:#f38ba8;">DELETE</span> <span class="url-tag">/api/users/4</span> HTTP/1.1\nHost: api.practico.ai\nAuthorization: Bearer sk-xxx',
+        response: '<span class="status-ok">HTTP/1.1 204 No Content</span>\n\n<span style="color:#6c7086;">// Пользователь #4 удален. Тело ответа пустое.</span>',
+        desc: '🗑️ DELETE — удалили пользователя #4. Сервер подтвердил удаление статусом 204.'
+    }
+};
+
+function httpDemo(method) {
+    const out = document.getElementById('http-demo-output');
+    const data = httpResponses[method];
+    document.querySelectorAll('.http-demo-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+
+    out.innerHTML = '<div style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #333;">' +
+        '<span style="color:#6c7086;">// Запрос:</span>\n' + data.request + '</div>' +
+        '<span style="color:#6c7086;">// Ответ:</span>\n' + data.response +
+        '\n\n<div style="padding:10px 14px;background:rgba(255,255,255,0.05);border-radius:8px;margin-top:12px;font-family:Nunito,sans-serif;">' + data.desc + '</div>';
+}
+
+// ── Chatbot Simulator ──
+const chatbotResponses = {
+    'товар': 'Самый популярный товар этой недели — Смартфон Galaxy S24 Ultra. Цена: 89 990 ₽. Хотите узнать подробнее?',
+    'доставк': 'Доставка по Москве — бесплатно при заказе от 5000 ₽. В другие города — от 290 ₽, срок 2-5 дней.',
+    'возврат': 'Возврат товара возможен в течение 14 дней. Товар должен быть в оригинальной упаковке. Деньги возвращаются на карту за 3-5 рабочих дней.',
+    'акци': 'Сейчас действует акция «Черная пятница» — скидки до 50% на электронику! Промокод: PRACTICO2024',
+    'default': 'Спасибо за вопрос! Я обработал его через цепочку Telegram → Make.com → OpenAI. Попробуйте спросить о товарах, доставке, возврате или акциях.'
+};
+
+const flowSteps = [
+    { label: '📱 Telegram', color: '#e3f2fd', textColor: '#1565c0' },
+    { label: '⚡ Make.com', color: 'var(--purple-light)', textColor: 'var(--purple)' },
+    { label: '🤖 OpenAI', color: 'var(--green-light)', textColor: 'var(--green)' },
+    { label: '📱 Ответ', color: '#e3f2fd', textColor: '#1565c0' }
+];
+
+function sendChatbot() {
+    const input = document.getElementById('chatbot-input');
+    const body = document.getElementById('chatbot-body');
+    const tracker = document.getElementById('chatbot-flow-tracker');
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+
+    // Add user message
+    body.innerHTML += '<div class="chatbot-msg user"><div class="chatbot-avatar" style="background:#E2E8F0;">👤</div><div class="chatbot-bubble">' + text.replace(/</g, '&lt;') + '</div></div>';
+    body.scrollTop = body.scrollHeight;
+
+    // Animate flow steps
+    tracker.innerHTML = '';
+    flowSteps.forEach((s, i) => {
+        const el = document.createElement('span');
+        el.className = 'chatbot-flow-step';
+        el.style.background = '#E2E8F0';
+        el.style.color = 'var(--gray)';
+        el.textContent = s.label;
+        tracker.appendChild(el);
+        if (i < flowSteps.length - 1) {
+            const arrow = document.createElement('span');
+            arrow.textContent = '→';
+            arrow.style.cssText = 'color:var(--gray);font-size:0.75rem;';
+            tracker.appendChild(arrow);
         }
     });
+
+    let stepIdx = 0;
+    const stepInterval = setInterval(() => {
+        if (stepIdx >= flowSteps.length) {
+            clearInterval(stepInterval);
+            // Find response
+            const lower = text.toLowerCase();
+            let resp = chatbotResponses['default'];
+            for (const key of Object.keys(chatbotResponses)) {
+                if (key !== 'default' && lower.includes(key)) { resp = chatbotResponses[key]; break; }
+            }
+            body.innerHTML += '<div class="chatbot-msg bot"><div class="chatbot-avatar" style="background:var(--blue-light);">🤖</div><div class="chatbot-bubble">' + resp + '</div></div>';
+            body.scrollTop = body.scrollHeight;
+            return;
+        }
+        const steps = tracker.querySelectorAll('.chatbot-flow-step');
+        steps[stepIdx].style.background = flowSteps[stepIdx].color;
+        steps[stepIdx].style.color = flowSteps[stepIdx].textColor;
+        steps[stepIdx].classList.add('active');
+        stepIdx++;
+    }, 500);
+}
+
+// ── Hallucination Detector ──
+let hallucSelected = -1;
+function selectHalluc(card, idx) {
+    if (document.getElementById('halluc-cards').dataset.answered) return;
+    document.querySelectorAll('.halluc-card').forEach(c => c.style.borderColor = '#E2E8F0');
+    card.style.borderColor = 'var(--blue)';
+    hallucSelected = idx;
+}
+
+function checkHalluc() {
+    if (hallucSelected === -1) return;
+    const container = document.getElementById('halluc-cards');
+    if (container.dataset.answered) return;
+    container.dataset.answered = 'true';
+    const result = document.getElementById('halluc-result');
+    const btn = document.getElementById('halluc-check-btn');
+    btn.disabled = true;
+
+    // Correct answer is index 1 (the GPT-4 date hallucination)
+    const cards = document.querySelectorAll('.halluc-card');
+    const truthMap = [true, false, true]; // true=fact, false=hallucination
+
+    cards.forEach((card, i) => {
+        card.classList.add(truthMap[i] ? 'revealed-true' : 'revealed-false');
+        card.style.cursor = 'default';
+        card.style.borderColor = ''; // Let CSS handle it
+    });
+
+    if (hallucSelected === 1) {
+        result.innerHTML = '🎉 <span style="color:var(--green);">Правильно! Вы нашли галлюцинацию. AI смешал реальные факты с выдуманными деталями — типичный паттерн!</span>';
+    } else {
+        result.innerHTML = '❌ <span style="color:#ef4444;">Неправильно. Галлюцинация была в утверждении #2. Обратите внимание, как AI смешивает правду с ложью.</span>';
+    }
+}
+
+// ── Agent Step-Through ──
+const agentSteps = [
+    {
+        icon: '📩', color: 'var(--blue)', title: 'Получен запрос',
+        content: '<div style="background:var(--blue-light);padding:16px;border-radius:10px;"><strong>Пользователь:</strong> «Забронируй мне столик в лучшем итальянском ресторане на пятницу»</div><p style="margin-top:12px;color:var(--gray);font-size:0.9rem;">Агент получил задачу и начинает анализ...</p>'
+    },
+    {
+        icon: '🧠', color: 'var(--purple)', title: 'Plan / Think — Анализ задачи',
+        content: '<div style="background:var(--purple-light);padding:16px;border-radius:10px;font-size:0.9rem;"><strong>Агент думает:</strong><br>1. Нужно найти итальянские рестораны поблизости<br>2. Проверить рейтинги и отзывы<br>3. Узнать свободные столики на пятницу<br>4. Сделать бронирование<br><br><strong>Инструменты:</strong> Google Maps API, Рейтинг-сервис, API бронирования</div>'
+    },
+    {
+        icon: '🔍', color: 'var(--orange)', title: 'Act — Поиск ресторанов',
+        content: '<div style="background:var(--orange-light);padding:16px;border-radius:10px;font-size:0.9rem;"><strong>→ Google Maps API:</strong> поиск "итальянский ресторан" в радиусе 5 км<br><br><strong>Результат:</strong> найдено 12 ресторанов<br>• La Piazza — ★4.8 (320 отзывов)<br>• Bella Italia — ★4.6 (215 отзывов)<br>• Trattoria Roma — ★4.9 (89 отзывов)</div>'
+    },
+    {
+        icon: '🔍', color: 'var(--orange)', title: 'Act — Проверка рейтингов',
+        content: '<div style="background:var(--orange-light);padding:16px;border-radius:10px;font-size:0.9rem;"><strong>→ Рейтинг-сервис:</strong> детальный анализ Trattoria Roma (★4.9)<br><br>✅ «Лучшая паста в городе» — 12 раз в отзывах<br>✅ Средний чек: 2500 ₽<br>✅ Тихая атмосфера, подходит для деловых встреч<br>⚠️ Популярное место — бронировать заранее</div>'
+    },
+    {
+        icon: '📞', color: 'var(--orange)', title: 'Act — Бронирование',
+        content: '<div style="background:var(--orange-light);padding:16px;border-radius:10px;font-size:0.9rem;"><strong>→ API бронирования:</strong><br>Ресторан: Trattoria Roma<br>Дата: пятница, 20 марта 2024<br>Время: 19:00<br>Гости: 2<br><br><span style="color:var(--green);font-weight:700;">✅ Бронирование подтверждено! Код: #TR-4521</span></div>'
+    },
+    {
+        icon: '✅', color: 'var(--green)', title: 'Answer — Ответ пользователю',
+        content: '<div style="background:var(--green-light);padding:16px;border-radius:10px;font-size:0.9rem;"><strong>Агент:</strong> Я забронировал столик на двоих в <strong>Trattoria Roma</strong> (рейтинг ★4.9) на <strong>пятницу, 19:00</strong>.<br><br>📍 Адрес: ул. Тверская, 15<br>🎫 Код бронирования: #TR-4521<br>💰 Средний чек: ~2500 ₽ на человека<br><br>Это лучший итальянский ресторан в вашем районе по отзывам. Приятного вечера!</div>'
+    }
+];
+
+let agentCurrentStep = 0;
+
+function initAgentStepper() {
+    const indicator = document.getElementById('agent-step-indicator');
+    if (!indicator) return;
+    indicator.innerHTML = '';
+    agentSteps.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'agent-step-dot' + (i === 0 ? ' current' : '');
+        indicator.appendChild(dot);
+    });
+    renderAgentStep();
+}
+
+function renderAgentStep() {
+    const step = agentSteps[agentCurrentStep];
+    const display = document.getElementById('agent-step-display');
+    display.innerHTML = '<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">' +
+        '<div style="width:48px;height:48px;border-radius:50%;background:' + step.color + ';color:white;display:flex;align-items:center;justify-content:center;font-size:1.4rem;">' + step.icon + '</div>' +
+        '<h4 style="font-size:1.1rem;">' + step.title + '</h4></div>' + step.content;
+
+    const dots = document.querySelectorAll('.agent-step-dot');
+    dots.forEach((d, i) => {
+        d.className = 'agent-step-dot';
+        if (i < agentCurrentStep) d.classList.add('done');
+        if (i === agentCurrentStep) d.classList.add('current');
+    });
+
+    document.getElementById('agent-prev').disabled = agentCurrentStep === 0;
+    document.getElementById('agent-next').disabled = agentCurrentStep === agentSteps.length - 1;
+    document.getElementById('agent-next').textContent = agentCurrentStep === agentSteps.length - 1 ? 'Готово ✓' : 'Дальше →';
+    document.getElementById('agent-step-counter').textContent = 'Шаг ' + (agentCurrentStep + 1) + ' из ' + agentSteps.length;
+}
+
+function agentStep(dir) {
+    const next = agentCurrentStep + dir;
+    if (next < 0 || next >= agentSteps.length) return;
+    agentCurrentStep = next;
+    renderAgentStep();
+}
+
+initAgentStepper();
+
+// ── RAG Comparison ──
+const ragData = [
+    {
+        noRag: 'Обычно политика возврата позволяет вернуть товар в течение 14-30 дней. Условия могут варьироваться. Рекомендую уточнить на сайте магазина или обратиться в службу поддержки.',
+        withRag: 'Согласно нашей политике возврата (обновлено 01.03.2024):\n\n• Возврат в течение 30 дней с момента получения\n• Электроника — 14 дней, при сохранении упаковки\n• Возврат денег на карту — 3-5 рабочих дней\n• Бесплатный возврат при браке\n• Для возврата заполните форму на practico.ai/returns\n\nИсточник: FAQ v3.2, раздел «Возвраты»'
+    },
+    {
+        noRag: 'Стоимость доставки зависит от региона и обычно составляет от 200 до 500 рублей. Для уточнения рекомендую проверить на сайте транспортной компании или связаться с продавцом.',
+        withRag: 'Доставка в Казань:\n\n• СДЭК — 290 ₽, 3-4 дня\n• Почта России — 180 ₽, 5-7 дней\n• Курьер до двери — 450 ₽, 2-3 дня\n• БЕСПЛАТНО при заказе от 5000 ₽ (СДЭК)\n\nСклад отправки: Москва, обработка 1 рабочий день.\n\nИсточник: Тарифы доставки 2024, таблица регионов'
+    },
+    {
+        noRag: 'Для информации о вакансиях рекомендую проверить раздел "Карьера" на корпоративном сайте или популярные площадки вроде hh.ru и LinkedIn. Обычно компании публикуют актуальные вакансии там.',
+        withRag: 'Открытые вакансии Practico (март 2024):\n\n• Senior Python Developer — от 350 000 ₽, удаленно\n• Product Manager (AI) — от 280 000 ₽, гибрид\n• AI Prompt Engineer — от 200 000 ₽, удаленно\n• Customer Success — от 150 000 ₽, офис Москва\n\nОтклик: careers@practico.ai или practico.ai/jobs\nДедлайн: 15 апреля 2024\n\nИсточник: HR база, обновлено 10.03.2024'
+    }
+];
+
+function ragCompare(idx, btn) {
+    document.querySelectorAll('.rag-question-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const noEl = document.getElementById('rag-no');
+    const yesEl = document.getElementById('rag-yes');
+    const data = ragData[idx];
+
+    noEl.textContent = '';
+    yesEl.textContent = '';
+    typeText(noEl, data.noRag, 15);
+    typeText(yesEl, data.withRag, 10);
+}
+
+function typeText(el, text, speed) {
+    let i = 0;
+    el.classList.add('typing');
+    el.textContent = '';
+    const interval = setInterval(() => {
+        if (i >= text.length) {
+            clearInterval(interval);
+            el.classList.remove('typing');
+            return;
+        }
+        el.textContent += text[i];
+        i++;
+    }, speed);
 }
 </script>
 </body>
