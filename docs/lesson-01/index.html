@@ -314,6 +314,58 @@ a { color: var(--blue); text-decoration: none; }
 </head>
 <body>
 
+<!-- ═══ PASSWORD GATE ═══ -->
+<div id="pw-gate" style="display:flex; align-items:center; justify-content:center; min-height:100vh; background:var(--bg); position:fixed; inset:0; z-index:9999;">
+    <div style="text-align:center; max-width:380px; padding:48px 32px; background:white; border-radius:20px; box-shadow:0 8px 32px rgba(0,0,0,0.08);">
+        <div style="font-size:2.5rem; margin-bottom:16px;">🔒</div>
+        <h2 style="font-size:1.3rem; margin-bottom:8px;">Материалы курса</h2>
+        <p style="color:var(--gray); font-size:0.9rem; margin-bottom:24px;">Введите пароль, полученный от преподавателя</p>
+        <input id="pw-input" type="password" placeholder="Пароль" autocomplete="off"
+            style="width:100%; padding:12px 16px; border:2px solid #E2E8F0; border-radius:10px; font-size:1rem; font-family:Nunito,sans-serif; outline:none; transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='#E2E8F0'">
+        <div id="pw-error" style="color:#EF4444; font-size:0.8rem; margin-top:8px; min-height:1.2em;"></div>
+        <button id="pw-btn" style="width:100%; margin-top:12px; padding:12px; background:var(--blue); color:white; border:none; border-radius:10px; font-size:1rem; font-weight:700; font-family:Nunito,sans-serif; cursor:pointer;">
+            Войти
+        </button>
+    </div>
+</div>
+<script>
+(function(){
+    // Simple hash check — not cryptographically secure, just a course gate
+    var HASH = '4d14366ce43d6a20cf0576ec17e3973b1afc4fdb98df73a9dc0a6791b6fcb030'; // sha256 of course password
+    var STORAGE_KEY = 'practico_pw_ok';
+
+    // If already authenticated in this session, skip
+    if (sessionStorage.getItem(STORAGE_KEY) === '1') {
+        document.getElementById('pw-gate').style.display = 'none';
+        return;
+    }
+
+    async function sha256(str) {
+        var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+        return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0')}).join('');
+    }
+
+    async function check() {
+        var val = document.getElementById('pw-input').value.trim();
+        if (!val) return;
+        var h = await sha256(val);
+        if (h === HASH) {
+            sessionStorage.setItem(STORAGE_KEY, '1');
+            document.getElementById('pw-gate').style.display = 'none';
+        } else {
+            document.getElementById('pw-error').textContent = 'Неверный пароль';
+            document.getElementById('pw-input').style.borderColor = '#EF4444';
+        }
+    }
+
+    document.getElementById('pw-btn').addEventListener('click', check);
+    document.getElementById('pw-input').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') check();
+    });
+})();
+</script>
+
 <!-- ═══ NAV ═══ -->
 <nav class="top-nav">
     <div class="nav-inner">
