@@ -1,0 +1,88 @@
+/* ═══════════════════════════════════════════════════════════════
+   Practico Interactive Components — Styles
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── INLINE QUIZ ───────────────────────────────────────────── */
+.inline-quiz { background: var(--bg); border-radius: 16px; padding: 32px; margin: 32px 0; }
+.quiz-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.quiz-counter { font-size: 0.8rem; font-weight: 700; color: var(--gray); white-space: nowrap; }
+.quiz-progress-bar { flex: 1; height: 4px; background: #E5E7EB; border-radius: 2px; overflow: hidden; }
+.quiz-progress-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.3s; }
+.quiz-question { font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; line-height: 1.5; }
+.quiz-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.quiz-option { text-align: left; padding: 14px 18px; border: 2px solid #E5E7EB; border-radius: 12px; background: white; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+.quiz-option:hover:not(.quiz-option-disabled) { border-color: var(--blue); background: var(--blue-light); }
+.quiz-option-disabled { cursor: default; opacity: 0.8; }
+.quiz-option-correct { border-color: var(--green) !important; background: var(--green-light) !important; opacity: 1 !important; }
+.quiz-option-wrong { border-color: #EF4444 !important; background: #FEF2F2 !important; opacity: 1 !important; }
+.quiz-feedback { padding: 16px; border-radius: 10px; font-size: 0.9rem; line-height: 1.6; margin-bottom: 16px; }
+.quiz-feedback-correct { background: var(--green-light); color: var(--green); border: 1px solid var(--green); }
+.quiz-feedback-wrong { background: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; }
+.quiz-btn { padding: 10px 24px; border: none; border-radius: 10px; font-size: 0.9rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+.quiz-btn-primary { background: var(--blue); color: white; }
+.quiz-btn-primary:hover { background: var(--blue-dark); }
+.quiz-btn-next { background: var(--dark); color: white; }
+.quiz-btn-next:hover { opacity: 0.9; }
+.quiz-result { text-align: center; padding: 24px 0; }
+.quiz-result-emoji { font-size: 3rem; margin-bottom: 12px; }
+.quiz-result-score { font-size: 1.8rem; font-weight: 800; color: var(--dark); }
+.quiz-result-text { font-size: 0.95rem; color: var(--gray); margin: 8px 0 24px; }
+
+/* ─── PROMPT BUILDER ────────────────────────────────────────── */
+.prompt-builder { background: var(--bg); border-radius: 16px; padding: 32px; margin: 32px 0; }
+.pb-label { font-weight: 700; margin-bottom: 12px; }
+.pb-toggles { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.pb-toggle { display: flex; align-items: center; gap: 6px; padding: 8px 16px; border: 2px solid #E5E7EB; border-radius: 10px; background: white; cursor: pointer; font-family: inherit; font-size: 0.85rem; font-weight: 600; transition: all 0.2s; }
+.pb-toggle:hover { border-color: var(--toggle-color); }
+.pb-toggle-active { border-color: var(--toggle-color); background: var(--toggle-bg); color: var(--toggle-color); }
+.pb-toggle-icon { font-size: 1rem; }
+.pb-preview { background: white; border-radius: 12px; padding: 20px; border: 1px solid #E5E7EB; }
+.pb-quality { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #F3F4F6; }
+.pb-quality-bar { display: flex; gap: 4px; }
+.pb-quality-dot { width: 8px; height: 8px; border-radius: 50%; transition: background 0.3s; }
+.pb-prompt { white-space: pre-wrap; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; line-height: 1.7; color: var(--dark); margin: 0; background: transparent; }
+
+/* ─── PROMPT IMPROVER (Before/After) ────────────────────────── */
+.prompt-improver { background: var(--bg); border-radius: 16px; padding: 32px; margin: 32px 0; }
+.pi-switch { display: flex; gap: 8px; margin-bottom: 20px; }
+.pi-tab { padding: 10px 20px; border: 2px solid #E5E7EB; border-radius: 10px; background: white; font-family: inherit; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.pi-tab-active.pi-tab-bad { border-color: #EF4444; background: #FEF2F2; color: #991B1B; }
+.pi-tab-active.pi-tab-good { border-color: var(--green); background: var(--green-light); color: var(--green); }
+.pi-content { background: white; border-radius: 12px; padding: 20px; border: 1px solid #E5E7EB; margin-bottom: 12px; }
+.pi-prompt { white-space: pre-wrap; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; line-height: 1.8; margin: 0; }
+.pi-improvements { display: flex; flex-wrap: wrap; gap: 8px; }
+.pi-tag { padding: 4px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; }
+.pi-hint { font-size: 0.85rem; color: var(--gray); text-align: center; }
+
+/* ─── FRAMEWORK PICKER ──────────────────────────────────────── */
+.framework-picker { background: var(--bg); border-radius: 16px; padding: 32px; margin: 32px 0; }
+.fp-task { background: var(--blue-light); border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; }
+.fp-task-label { font-size: 0.8rem; font-weight: 700; color: var(--blue); margin-bottom: 4px; }
+.fp-task-text { font-size: 0.95rem; font-weight: 600; }
+.fp-options { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.fp-option { text-align: left; padding: 12px 16px; border: 2px solid #E5E7EB; border-radius: 12px; background: white; cursor: pointer; font-family: inherit; transition: all 0.2s; min-width: 140px; }
+.fp-option:hover { border-color: var(--fw-color); }
+.fp-option-active { border-color: var(--fw-color); background: color-mix(in srgb, var(--fw-color) 8%, white); }
+.fp-option-name { display: block; font-weight: 800; font-size: 0.9rem; }
+.fp-option-desc { display: block; font-size: 0.75rem; color: var(--gray); margin-top: 2px; }
+.fp-result { background: white; border-radius: 12px; padding: 20px; margin-top: 12px; }
+.fp-result-title { font-weight: 800; margin-bottom: 12px; }
+.fp-result-prompt { white-space: pre-wrap; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; line-height: 1.7; margin: 0; }
+.fp-hint { font-size: 0.85rem; color: var(--gray); text-align: center; }
+
+/* ─── COT STEPPER ───────────────────────────────────────────── */
+.cot-stepper { background: var(--bg); border-radius: 16px; padding: 32px; margin: 32px 0; }
+.cot-question { font-size: 1rem; font-weight: 700; background: var(--purple-light); padding: 16px 20px; border-radius: 12px; border-left: 4px solid var(--purple); margin-bottom: 24px; }
+.cot-steps { margin-bottom: 20px; }
+.cot-step { padding: 16px 20px; background: white; border-radius: 12px; border: 1px solid #E5E7EB; transition: all 0.4s ease; }
+.cot-step-hidden { opacity: 0.15; filter: blur(2px); pointer-events: none; }
+.cot-step-visible { opacity: 1; filter: none; }
+.cot-step-num { font-size: 0.75rem; font-weight: 800; color: var(--blue); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.cot-step-text { font-size: 0.9rem; line-height: 1.6; }
+.cot-arrow { text-align: center; font-size: 1.2rem; color: #CBD5E1; padding: 4px 0; transition: all 0.3s; }
+.cot-arrow-visible { color: var(--blue); }
+.cot-answer { background: var(--green-light); border: 1px solid var(--green); border-radius: 12px; padding: 16px 20px; margin-bottom: 16px; font-size: 0.95rem; animation: fadeIn 0.5s ease; }
+.cot-controls { text-align: center; }
+.cot-reset { background: #E5E7EB; color: var(--dark); }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }

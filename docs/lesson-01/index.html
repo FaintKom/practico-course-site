@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Урок 1 — Знакомство и введение в AI</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="interactive.css">
 <style>
 :root {
     --blue: #0080ff;
@@ -569,6 +570,19 @@ a { color: var(--blue); text-decoration: none; }
     </div>
 </section>
 
+<!-- ═══ QUIZ: Что такое AI ═══ -->
+<section class="section" id="qa-1">
+    <div class="section-inner">
+        <div class="section-badge bg-blue-light text-blue">&#x1f9e0; Проверь себя</div>
+        <h2 class="section-title">Мини-тест: Основы AI</h2>
+        <div class="inline-quiz" data-quiz='[
+            {"question": "Какой тип AI используется сегодня в реальных продуктах (Siri, Google Translate, фильтры спама)?", "options": ["General AI (Общий)", "Narrow AI (Узкий)", "Super AI (Сверхинтеллект)", "Все три одновременно"], "correct": 1, "explanation": "Все современные AI-системы — это Narrow AI. Они решают только конкретные задачи, для которых обучены."},
+            {"question": "AI, который превосходит человека во всех задачах — это:", "options": ["Narrow AI", "General AI", "Super AI", "Machine Learning"], "correct": 2, "explanation": "Super AI — гипотетический AI, превосходящий человека во всём. Его пока не существует."},
+            {"question": "Какие задачи может выполнять AI сегодня?", "options": ["Только распознавание изображений", "Понимание речи, распознавание образов, принятие решений, генерация контента", "Только генерация текста", "Только математические вычисления"], "correct": 1, "explanation": "Современный AI работает с речью, образами, текстом, принятием решений и генерацией нового контента."}
+        ]'></div>
+    </div>
+</section>
+
 <!-- ═══ 3. RULE-BASED VS ML ═══ -->
 <section class="section" id="rule-vs-ml">
     <div class="section-inner">
@@ -827,6 +841,20 @@ a { color: var(--blue); text-decoration: none; }
                 <div style="font-size:0.78rem; color:var(--gray);">Пример: модель экспериментирует с ценами и учится максимизировать прибыль</div>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- ═══ QUIZ: ML и обучение ═══ -->
+<section class="section" id="qa-ml">
+    <div class="section-inner">
+        <div class="section-badge bg-green-light text-green">&#x1f9e0; Проверь себя</div>
+        <h2 class="section-title">Мини-тест: ML и обучение</h2>
+        <div class="inline-quiz" data-quiz='[
+            {"question": "Чем Rule-Based системы отличаются от Machine Learning?", "options": ["Rule-Based быстрее", "В Rule-Based правила пишет человек, в ML модель учится сама", "ML не требует данных", "Rule-Based дороже"], "correct": 1, "explanation": "В Rule-Based человек вручную пишет правила «если...то...», а в ML алгоритм сам находит закономерности в данных."},
+            {"question": "Какой тип ML использует размеченные данные (с правильными ответами)?", "options": ["Unsupervised Learning", "Reinforcement Learning", "Supervised Learning", "Transfer Learning"], "correct": 2, "explanation": "Supervised Learning — модель учится на данных с правильными ответами (labels), например: «это спам» / «не спам»."},
+            {"question": "Датасет делится на 3 части для обучения. Какая часть используется для финальной проверки модели?", "options": ["Обучающая (training)", "Валидационная (validation)", "Тестовая (testing)", "Все три одновременно"], "correct": 2, "explanation": "Тестовая выборка — данные, которых модель никогда не видела. Это финальная проверка качества."},
+            {"question": "Accuracy модели = 90%. Что это значит?", "options": ["Модель обучалась 90 минут", "90% всех предсказаний оказались верными", "Модель использует 90% данных", "90% пользователей довольны"], "correct": 1, "explanation": "Accuracy показывает долю правильных предсказаний: из 100 писем 90 определены верно."}
+        ]'></div>
     </div>
 </section>
 
@@ -1109,6 +1137,26 @@ a { color: var(--blue); text-decoration: none; }
     </div>
 </section>
 
+<!-- ═══ INTERACTIVE: Как GPT обрабатывает текст ═══ -->
+<section class="section" id="gpt-demo">
+    <div class="section-inner">
+        <div class="section-badge bg-blue-light text-blue">&#x1f3ae; Интерактив</div>
+        <h2 class="section-title">Как GPT обрабатывает ваш запрос</h2>
+        <p class="section-subtitle">Нажимайте &laquo;Следующий шаг&raquo; чтобы увидеть, что происходит внутри модели.</p>
+        <div class="cot-stepper" data-config='{
+            "question": "Вы написали: «Напиши рецепт яичницы»",
+            "steps": [
+                "🔤 <strong>Токенизация:</strong> Текст разбивается на токены: [\"Напиши\", \" рецепт\", \" яич\", \"ницы\"]. Каждый фрагмент — отдельная единица обработки.",
+                "🔢 <strong>Присвоение ID:</strong> Каждый токен получает числовой ID из словаря модели: \"Напиши\" → 15339, \" рецепт\" → 27841, \" яич\" → 98102, \"ницы\" → 4521.",
+                "📐 <strong>Эмбеддинги:</strong> ID превращаются в векторы из 768+ чисел. \"Рецепт\" и \"блюдо\" будут близко в пространстве, \"рецепт\" и \"автомобиль\" — далеко.",
+                "👁️ <strong>Механизм внимания:</strong> Каждое слово \"смотрит\" на все остальные. Модель понимает, что \"яичницы\" связано с \"рецепт\", а не с абстрактным значением.",
+                "🎯 <strong>Генерация:</strong> Модель вычисляет вероятность следующего токена. \"Чтобы\" (35%), \"Для\" (20%), \"Ингредиенты\" (15%)... Выбирается наиболее вероятный. Процесс повторяется для каждого нового токена."
+            ],
+            "answer": "Модель генерирует ответ токен за токеном, каждый раз учитывая весь контекст через механизм внимания. Вот почему GPT может писать связные тексты — каждое слово «видит» все предыдущие."
+        }'></div>
+    </div>
+</section>
+
 <!-- ═══ 9. МОДЕЛИ И ЭКОСИСТЕМА ═══ -->
 <section class="section" id="models">
     <div class="section-inner">
@@ -1290,6 +1338,21 @@ a { color: var(--blue); text-decoration: none; }
     </div>
 </section>
 
+<!-- ═══ QUIZ: Нейросети, модели, экосистема ═══ -->
+<section class="section" id="qa-final">
+    <div class="section-inner">
+        <div class="section-badge bg-purple-light text-purple">&#x1f9e0; Проверь себя</div>
+        <h2 class="section-title">Финальный мини-тест</h2>
+        <div class="inline-quiz" data-quiz='[
+            {"question": "Что такое Deep Learning?", "options": ["Любой алгоритм машинного обучения", "Нейросеть с одним скрытым слоем", "Нейросеть с множеством скрытых слоёв (десятки-сотни)", "Метод обучения без данных"], "correct": 2, "explanation": "Deep Learning = нейросети с множеством скрытых слоёв. GPT-4 имеет ~120 слоёв. Больше слоёв = более сложные закономерности."},
+            {"question": "Что такое «вес» в нейросети?", "options": ["Размер модели в гигабайтах", "Число, определяющее силу связи между нейронами", "Количество слоёв", "Скорость обучения"], "correct": 1, "explanation": "Вес — число (например, 0.7), определяющее, насколько сильно один нейрон влияет на следующий. GPT-4 имеет ~1.8 трлн таких чисел."},
+            {"question": "Чем генеративный AI отличается от дискриминативного?", "options": ["Генеративный дешевле", "Дискриминативный классифицирует, генеративный создаёт новое", "Они одинаковые", "Генеративный точнее"], "correct": 1, "explanation": "Дискриминативный AI распознаёт и классифицирует (\"это кот\"), генеративный — создаёт новые данные (\"нарисуй кота\")."},
+            {"question": "Что такое контекстное окно модели?", "options": ["Окно браузера с ChatGPT", "Максимальный объём текста, который модель может учитывать за раз", "Время ожидания ответа", "Количество пользователей"], "correct": 1, "explanation": "Контекстное окно — лимит токенов, которые модель видит одновременно. GPT-4o: 128K токенов, GPT-5: до 1M."},
+            {"question": "Foundation Models (GPT-4, Claude, Gemini) — это:", "options": ["Модели только для текста", "Огромные модели, обученные на терабайтах данных для широкого круга задач", "Модели для одной конкретной задачи", "Открытые модели без лицензии"], "correct": 1, "explanation": "Foundation Models — большие модели, обученные на огромных объёмах данных, способные решать множество задач: текст, код, перевод, анализ."}
+        ]'></div>
+    </div>
+</section>
+
 <!-- ═══ ПРОМПТИНГ ═══ -->
 <section class="section" id="prompting">
     <div class="section-inner">
@@ -1399,6 +1462,7 @@ a { color: var(--blue); text-decoration: none; }
     <p style="margin-top:8px;">Урок 1 из 26 &bull; Знакомство и введение в AI</p>
 </footer>
 
+<script src="interactive.js"></script>
 <script>
 // Progress bar on scroll
 window.addEventListener('scroll', () => {
