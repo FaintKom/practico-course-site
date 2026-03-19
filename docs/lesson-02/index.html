@@ -1379,59 +1379,77 @@ a { color: var(--blue); text-decoration: none; }
 
         <!-- Summary visual: technique selection flowchart -->
         <div style="background:linear-gradient(135deg, var(--blue-light), var(--purple-light)); border-radius:var(--radius); padding:32px; margin-top:40px;">
-            <h3 class="mb-24" style="text-align:center;">Как выбрать технику?</h3>
-            <div style="max-width:700px; margin:0 auto;">
-                <div style="background:var(--blue-light); border:2px solid var(--blue); border-radius:12px; padding:16px; text-align:center; font-weight:700; margin-bottom:8px;">
-                    Какая у вас задача?
+            <h3 class="mb-24" style="text-align:center;">&#x1f3af; Как выбрать технику?</h3>
+            <p style="text-align:center; color:var(--gray); margin-bottom:20px; font-size:0.9rem;">Нажмите на тип задачи &mdash; подсветится рекомендуемая техника с пояснением.</p>
+
+            <div style="max-width:800px; margin:0 auto;">
+                <!-- Task buttons -->
+                <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:24px;">
+                    <button onclick="showTechnique(0)" class="tp-btn" style="background:var(--blue-light); color:var(--blue); border:2px solid var(--blue); border-radius:10px; padding:10px 18px; font-family:Nunito,sans-serif; font-size:0.85rem; font-weight:700; cursor:pointer;">&#x1f4dd; Простая задача</button>
+                    <button onclick="showTechnique(1)" class="tp-btn" style="background:var(--purple-light); color:var(--purple); border:2px solid var(--purple); border-radius:10px; padding:10px 18px; font-family:Nunito,sans-serif; font-size:0.85rem; font-weight:700; cursor:pointer;">&#x1f4cb; Нужен формат</button>
+                    <button onclick="showTechnique(2)" class="tp-btn" style="background:var(--orange-light); color:var(--orange); border:2px solid var(--orange); border-radius:10px; padding:10px 18px; font-family:Nunito,sans-serif; font-size:0.85rem; font-weight:700; cursor:pointer;">&#x1f9ee; Расчёты / логика</button>
+                    <button onclick="showTechnique(3)" class="tp-btn" style="background:var(--green-light); color:var(--green); border:2px solid var(--green); border-radius:10px; padding:10px 18px; font-family:Nunito,sans-serif; font-size:0.85rem; font-weight:700; cursor:pointer;">&#x1f500; Много вариантов</button>
+                    <button onclick="showTechnique(4)" class="tp-btn" style="background:#FEF2F2; color:#EF4444; border:2px solid #EF4444; border-radius:10px; padding:10px 18px; font-family:Nunito,sans-serif; font-size:0.85rem; font-weight:700; cursor:pointer;">&#x1f50d; Нужен контекст</button>
+                    <button onclick="showTechnique(5)" class="tp-btn" style="background:var(--green-light); color:var(--green); border:2px solid var(--green); border-radius:10px; padding:10px 18px; font-family:Nunito,sans-serif; font-size:0.85rem; font-weight:700; cursor:pointer;">&#x2728; Улучшить ответ</button>
                 </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:8px;">
-                    <div style="text-align:center; font-size:0.8rem; color:var(--gray);">&darr; Простая, без примеров</div>
-                    <div style="text-align:center; font-size:0.8rem; color:var(--gray);">&darr; Нужен точный формат</div>
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px;">
-                    <div style="background:var(--green-light); border:2px solid var(--green); border-radius:10px; padding:12px; text-align:center;">
-                        <div style="font-weight:700; color:var(--green);">Zero-shot</div>
-                        <div style="font-size:0.8rem; color:var(--gray);">Прямая инструкция</div>
+
+                <!-- Result panel -->
+                <div id="tp-result" style="display:none; background:var(--bg); border-radius:16px; padding:28px; transition:all 0.3s;">
+                    <div style="display:flex; align-items:center; gap:16px; margin-bottom:16px;">
+                        <div id="tp-icon" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:800; color:white;"></div>
+                        <div>
+                            <div id="tp-name" style="font-size:1.2rem; font-weight:800;"></div>
+                            <div id="tp-subtitle" style="font-size:0.85rem; color:var(--gray);"></div>
+                        </div>
                     </div>
-                    <div style="background:var(--purple-light); border:2px solid var(--purple); border-radius:10px; padding:12px; text-align:center;">
-                        <div style="font-weight:700; color:var(--purple);">Few-shot</div>
-                        <div style="font-size:0.8rem; color:var(--gray);">Даём 2-3 примера</div>
-                    </div>
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:8px;">
-                    <div style="text-align:center; font-size:0.8rem; color:var(--gray);">&darr; Сложная логика/расчёты</div>
-                    <div style="text-align:center; font-size:0.8rem; color:var(--gray);">&darr; Несколько путей решения</div>
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px;">
-                    <div style="background:var(--orange-light); border:2px solid var(--orange); border-radius:10px; padding:12px; text-align:center;">
-                        <div style="font-weight:700; color:var(--orange);">Chain-of-Thought</div>
-                        <div style="font-size:0.8rem; color:var(--gray);">Пошаговое рассуждение</div>
-                    </div>
-                    <div style="background:var(--blue-light); border:2px solid var(--blue); border-radius:10px; padding:12px; text-align:center;">
-                        <div style="font-weight:700; color:var(--blue);">Tree of Thoughts</div>
-                        <div style="font-size:0.8rem; color:var(--gray);">Ветвление решений</div>
-                    </div>
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:8px;">
-                    <div style="text-align:center; font-size:0.8rem; color:var(--gray);">&darr; Нужен контекст</div>
-                    <div style="text-align:center; font-size:0.8rem; color:var(--gray);">&darr; Улучшить ответ</div>
-                    <div style="text-align:center; font-size:0.8rem; color:var(--gray);">&darr; Фокус внимания</div>
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
-                    <div style="background:#FEF2F2; border:2px solid #EF4444; border-radius:10px; padding:12px; text-align:center;">
-                        <div style="font-weight:700; color:#EF4444;">Step-back</div>
-                        <div style="font-size:0.8rem; color:var(--gray);">Сначала общий вопрос</div>
-                    </div>
-                    <div style="background:var(--green-light); border:2px solid var(--green); border-radius:10px; padding:12px; text-align:center;">
-                        <div style="font-weight:700; color:var(--green);">Self-Criticism</div>
-                        <div style="font-size:0.8rem; color:var(--gray);">Генерация &rarr; Критика &rarr; Улучшение</div>
-                    </div>
-                    <div style="background:var(--purple-light); border:2px solid var(--purple); border-radius:10px; padding:12px; text-align:center;">
-                        <div style="font-weight:700; color:var(--purple);">Re2 / RaR</div>
-                        <div style="font-size:0.8rem; color:var(--gray);">Повтор / Перефразирование</div>
+                    <div id="tp-desc" style="font-size:0.9rem; color:var(--dark); margin-bottom:16px; line-height:1.7;"></div>
+                    <div id="tp-example" style="background:white; border-radius:10px; padding:16px; border-left:4px solid var(--blue);">
+                        <div style="font-size:0.75rem; font-weight:700; color:var(--gray); margin-bottom:6px;">&#x1f4ac; ПРИМЕР ПРОМПТА</div>
+                        <div id="tp-prompt" style="font-size:0.85rem; font-style:italic; color:var(--dark);"></div>
                     </div>
                 </div>
             </div>
+
+            <script>
+            var techniques = [
+                {name:'Zero-shot', sub:'Прямая инструкция без примеров', color:'#2e8749', icon:'0',
+                 desc:'Модель получает только задачу, без примеров. Работает для простых, чётко сформулированных запросов.',
+                 prompt:'Переведи на английский: «Искусственный интеллект меняет бизнес-процессы»'},
+                {name:'Few-shot', sub:'Обучение на 2-3 примерах', color:'#5243c3', icon:'3',
+                 desc:'Даёте модели 2-3 примера нужного формата. Она «понимает» паттерн и воспроизводит его. Идеально когда нужен конкретный стиль или структура.',
+                 prompt:'Преобразуй отзыв в тег:\\n«Быстрая доставка» → #logistics_positive\\n«Товар сломан» → #quality_negative\\n«Вежливый менеджер» →'},
+                {name:'Chain-of-Thought', sub:'Пошаговое рассуждение', color:'#ff6805', icon:'→',
+                 desc:'Просите модель рассуждать шаг за шагом. Резко улучшает точность в задачах с логикой, математикой и многоступенчатым анализом.',
+                 prompt:'У нас 1000 клиентов, конверсия 3%, средний чек $50. Если увеличим конверсию до 5%, как изменится выручка? Рассуждай пошагово.'},
+                {name:'Tree of Thoughts', sub:'Ветвление решений', color:'#0080ff', icon:'⑃',
+                 desc:'Модель генерирует несколько вариантов решения, оценивает каждый и выбирает лучший. Для задач с неочевидным оптимальным путём.',
+                 prompt:'Предложи 3 стратегии выхода на новый рынок. Для каждой оцени риски (1-10), стоимость и срок. Выбери лучшую и обоснуй.'},
+                {name:'Step-back', sub:'Сначала общий вопрос', color:'#EF4444', icon:'↩',
+                 desc:'Сначала задаёте общий вопрос о принципах, затем применяете к конкретной задаче. Помогает избежать ошибок в сложных доменах.',
+                 prompt:'1) Какие общие принципы ценообразования SaaS-продуктов?\\n2) Применяя эти принципы, какую цену поставить для нашего B2B CRM с 500 пользователями?'},
+                {name:'Self-Criticism', sub:'Генерация → Критика → Улучшение', color:'#2e8749', icon:'↻',
+                 desc:'Модель генерирует ответ, затем сама его критикует и улучшает. 3 итерации дают результат на уровне эксперта.',
+                 prompt:'Напиши email клиенту об изменении цен.\\nТеперь найди 3 слабых места в этом письме.\\nПерепиши, исправив все найденные проблемы.'}
+            ];
+            function showTechnique(i) {
+                var t = techniques[i];
+                var r = document.getElementById('tp-result');
+                r.style.display = 'block';
+                document.getElementById('tp-icon').style.background = t.color;
+                document.getElementById('tp-icon').textContent = t.icon;
+                document.getElementById('tp-name').textContent = t.name;
+                document.getElementById('tp-name').style.color = t.color;
+                document.getElementById('tp-subtitle').textContent = t.sub;
+                document.getElementById('tp-desc').textContent = t.desc;
+                document.getElementById('tp-prompt').innerHTML = t.prompt.replace(/\\n/g, '<br>');
+                document.getElementById('tp-example').style.borderLeftColor = t.color;
+                // Highlight active button
+                document.querySelectorAll('.tp-btn').forEach(function(b,j){
+                    b.style.opacity = j===i ? '1' : '0.4';
+                    b.style.transform = j===i ? 'scale(1.05)' : 'scale(1)';
+                });
+            }
+            </script>
         </div>
 
         <!-- Quiz -->
