@@ -1484,18 +1484,19 @@ window.addEventListener('scroll', () => {
 // ═══ Normal mode: full page with copy buttons ═══
 (function() {
     var params = new URLSearchParams(window.location.search);
-    var sectionId = params.get('section');
+    var sectionParam = params.get('section');
+    var sectionIds = sectionParam ? sectionParam.split(',') : [];
     var isEmbed = params.get('embed') === 'true';
 
-    if (sectionId) {
+    if (sectionIds.length > 0) {
         // Hide chrome
         document.querySelector('nav').style.display = 'none';
         document.querySelector('.hero').style.display = 'none';
         document.getElementById('progress').style.display = 'none';
         document.querySelector('footer').style.display = 'none';
-        // Hide all other sections
+        // Show only specified sections
         document.querySelectorAll('section.section').forEach(function(sec) {
-            if (sec.id !== sectionId) sec.style.display = 'none';
+            if (sectionIds.indexOf(sec.id) === -1) sec.style.display = 'none';
         });
         document.body.style.margin = '0';
         document.body.style.padding = '0';
