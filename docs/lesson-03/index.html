@@ -892,15 +892,15 @@ a:hover { text-decoration: underline; }
 
         <!-- Quiz 1 -->
         <div class="quiz-block" style="margin-top:40px;">
-            <h4>📝 Проверьте себя: Чем Webhook отличается от обычного API?</h4>
-            <div class="quiz-options" data-quiz="q3" data-correct="1">
-                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Webhook работает быстрее</div>
-                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Webhook — «обратный вызов»: сервер сам отправляет данные при наступлении события</div>
-                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Webhook используется только для безопасности</div>
-                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Webhook не поддерживает JSON</div>
+            <h4>📝 Курьерская служба отправляет уведомление «Заказ доставлен» в CRM-систему магазина автоматически, без запроса. Какая технология используется?</h4>
+            <div class="quiz-options" data-quiz="q3" data-correct="2">
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>REST API (GET-запрос)</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>WebSocket</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Webhook</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>FTP</div>
             </div>
             <button class="quiz-check" onclick="checkQuiz(this)">Проверить ответ</button>
-            <div class="quiz-explanation">Webhook — push-модель: сервер автоматически отправляет данные на указанный URL при наступлении события, а не клиент постоянно спрашивает.</div>
+            <div class="quiz-explanation">Webhook = push-уведомление. Курьерская служба сама «стучится» в CRM при событии, без опроса.</div>
         </div>
     </div>
 </section>
@@ -970,15 +970,15 @@ a:hover { text-decoration: underline; }
         <!-- Quiz -->
         <div style="margin-top:48px; padding-top:32px; border-top:2px solid #E2E8F0;">
             <div class="quiz-block" style="margin-top:32px;text-align:left;">
-                <h4>&#x1f4dd; Какие три основных компонента составляют веб-приложение?</h4>
+                <h4>&#x1f4dd; Пользователь нажал кнопку «Купить» в интернет-магазине. Что происходит дальше?</h4>
                 <div class="quiz-options" data-quiz="q1" data-correct="1">
-                    <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>HTML, CSS, Python</div>
-                    <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Frontend, Backend, База данных</div>
-                    <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Браузер, Сервер, Домен</div>
-                    <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>API, Webhook, JSON</div>
+                    <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Frontend отправляет запрос напрямую в базу данных</div>
+                    <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Frontend отправляет API-запрос на Backend, который обращается к БД</div>
+                    <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>База данных сама обрабатывает покупку</div>
+                    <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Браузер сохраняет заказ локально</div>
                 </div>
                 <button class="quiz-check" onclick="checkQuiz(this)">Проверить ответ</button>
-                <div class="quiz-explanation">Три основных слоя: Frontend (интерфейс пользователя), Backend (серверная логика) и База данных (хранение информации).</div>
+                <div class="quiz-explanation">Frontend НИКОГДА не обращается к БД напрямую — всегда через Backend по API.</div>
             </div>
         </div>
     </div>
@@ -1305,15 +1305,15 @@ a:hover { text-decoration: underline; }
 
         <!-- Quiz 3 -->
         <div class="quiz-block" style="margin-top:32px;">
-            <h4>📝 Какую ключевую проблему LLM решает RAG-архитектура?</h4>
+            <h4>📝 HR-менеджер спросил ChatGPT: «Какой у нас отпуск?» и получил общий ответ про ТК РФ. Как RAG решил бы эту проблему?</h4>
             <div class="quiz-options" data-quiz="q7" data-correct="1">
-                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Скорость генерации ответов</div>
-                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Галлюцинации и устаревшие знания — RAG позволяет модели опираться на актуальные данные</div>
-                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Стоимость использования API</div>
-                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Необходимость обучения модели с нуля</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Обучил бы новую модель на документах компании</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Нашёл бы ответ в корпоративной базе знаний и дополнил им запрос</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Подключил бы более мощную модель</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Увеличил бы контекстное окно</div>
             </div>
             <button class="quiz-check" onclick="checkQuiz(this)">Проверить ответ</button>
-            <div class="quiz-explanation">RAG решает проблему галлюцинаций и ограниченности знаний, давая модели доступ к актуальной базе знаний компании.</div>
+            <div class="quiz-explanation">RAG извлекает релевантные документы из базы и добавляет их в контекст запроса.</div>
         </div>
     </div>
 </section>
@@ -1380,15 +1380,15 @@ a:hover { text-decoration: underline; }
 
         <!-- Quiz 4 -->
         <div class="quiz-block" style="margin-top:32px;">
-            <h4>📝 Что такое AI-агент?</h4>
+            <h4>📝 Чем AI-агент принципиально отличается от обычного ChatGPT?</h4>
             <div class="quiz-options" data-quiz="q8" data-correct="1">
-                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Чат-бот с готовыми ответами</div>
-                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Автономная AI-система, которая может планировать, использовать инструменты и принимать решения</div>
-                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Человек, который управляет AI</div>
-                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Плагин для браузера</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Агент использует более мощную модель</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Агент может планировать действия и использовать внешние инструменты</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Агент не имеет ограничений контекста</div>
+                <div class="quiz-option" onclick="selectOption(this)"><div class="quiz-radio"></div>Агент всегда даёт правильные ответы</div>
             </div>
             <button class="quiz-check" onclick="checkQuiz(this)">Проверить ответ</button>
-            <div class="quiz-explanation">AI-агент — система, способная самостоятельно планировать шаги, вызывать инструменты (API, базы, поиск) и адаптировать поведение для достижения цели.</div>
+            <div class="quiz-explanation">AI-агент умеет: планировать, думать, действовать, наблюдать результат. ChatGPT только генерирует текст.</div>
         </div>
     </div>
 </section>
