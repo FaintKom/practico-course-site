@@ -1,848 +1,30 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
-
-        .practico-longread {
-            --practico-blue: #0080ff;
-            --practico-blue-dark: #0060cc;
-            --practico-blue-light: #e9f1fc;
-            --accent-coral: #ff6805;
-            --accent-green: #2e8749;
-            --accent-yellow: #FBBF24;
-            --accent-purple: #5243c3;
-            --text-dark: #1e1e1e;
-            --text-gray: #64748B;
-            --bg-light: #F8FAFC;
-            --bg-white: #FFFFFF;
-            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-            --shadow-md: 0 4px 20px rgba(0,128,255,0.15);
-            --shadow-lg: 0 10px 40px rgba(0,128,255,0.2);
-            --radius-sm: 8px;
-            --radius-md: 16px;
-            --radius-lg: 24px;
-        }
-
-
-
-
-
-
-
-        
-
-        /* Layout */
-        .practico-longread .layout {
-            display: flex;
-            min-height: 600px;
-        }
-
-        /* Sidebar */
-        .practico-longread .sidebar {
-            width: 260px;
-            min-width: 260px;
-            background: white;
-            border-right: 1px solid #E2E8F0;
-            position: sticky;
-            top: 0;
-            height: calc(100vh - 100px);
-            align-self: flex-start;
-            overflow-y: auto;
-            padding: 24px 0;
-        }
-
-        .practico-longread .sidebar-header {
-            padding: 0 24px 20px;
-            border-bottom: 1px solid #E2E8F0;
-            margin-bottom: 16px;
-        }
-
-        .practico-longread .sidebar-header h2 {
-            font-size: 1.1rem;
-            color: var(--text-dark);
-            margin-bottom: 8px;
-        }
-
-        .practico-longread .progress-bar-container {
-            background: #E2E8F0;
-            height: 8px;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .practico-longread .progress-bar-fill {
-            background: linear-gradient(90deg, var(--practico-blue), var(--accent-purple));
-            height: 100%;
-            width: 0%;
-            transition: width 0.5s ease;
-            border-radius: 4px;
-        }
-
-        .practico-longread .progress-text {
-            font-size: 0.8rem;
-            color: var(--text-gray);
-            margin-top: 8px;
-        }
-
-        .practico-longread .nav-sections {
-            list-style: none;
-        }
-
-        .practico-longread .nav-section {
-            border-bottom: 1px solid #F1F5F9;
-        }
-
-        .practico-longread .nav-section-title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 24px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: 600;
-            color: var(--text-gray);
-        }
-
-        .practico-longread .nav-section-title:hover {
-            background: var(--bg-light);
-            color: var(--text-dark);
-        }
-
-        .practico-longread .nav-section-title.active {
-            background: var(--practico-blue-light);
-            color: var(--practico-blue);
-        }
-
-        .practico-longread .nav-section-title.completed {
-            color: var(--accent-green);
-        }
-
-        .practico-longread .nav-section-number {
-            width: 28px;
-            min-width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: #E2E8F0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-
-        .practico-longread .nav-section-title.active .nav-section-number {
-            background: var(--practico-blue);
-            color: white;
-        }
-
-        .practico-longread .nav-section-title.completed .nav-section-number {
-            background: var(--accent-green);
-            color: white;
-        }
-
-        .practico-longread .nav-section-title.completed .nav-section-number::after {
-            content: '\2713';
-        }
-
-        .practico-longread .nav-section-title.completed .nav-section-number span {
-            display: none;
-        }
-
-        /* Main Content */
-        .practico-longread .main-content {
-            flex: 1;
-            min-width: 0;
-            padding: 40px;
-        }
-
-        .practico-longread .lesson-container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        /* Section */
-        .practico-longread .section {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .practico-longread .section.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .practico-longread .section-header {
-            margin-bottom: 32px;
-        }
-
-        .practico-longread .section-number {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--practico-blue-light);
-            color: var(--practico-blue);
-            padding: 6px 16px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            margin-bottom: 16px;
-        }
-
-        .practico-longread .section-title {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--text-dark);
-            margin-bottom: 12px;
-        }
-
-        .practico-longread .section-subtitle {
-            font-size: 1.1rem;
-            color: var(--text-gray);
-        }
-
-        /* Content Elements */
-        .practico-longread .content-block {
-            background: white;
-            border-radius: var(--radius-lg);
-            padding: 32px;
-            margin-bottom: 24px;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .practico-longread .content-block h3 {
-            font-size: 1.35rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 16px;
-        }
-
-        .practico-longread .content-block p {
-            color: var(--text-gray);
-            margin-bottom: 16px;
-        }
-
-        .practico-longread .content-block p:last-child {
-            margin-bottom: 0;
-        }
-
-        /* Key Point */
-        .practico-longread .key-point {
-            background: linear-gradient(135deg, var(--practico-blue-light) 0%, #F0F9FF 100%);
-            border-left: 4px solid var(--practico-blue);
-            padding: 20px 24px;
-            border-radius: 0 var(--radius-md) var(--radius-md) 0;
-            margin: 24px 0;
-        }
-
-        .practico-longread .key-point-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            color: var(--practico-blue);
-            margin-bottom: 8px;
-        }
-
-        .practico-longread .key-point p {
-            color: var(--text-dark);
-            margin: 0;
-        }
-
-        /* Definition */
-        .practico-longread .definition {
-            background: #FFFBEB;
-            border: 2px dashed var(--accent-yellow);
-            padding: 20px 24px;
-            border-radius: var(--radius-md);
-            margin: 24px 0;
-        }
-
-        .practico-longread .definition-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            color: #B45309;
-            margin-bottom: 8px;
-        }
-
-        /* Example */
-        .practico-longread .example {
-            background: #F0FDF4;
-            border-left: 4px solid var(--accent-green);
-            padding: 20px 24px;
-            border-radius: 0 var(--radius-md) var(--radius-md) 0;
-            margin: 24px 0;
-        }
-
-        .practico-longread .example-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            color: var(--accent-green);
-            margin-bottom: 8px;
-        }
-
-        /* Cards Grid */
-        .practico-longread .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 24px 0;
-        }
-
-        .practico-longread .card {
-            background: white;
-            border: 1px solid #E2E8F0;
-            border-radius: var(--radius-md);
-            padding: 24px;
-            transition: all 0.3s ease;
-        }
-
-        .practico-longread .card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .practico-longread .card-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: var(--radius-sm);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 16px;
-        }
-
-        .practico-longread .card h4 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 8px;
-        }
-
-        .practico-longread .card p {
-            font-size: 0.9rem;
-            color: var(--text-gray);
-            margin: 0;
-        }
-
-        /* Table */
-        .practico-longread .table-container {
-            overflow-x: auto;
-            margin: 24px 0;
-            border-radius: var(--radius-md);
-            border: 1px solid #E2E8F0;
-        }
-
-        .practico-longread .styled-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.95rem;
-        }
-
-        .practico-longread .styled-table th {
-            background: var(--practico-blue);
-            color: white;
-            padding: 14px 20px;
-            text-align: left;
-            font-weight: 700;
-        }
-
-        .practico-longread .styled-table td {
-            padding: 14px 20px;
-            border-bottom: 1px solid #E2E8F0;
-            color: var(--text-gray);
-        }
-
-        .practico-longread .styled-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .practico-longread .styled-table tr:hover td {
-            background: var(--practico-blue-light);
-        }
-
-        /* Comparison */
-        .practico-longread .comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin: 24px 0;
-        }
-
-        .practico-longread .comparison-card {
-            background: white;
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            border: 2px solid #E2E8F0;
-        }
-
-        .practico-longread .comparison-card.left {
-            border-color: var(--accent-coral);
-        }
-
-        .practico-longread .comparison-card.right {
-            border-color: var(--accent-green);
-        }
-
-        .practico-longread .comparison-card h4 {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.15rem;
-            margin-bottom: 16px;
-        }
-
-        .practico-longread .comparison-card.left h4 {
-            color: var(--accent-coral);
-        }
-
-        .practico-longread .comparison-card.right h4 {
-            color: var(--accent-green);
-        }
-
-        .practico-longread .comparison-card ul {
-            list-style: none;
-        }
-
-        .practico-longread .comparison-card li {
-            padding: 8px 0;
-            color: var(--text-gray);
-            font-size: 0.95rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-        }
-
-        .practico-longread .comparison-card li::before {
-            content: '•';
-            color: inherit;
-        }
-
-        /* Code Block */
-        .practico-longread .code-block {
-            background: #1E293B;
-            border-radius: var(--radius-md);
-            padding: 20px;
-            margin: 20px 0;
-            overflow-x: auto;
-        }
-
-        .practico-longread .code-block code {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
-            color: #E2E8F0;
-            line-height: 1.8;
-        }
-
-        .practico-longread .code-keyword { color: #F472B6; }
-        .practico-longread .code-string { color: #4caf7a; }
-        .practico-longread .code-comment { color: #64748B; }
-
-        /* Image Container */
-        .practico-longread .image-container {
-            background: white;
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            margin: 24px 0;
-            text-align: center;
-            border: 1px solid #E2E8F0;
-        }
-
-        .practico-longread .image-container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: var(--radius-md);
-        }
-
-        .practico-longread .image-caption {
-            margin-top: 12px;
-            font-size: 0.9rem;
-            color: var(--text-gray);
-        }
-
-        /* Learning Cards (ML Types) */
-        .practico-longread .learning-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            margin: 24px 0;
-        }
-
-        .practico-longread .learning-card {
-            background: white;
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            border: 1px solid #E2E8F0;
-        }
-
-        .practico-longread .learning-card-header {
-            padding: 20px;
-            color: white;
-        }
-
-        .practico-longread .learning-card-header.blue { background: linear-gradient(135deg, var(--practico-blue), #339dff); }
-        .practico-longread .learning-card-header.purple { background: linear-gradient(135deg, var(--accent-purple), #7b6dd8); }
-        .practico-longread .learning-card-header.green { background: linear-gradient(135deg, var(--accent-green), #4caf7a); }
-        .practico-longread .learning-card-header.orange { background: linear-gradient(135deg, #ff6805, #ff8a3d); }
-
-        .practico-longread .learning-card-header h4 {
-            font-size: 1.1rem;
-            margin-bottom: 4px;
-            color: white;
-        }
-
-        .practico-longread .learning-card-header p {
-            font-size: 0.85rem;
-            margin: 0;
-            color: white;
-        }
-
-        .practico-longread .learning-card-body {
-            padding: 20px;
-        }
-
-        .practico-longread .learning-card-body img {
-            width: 100%;
-            border-radius: var(--radius-sm);
-            margin-bottom: 12px;
-        }
-
-        .practico-longread .learning-card-body p {
-            font-size: 0.9rem;
-            color: var(--text-gray);
-            margin: 0;
-        }
-
-        /* Timeline */
-        .practico-longread .timeline {
-            position: relative;
-            margin: 24px 0;
-            padding-left: 32px;
-        }
-
-        .practico-longread .timeline::before {
-            content: '';
-            position: absolute;
-            left: 8px;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: linear-gradient(180deg, var(--practico-blue), var(--accent-purple));
-            border-radius: 3px;
-        }
-
-        .practico-longread .timeline-item {
-            position: relative;
-            padding-bottom: 24px;
-        }
-
-        .practico-longread .timeline-item:last-child {
-            padding-bottom: 0;
-        }
-
-        .practico-longread .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -32px;
-            top: 4px;
-            width: 18px;
-            height: 18px;
-            background: white;
-            border: 4px solid var(--practico-blue);
-            border-radius: 50%;
-        }
-
-        .practico-longread .timeline-item h4 {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--practico-blue);
-            margin-bottom: 6px;
-        }
-
-        .practico-longread .timeline-item p {
-            color: var(--text-gray);
-            font-size: 0.95rem;
-            margin: 0;
-        }
-
-        /* HR Cases */
-        .practico-longread .hr-cases {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin: 24px 0;
-        }
-
-        .practico-longread .hr-case {
-            background: white;
-            border-radius: var(--radius-md);
-            padding: 24px;
-            border-left: 4px solid var(--practico-blue);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .practico-longread .hr-case h4 {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.05rem;
-            color: var(--text-dark);
-            margin-bottom: 12px;
-        }
-
-        .practico-longread .hr-case ul {
-            list-style: none;
-        }
-
-        .practico-longread .hr-case li {
-            font-size: 0.9rem;
-            color: var(--text-gray);
-            padding: 6px 0;
-            border-bottom: 1px solid #F1F5F9;
-        }
-
-        .practico-longread .hr-case li:last-child {
-            border-bottom: none;
-        }
-
-        /* Quiz */
-        .practico-longread .quiz {
-            background: linear-gradient(135deg, #EDE9FE 0%, #F5F3FF 100%);
-            border-radius: var(--radius-lg);
-            padding: 32px;
-            margin: 32px 0;
-            border: 2px solid var(--accent-purple);
-        }
-
-        .practico-longread .quiz-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--accent-purple);
-            margin-bottom: 20px;
-        }
-
-        .practico-longread .quiz-question {
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 16px;
-        }
-
-        .practico-longread .quiz-options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .practico-longread .quiz-option {
-            background: white;
-            border: 2px solid #E2E8F0;
-            border-radius: var(--radius-md);
-            padding: 14px 20px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .practico-longread .quiz-option:hover {
-            border-color: var(--accent-purple);
-        }
-
-        .practico-longread .quiz-option.selected {
-            border-color: var(--accent-purple);
-            background: #F5F3FF;
-        }
-
-        .practico-longread .quiz-option.correct {
-            border-color: var(--accent-green);
-            background: #F0FDF4;
-        }
-
-        .practico-longread .quiz-option.incorrect {
-            border-color: var(--accent-coral);
-            background: #FEF2F2;
-        }
-
-        .practico-longread .quiz-option-marker {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            border: 2px solid #CBD5E1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: 700;
-        }
-
-        .practico-longread .quiz-option.selected .quiz-option-marker {
-            border-color: var(--accent-purple);
-            background: var(--accent-purple);
-            color: white;
-        }
-
-        .practico-longread .quiz-feedback {
-            margin-top: 16px;
-            padding: 16px;
-            border-radius: var(--radius-md);
-            display: none;
-        }
-
-        .practico-longread .quiz-feedback.show {
-            display: block;
-        }
-
-        .practico-longread .quiz-feedback.correct {
-            background: #F0FDF4;
-            color: var(--accent-green);
-        }
-
-        .practico-longread .quiz-feedback.incorrect {
-            background: #FEF2F2;
-            color: var(--accent-coral);
-        }
-
-        .practico-longread .quiz-btn {
-            margin-top: 16px;
-            background: var(--accent-purple);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: var(--radius-md);
-            font-family: inherit;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .practico-longread .quiz-btn:hover {
-            background: #3d2fa0;
-        }
-
-        .practico-longread .quiz-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Navigation Buttons */
-        .practico-longread .nav-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 40px;
-            padding-top: 24px;
-            border-top: 1px solid #E2E8F0;
-        }
-
-        .practico-longread .nav-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 14px 24px;
-            border-radius: var(--radius-md);
-            font-family: inherit;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-        }
-
-        .practico-longread .nav-btn-prev {
-            background: white;
-            color: var(--text-gray);
-            border: 2px solid #E2E8F0;
-        }
-
-        .practico-longread .nav-btn-prev:hover {
-            border-color: var(--practico-blue);
-            color: var(--practico-blue);
-        }
-
-        .practico-longread .nav-btn-next {
-            background: var(--practico-blue);
-            color: white;
-            border: none;
-        }
-
-        .practico-longread .nav-btn-next:hover {
-            background: var(--practico-blue-dark);
-        }
-
-        .practico-longread .nav-btn-complete {
-            background: var(--accent-green);
-        }
-
-        .practico-longread .nav-btn-complete:hover {
-            background: #1f6e3b;
-        }
-
-        /* Completion */
-        .practico-longread .completion {
-            text-align: center;
-            padding: 60px 40px;
-        }
-
-        .practico-longread .completion-icon {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, var(--accent-green), #4caf7a);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 24px;
-            font-size: 3rem;
-            color: white;
-        }
-
-        .practico-longread .completion h2 {
-            font-size: 2rem;
-            color: var(--text-dark);
-            margin-bottom: 12px;
-        }
-
-        .practico-longread .completion p {
-            color: var(--text-gray);
-            font-size: 1.1rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 640px) {
-            .practico-longread .sidebar {
-                display: none;
-            }
-            .practico-longread .main-content {
-                min-width: 0;
-                padding: 16px;
-            }
-            .practico-longread .comparison {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .practico-longread .main-content {
-                padding: 24px;
-            }
-            .practico-longread .content-block {
-                padding: 24px;
-            }
-            .practico-longread .learning-cards {
-                grid-template-columns: 1fr;
-            }
-        }
-    
+.practico-longread {
+    --practico-blue: #0080ff;
+    --practico-blue-dark: #0060cc;
+    --practico-blue-light: #e9f1fc;
+    --accent-coral: #ff6805;
+    --accent-green: #2e8749;
+    --accent-yellow: #FBBF24;
+    --accent-purple: #5243c3;
+    --accent-purple-light: #ebe9fc;
+    --text-dark: #1e1e1e;
+    --text-gray: #64748B;
+    --bg-light: #F8FAFC;
+    --bg-white: #FFFFFF;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 20px rgba(0,128,255,0.15);
+    --shadow-lg: 0 10px 40px rgba(0,128,255,0.2);
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --red: #EF4444;
+    --red-light: #FEF2F2;
+    --green-light: #e9fcf0;
+    --orange-light: #ffebe1;
+}
 
 .practico-longread {
     font-family: 'Nunito', 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
@@ -855,806 +37,1611 @@
 .practico-longread *, .practico-longread *::before, .practico-longread *::after {
     box-sizing: border-box;
 }
+
+/* Layout */
+.practico-longread .layout {
+    display: flex;
+    min-height: 600px;
+}
+
+/* Sidebar */
+.practico-longread .sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: white;
+    border-right: 1px solid #E2E8F0;
+    position: sticky;
+    top: 0;
+    height: calc(100vh - 100px);
+    align-self: flex-start;
+    overflow-y: auto;
+    padding: 24px 0;
+}
+
+.practico-longread .sidebar-header {
+    padding: 0 24px 20px;
+    border-bottom: 1px solid #E2E8F0;
+    margin-bottom: 16px;
+}
+
+.practico-longread .sidebar-header h2 {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+}
+
+.practico-longread .progress-bar-container {
+    background: #E2E8F0;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.practico-longread .progress-bar-fill {
+    background: linear-gradient(90deg, var(--practico-blue), var(--accent-purple));
+    height: 100%;
+    width: 0%;
+    transition: width 0.5s ease;
+    border-radius: 4px;
+}
+
+.practico-longread .progress-text {
+    font-size: 0.8rem;
+    color: var(--text-gray);
+    margin-top: 8px;
+}
+
+.practico-longread .nav-sections {
+    list-style: none;
+}
+
+.practico-longread .nav-section {
+    border-bottom: 1px solid #F1F5F9;
+}
+
+.practico-longread .nav-section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--text-gray);
+}
+
+.practico-longread .nav-section-title:hover {
+    background: var(--bg-light);
+    color: var(--text-dark);
+}
+
+.practico-longread .nav-section-title.active {
+    background: var(--practico-blue-light);
+    color: var(--practico-blue);
+}
+
+.practico-longread .nav-section-title.completed {
+    color: var(--accent-green);
+}
+
+.practico-longread .nav-section-number {
+    width: 28px;
+    min-width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #E2E8F0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.practico-longread .nav-section-title.active .nav-section-number {
+    background: var(--practico-blue);
+    color: white;
+}
+
+.practico-longread .nav-section-title.completed .nav-section-number {
+    background: var(--accent-green);
+    color: white;
+}
+
+.practico-longread .nav-section-title.completed .nav-section-number::after {
+    content: '\2713';
+}
+
+.practico-longread .nav-section-title.completed .nav-section-number span {
+    display: none;
+}
+
+/* Main Content */
+.practico-longread .main-content {
+    flex: 1;
+    min-width: 0;
+    padding: 40px;
+}
+
+.practico-longread .lesson-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Section */
+.practico-longread .section {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.practico-longread .section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.practico-longread .section-header {
+    margin-bottom: 32px;
+}
+
+.practico-longread .section-number {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--practico-blue-light);
+    color: var(--practico-blue);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+}
+
+.practico-longread .section-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+}
+
+.practico-longread .section-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-gray);
+}
+
+/* Content Elements */
+.practico-longread .content-block {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-sm);
+}
+
+.practico-longread .content-block h3 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+}
+
+.practico-longread .content-block h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+}
+
+.practico-longread .content-block p {
+    color: var(--text-gray);
+    margin-bottom: 16px;
+}
+
+.practico-longread .content-block p:last-child {
+    margin-bottom: 0;
+}
+
+/* Key Point */
+.practico-longread .key-point {
+    background: linear-gradient(135deg, var(--practico-blue-light) 0%, #F0F9FF 100%);
+    border-left: 4px solid var(--practico-blue);
+    padding: 20px 24px;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    margin: 24px 0;
+}
+
+.practico-longread .key-point-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    color: var(--practico-blue);
+    margin-bottom: 8px;
+}
+
+.practico-longread .key-point p {
+    color: var(--text-dark);
+    margin: 0;
+}
+
+/* Definition */
+.practico-longread .definition {
+    background: #FFFBEB;
+    border: 2px dashed var(--accent-yellow);
+    padding: 20px 24px;
+    border-radius: var(--radius-md);
+    margin: 24px 0;
+}
+
+.practico-longread .definition-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    color: #B45309;
+    margin-bottom: 8px;
+}
+
+/* Example */
+.practico-longread .example {
+    background: #F0FDF4;
+    border-left: 4px solid var(--accent-green);
+    padding: 20px 24px;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    margin: 24px 0;
+}
+
+.practico-longread .example-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    color: var(--accent-green);
+    margin-bottom: 8px;
+}
+
+/* Warning */
+.practico-longread .warning-block {
+    background: var(--red-light);
+    border-left: 4px solid var(--red);
+    padding: 20px 24px;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    margin: 24px 0;
+}
+
+.practico-longread .warning-block .warning-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    color: var(--red);
+    margin-bottom: 8px;
+}
+
+/* Cards Grid */
+.practico-longread .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 24px 0;
+}
+
+.practico-longread .cards-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.practico-longread .cards-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.practico-longread .cards-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.practico-longread .card {
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: var(--radius-md);
+    padding: 24px;
+    transition: all 0.3s ease;
+}
+
+.practico-longread .card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.practico-longread .card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 16px;
+}
+
+.practico-longread .card h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+}
+
+.practico-longread .card p {
+    font-size: 0.9rem;
+    color: var(--text-gray);
+    margin: 0;
+}
+
+/* Table */
+.practico-longread .table-container {
+    overflow-x: auto;
+    margin: 24px 0;
+    border-radius: var(--radius-md);
+    border: 1px solid #E2E8F0;
+}
+
+.practico-longread .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.practico-longread .styled-table th {
+    background: var(--practico-blue);
+    color: white;
+    padding: 14px 20px;
+    text-align: left;
+    font-weight: 700;
+}
+
+.practico-longread .styled-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid #E2E8F0;
+    color: var(--text-gray);
+}
+
+.practico-longread .styled-table tr:last-child td { border-bottom: none; }
+.practico-longread .styled-table tr:hover td { background: var(--practico-blue-light); }
+
+/* Comparison */
+.practico-longread .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+}
+
+.practico-longread .comparison-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    border: 2px solid #E2E8F0;
+}
+
+.practico-longread .comparison-card.bad { border-color: var(--red); }
+.practico-longread .comparison-card.good { border-color: var(--accent-green); }
+
+.practico-longread .comparison-card h4 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+    margin-bottom: 16px;
+}
+
+.practico-longread .comparison-card.bad h4 { color: var(--red); }
+.practico-longread .comparison-card.good h4 { color: var(--accent-green); }
+
+/* Code Block */
+.practico-longread .code-block {
+    background: #1E293B;
+    border-radius: var(--radius-md);
+    padding: 20px;
+    margin: 20px 0;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem;
+    color: #E2E8F0;
+    line-height: 1.8;
+    white-space: pre-wrap;
+}
+
+/* Learning Cards */
+.practico-longread .learning-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin: 24px 0;
+}
+
+.practico-longread .learning-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid #E2E8F0;
+}
+
+.practico-longread .learning-card-header {
+    padding: 20px;
+    color: white;
+}
+
+.practico-longread .learning-card-header.blue { background: linear-gradient(135deg, var(--practico-blue), #339dff); }
+.practico-longread .learning-card-header.purple { background: linear-gradient(135deg, var(--accent-purple), #7b6dd8); }
+.practico-longread .learning-card-header.green { background: linear-gradient(135deg, var(--accent-green), #4caf7a); }
+.practico-longread .learning-card-header.orange { background: linear-gradient(135deg, #ff6805, #ff8a3d); }
+.practico-longread .learning-card-header.red { background: linear-gradient(135deg, #EF4444, #F87171); }
+.practico-longread .learning-card-header.sky { background: linear-gradient(135deg, #0EA5E9, #38BDF8); }
+.practico-longread .learning-card-header.violet { background: linear-gradient(135deg, #8B5CF6, #A78BFA); }
+.practico-longread .learning-card-header.pink { background: linear-gradient(135deg, #EC4899, #F472B6); }
+
+.practico-longread .learning-card-header h4 {
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+    color: white;
+}
+
+.practico-longread .learning-card-header p {
+    font-size: 0.85rem;
+    margin: 0;
+    color: rgba(255,255,255,0.85);
+}
+
+.practico-longread .learning-card-body {
+    padding: 20px;
+}
+
+.practico-longread .learning-card-body p {
+    font-size: 0.9rem;
+    color: var(--text-gray);
+    margin-bottom: 10px;
+}
+
+.practico-longread .learning-card-body p:last-child { margin-bottom: 0; }
+
+/* Timeline */
+.practico-longread .timeline {
+    position: relative;
+    margin: 24px 0;
+    padding-left: 32px;
+}
+
+.practico-longread .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, var(--practico-blue), var(--accent-purple));
+    border-radius: 3px;
+}
+
+.practico-longread .timeline-item {
+    position: relative;
+    padding-bottom: 24px;
+}
+
+.practico-longread .timeline-item:last-child { padding-bottom: 0; }
+
+.practico-longread .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -32px;
+    top: 4px;
+    width: 18px;
+    height: 18px;
+    background: white;
+    border: 4px solid var(--practico-blue);
+    border-radius: 50%;
+}
+
+.practico-longread .timeline-item h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--practico-blue);
+    margin-bottom: 6px;
+}
+
+.practico-longread .timeline-item p {
+    color: var(--text-gray);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+/* Quiz */
+.practico-longread .quiz {
+    background: linear-gradient(135deg, #EDE9FE 0%, #F5F3FF 100%);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    margin: 32px 0;
+    border: 2px solid var(--accent-purple);
+}
+
+.practico-longread .quiz-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--accent-purple);
+    margin-bottom: 20px;
+}
+
+.practico-longread .quiz-question {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+}
+
+.practico-longread .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.practico-longread .quiz-option {
+    background: white;
+    border: 2px solid #E2E8F0;
+    border-radius: var(--radius-md);
+    padding: 14px 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.practico-longread .quiz-option:hover { border-color: var(--accent-purple); }
+.practico-longread .quiz-option.selected { border-color: var(--accent-purple); background: #F5F3FF; }
+.practico-longread .quiz-option.correct { border-color: var(--accent-green); background: #F0FDF4; }
+.practico-longread .quiz-option.incorrect { border-color: var(--accent-coral); background: #FEF2F2; }
+
+.practico-longread .quiz-option-marker {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #CBD5E1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.practico-longread .quiz-option.selected .quiz-option-marker {
+    border-color: var(--accent-purple);
+    background: var(--accent-purple);
+    color: white;
+}
+
+.practico-longread .quiz-feedback {
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: var(--radius-md);
+    display: none;
+    font-size: 0.92rem;
+}
+
+.practico-longread .quiz-feedback.show { display: block; }
+.practico-longread .quiz-feedback.correct { background: #F0FDF4; color: var(--accent-green); }
+.practico-longread .quiz-feedback.incorrect { background: #FEF2F2; color: var(--red); }
+
+.practico-longread .quiz-btn {
+    margin-top: 16px;
+    background: var(--accent-purple);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.practico-longread .quiz-btn:hover { background: #3d2fa0; }
+.practico-longread .quiz-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Interactive blocks */
+.practico-longread .interactive-block {
+    background: linear-gradient(135deg, var(--practico-blue-light), #F0F9FF);
+    border: 2px solid var(--practico-blue);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    margin: 32px 0;
+}
+
+.practico-longread .interactive-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--practico-blue);
+    margin-bottom: 16px;
+}
+
+.practico-longread .interactive-btn {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid;
+}
+
+.practico-longread .interactive-btn:hover { transform: scale(1.03); }
+
+.practico-longread .interactive-btn.active {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.practico-longread .result-panel {
+    background: white;
+    border-radius: var(--radius-md);
+    padding: 24px;
+    margin-top: 20px;
+    border: 1px solid #E2E8F0;
+    display: none;
+}
+
+.practico-longread .result-panel.visible { display: block; }
+
+/* Prompt builder interactive */
+.practico-longread .pb-element {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: white;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid #E2E8F0;
+    user-select: none;
+}
+
+.practico-longread .pb-element:hover { border-color: var(--practico-blue); }
+.practico-longread .pb-element.active { border-color: var(--accent-green); background: var(--green-light); }
+
+.practico-longread .pb-toggle {
+    width: 40px;
+    height: 22px;
+    border-radius: 11px;
+    background: #CBD5E1;
+    position: relative;
+    transition: background 0.3s;
+    flex-shrink: 0;
+}
+
+.practico-longread .pb-toggle::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: white;
+    transition: transform 0.3s;
+}
+
+.practico-longread .pb-element.active .pb-toggle {
+    background: var(--accent-green);
+}
+
+.practico-longread .pb-element.active .pb-toggle::after {
+    transform: translateX(18px);
+}
+
+.practico-longread .pb-output {
+    background: #1E293B;
+    border-radius: var(--radius-md);
+    padding: 20px;
+    margin-top: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #E2E8F0;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    min-height: 80px;
+    transition: all 0.3s;
+}
+
+/* Technique comparison table */
+.practico-longread .tech-compare-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 1fr 100px;
+    gap: 1px;
+    background: #E2E8F0;
+    margin-bottom: 1px;
+}
+
+.practico-longread .tech-compare-row > div {
+    background: white;
+    padding: 12px 16px;
+    font-size: 0.88rem;
+}
+
+.practico-longread .tech-compare-row.header > div {
+    background: var(--practico-blue);
+    color: white;
+    font-weight: 700;
+    font-size: 0.82rem;
+}
+
+.practico-longread .tech-compare-row .tech-name-cell {
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.practico-longread .difficulty-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* Navigation Buttons */
+.practico-longread .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid #E2E8F0;
+}
+
+.practico-longread .nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 24px;
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.practico-longread .nav-btn-prev {
+    background: white;
+    color: var(--text-gray);
+    border: 2px solid #E2E8F0;
+}
+
+.practico-longread .nav-btn-prev:hover { border-color: var(--practico-blue); color: var(--practico-blue); }
+
+.practico-longread .nav-btn-next {
+    background: var(--practico-blue);
+    color: white;
+    border: none;
+}
+
+.practico-longread .nav-btn-next:hover { background: var(--practico-blue-dark); }
+.practico-longread .nav-btn-complete { background: var(--accent-green); }
+.practico-longread .nav-btn-complete:hover { background: #1f6e3b; }
+
+/* Completion */
+.practico-longread .completion {
+    text-align: center;
+    padding: 60px 40px;
+}
+
+.practico-longread .completion-icon {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, var(--accent-green), #4caf7a);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 3rem;
+    color: white;
+}
+
+.practico-longread .completion h2 {
+    font-size: 2rem;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+}
+
+.practico-longread .completion p {
+    color: var(--text-gray);
+    font-size: 1.1rem;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .practico-longread .sidebar { display: none; }
+    .practico-longread .main-content { min-width: 0; padding: 16px; }
+    .practico-longread .comparison { grid-template-columns: 1fr; }
+    .practico-longread .cards-grid-2, .practico-longread .cards-grid-3, .practico-longread .cards-grid-4 { grid-template-columns: 1fr; }
+    .practico-longread .tech-compare-row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+    .practico-longread .main-content { padding: 24px; }
+    .practico-longread .content-block { padding: 24px; }
+    .practico-longread .learning-cards { grid-template-columns: 1fr; }
+}
 </style>
 
 <div class="practico-longread">
 <div class="layout">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <h2>Содержание урока</h2>
-                <div class="progress-bar-container">
-                    <div class="progress-bar-fill" id="progressBar"></div>
-                </div>
-                <div class="progress-text">Завершено: <span id="completedSections">0</span> из <span id="totalSections">8</span> разделов</div>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Промпт-инжиниринг</h2>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="progressBar"></div>
             </div>
-            <ul class="nav-sections" id="navSections">
-                <!-- Generated by JS -->
-            </ul>
-        </aside>
+            <div class="progress-text">Завершено: <span id="completedSections">0</span> из <span id="totalSections">13</span> разделов</div>
+        </div>
+        <ul class="nav-sections" id="navSections"></ul>
+    </aside>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <div class="lesson-container">
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="lesson-container">
 
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 0: Введение и типы промптов -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
 <div class="section active" id="section-0" data-section="0">
     <div class="section-header">
-        <div class="section-number">&#x1f4ac; Что такое промпт</div>
-        <h1 class="section-title">Что такое промпт</h1>
+        <div class="section-number">01 &mdash; Введение</div>
+        <h1 class="section-title">Введение в промпт-инжиниринг</h1>
+        <p class="section-subtitle">Что такое промпт, почему он важен и какие бывают типы промптов</p>
     </div>
-<div class="content-block">
-<h3>Введение в промпт-инжиниринг</h3><p>В этом уроке мы разберёмся, что такое промпт, почему он важен и как правильно формулировать запросы к языковым моделям. Вы узнаете о типологии промптов, структуре эффективного запроса и популярных фреймворках для написания промптов.</p>
-</div>
-<div class="definition">
-    <div class="definition-title">&#x1f4d6; Промпт (Prompt)</div>
-    <p>Промпт &mdash; это входные данные в виде текста (запроса, инструкции), которые пользователь передаёт языковой модели (например, ChatGPT), чтобы получить желаемый ответ. Промпт задаёт модели рамки, формат и контекст ответа.</p>
-</div>
-<div class="key-point">
-    <div class="key-point-title">&#x1f4a1; Почему важно уметь писать хорошие промпты?</div>
-    <p><strong>1. Точность ответа:</strong> Чем подробнее и яснее запрос, тем выше шанс получить релевантный и полезный ответ от модели.<br><strong>2. Экономия ресурсов:</strong> Краткие и структурированные запросы потребляют меньше токенов.<br><strong>3. Скорость:</strong> Хорошо сформулированный промпт исключает необходимость уточняющих сообщений и экономит время.</p>
-</div>
-<div class="cards-grid">
-<div class="card">
-    <div class="card-icon" style="background: #ffebe1;">&#x26a0;</div>
-    <h4>Качество данных</h4>
-    <p>Качество ответа зависит от качества данных и ясности промпта</p>
-</div>
-<div class="card">
-    <div class="card-icon" style="background: #ffebe1;">&#x1f4ad;</div>
-    <h4>Галлюцинации</h4>
-    <p>Модель может ошибаться или фантазировать (&laquo;галлюцинировать&raquo;)</p>
-</div>
-<div class="card">
-    <div class="card-icon" style="background: #ffebe1;">&#x1f6d1;</div>
-    <h4>Проверка обязательна</h4>
-    <p>Нельзя использовать промпты без проверки в критически важных задачах</p>
-</div>
-</div>
 
-<div class="nav-buttons">
-    <div></div>
-    <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
-</div>
-
-</div>
-
-<div class="section" id="section-1" data-section="1">
-    <div class="section-header">
-        <div class="section-number">&#x1f504; Промпт-инжиниринг и итеративный подход</div>
-        <h1 class="section-title">Промпт-инжиниринг и итеративный подход</h1>
-    </div>
-<div class="definition">
-    <div class="definition-title">&#x1f4d6; Промпт-инжиниринг</div>
-    <p>Промпт-инжиниринг &mdash; это процесс проектирования, тестирования и улучшения запросов для взаимодействия с LLM (large language models). Он основан на итеративном подходе и требует понимания логики работы модели.</p>
-</div>
-<div class="timeline">
-<div class="timeline-item">
-    <h4>Шаг 1. Определить цель</h4>
-    <p>Что вы хотите получить от модели? Сформулируйте ожидаемый результат.</p>
-</div>
-<div class="timeline-item">
-    <h4>Шаг 2. Сформулировать первый вариант промпта</h4>
-    <p>Включите инструкцию, контекст, входные данные и формат вывода.</p>
-</div>
-<div class="timeline-item">
-    <h4>Шаг 3. Протестировать</h4>
-    <p>Посмотрите, что вернёт модель. Оцените результат.</p>
-</div>
-<div class="timeline-item">
-    <h4>Шаг 4. Оценить результат</h4>
-    <p>Насколько ответ соответствует вашим ожиданиям? Что можно улучшить?</p>
-</div>
-<div class="timeline-item">
-    <h4>Шаг 5. Уточнить и повторить</h4>
-    <p>Измените или дополните промпт и снова протестируйте.</p>
-</div>
-</div>
-<div class="key-point">
-    <div class="key-point-title">&#x1f4a1; Главный вывод</div>
-    <p>Промпт-инжиниринг &mdash; это ключевая компетенция 21 века для тех, кто хочет эффективно использовать искусственный интеллект. Чем лучше вы формулируете запросы, тем больше пользы получаете от LLM.</p>
-</div>
-
-<div class="nav-buttons">
-    <button class="nav-btn nav-btn-prev" onclick="prevSection()">&#x2190; Назад</button>
-    <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
-</div>
-
-</div>
-
-<div class="section" id="section-2" data-section="2">
-    <div class="section-header">
-        <div class="section-number">&#x1f9e9; Проверка знаний: основы</div>
-        <h1 class="section-title">Проверка знаний: основы</h1>
-    </div>
-<div class="quiz" id="q1">
-    <div class="quiz-title">&#x1f9e9; Проверьте себя</div>
-    <p class="quiz-question">Почему один и тот же вопрос может дать совершенно разные ответы у ChatGPT?</p>
-    <div class="quiz-options">
-<div class="quiz-option" data-answer="a" onclick="selectAnswer(this, 'q1')">
-    <span class="quiz-option-marker">A</span>
-    <span>ChatGPT генерирует случайные ответы</span>
-</div>
-<div class="quiz-option" data-answer="b" onclick="selectAnswer(this, 'q1')">
-    <span class="quiz-option-marker">B</span>
-    <span>Всё зависит от формулировки промпта и контекста</span>
-</div>
-<div class="quiz-option" data-answer="c" onclick="selectAnswer(this, 'q1')">
-    <span class="quiz-option-marker">C</span>
-    <span>Модель запоминает предыдущие сессии</span>
-</div>
-<div class="quiz-option" data-answer="d" onclick="selectAnswer(this, 'q1')">
-    <span class="quiz-option-marker">D</span>
-    <span>Влияет время суток</span>
-</div>
-    </div>
-    <button class="quiz-btn" disabled onclick="checkAnswer('q1', 'b', 'Верно! Качество ответа напрямую зависит от того, как сформулирован промпт.', 'Неверно. Качество ответа напрямую зависит от того, как сформулирован промпт и какой контекст предоставлен.')">Проверить ответ</button>
-    <div class="quiz-feedback" id="q1-feedback"></div>
-</div>
-<div class="quiz" id="q2">
-    <div class="quiz-title">&#x1f9e9; Проверьте себя</div>
-    <p class="quiz-question">Какой шаг НЕ входит в итеративный подход к промпт-инжинирингу?</p>
-    <div class="quiz-options">
-<div class="quiz-option" data-answer="a" onclick="selectAnswer(this, 'q2')">
-    <span class="quiz-option-marker">A</span>
-    <span>Определить цель</span>
-</div>
-<div class="quiz-option" data-answer="b" onclick="selectAnswer(this, 'q2')">
-    <span class="quiz-option-marker">B</span>
-    <span>Протестировать промпт</span>
-</div>
-<div class="quiz-option" data-answer="c" onclick="selectAnswer(this, 'q2')">
-    <span class="quiz-option-marker">C</span>
-    <span>Обучить модель на новых данных</span>
-</div>
-<div class="quiz-option" data-answer="d" onclick="selectAnswer(this, 'q2')">
-    <span class="quiz-option-marker">D</span>
-    <span>Уточнить и повторить</span>
-</div>
-    </div>
-    <button class="quiz-btn" disabled onclick="checkAnswer('q2', 'c', 'Правильно! Обучение модели на новых данных не является частью промпт-инжиниринга. Мы работаем только с запросами.', 'Неверно. Промпт-инжиниринг не предполагает обучение модели &mdash; только проектирование и улучшение запросов.')">Проверить ответ</button>
-    <div class="quiz-feedback" id="q2-feedback"></div>
-</div>
-
-<div class="nav-buttons">
-    <button class="nav-btn nav-btn-prev" onclick="prevSection()">&#x2190; Назад</button>
-    <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
-</div>
-
-</div>
-
-<div class="section" id="section-3" data-section="3">
-    <div class="section-header">
-        <div class="section-number">&#x1f4da; Типология промптов</div>
-        <h1 class="section-title">Типология промптов</h1>
-    </div>
-<div class="content-block">
-<h3>Какие бывают промпты</h3><p>Типология промптов помогает понять, как формулировать запросы в зависимости от задачи. Разные типы промптов активируют разные &laquo;режимы мышления&raquo; у модели.</p>
-</div>
-<div class="content-block">
-<h4>По степени конкретики</h4>
-</div>
-<div class="table-container">
-<table class="styled-table">
-<thead><tr><th>Тип</th><th>Описание</th><th>Пример</th></tr></thead>
-<tbody>
-<tr><td><strong>Явные</strong></td><td>Содержат чёткую инструкцию, формат, контекст и стиль</td><td>&laquo;Сделай таблицу на 5 колонок для анализа бюджета за март&raquo;</td></tr>
-<tr><td><strong>Неявные</strong></td><td>Более свободные, оставляют ИИ пространство для интерпретации</td><td>&laquo;Как улучшить работу отдела продаж?&raquo;</td></tr>
-<tr><td><strong>Креативные</strong></td><td>Нацелены на генерацию нестандартных идей</td><td>&laquo;Придумай идею для вирусной рекламы экологичной бутылки&raquo;</td></tr>
-</tbody>
-</table>
-</div>
-<div class="content-block">
-<h4>По роли и цели</h4>
-</div>
-<div class="table-container">
-<table class="styled-table">
-<thead><tr><th>Тип</th><th>Описание</th><th>Пример</th></tr></thead>
-<tbody>
-<tr><td><strong>Системные</strong></td><td>Задают роль и стиль работы модели</td><td>&laquo;Ты &mdash; UX-дизайнер. Предложи улучшения главной страницы сайта банка.&raquo;</td></tr>
-<tr><td><strong>Условные</strong></td><td>Включают условия для выбора сценариев</td><td>&laquo;Если пользователь &mdash; новичок, предложи простую инструкцию. Если опытный &mdash; ссылку на документацию.&raquo;</td></tr>
-<tr><td><strong>Естественные</strong></td><td>Запросы в форме обычных человеческих вопросов</td><td>&laquo;Как убедить инвесторов вложиться в стартап?&raquo;</td></tr>
-</tbody>
-</table>
-</div>
-
-<div class="nav-buttons">
-    <button class="nav-btn nav-btn-prev" onclick="prevSection()">&#x2190; Назад</button>
-    <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
-</div>
-
-</div>
-
-<div class="section" id="section-4" data-section="4">
-    <div class="section-header">
-        <div class="section-number">&#x1f3af; Типы промптов по назначению</div>
-        <h1 class="section-title">Типы промптов по назначению</h1>
-    </div>
-<div class="content-block">
-<h3>Классификация по назначению</h3><p>В зависимости от цели запроса можно выделить 8 основных типов промптов:</p>
-</div>
-<div class="cards-grid">
-<div class="card">
-    <div class="card-icon" style="background: #e9f1fc;">&#x2139;</div>
-    <h4>Информационные</h4>
-    <p>Получение фактов и объяснений. Пример: &laquo;Расскажи о принципах юнит-экономики для SaaS-продукта&raquo;</p>
-</div>
-<div class="card">
-    <div class="card-icon" style="background: #e9fcf0;">&#x1f4cb;</div>
-    <h4>Инструкционные</h4>
-    <p>Пошаговые указания. Пример: &laquo;Объясни пошагово, как настроить CRM-воронку для B2B-продаж&raquo;</p>
-</div>
-<div class="card">
-    <div class="card-icon" style="background: #ebe9fc;">&#x1f4ca;</div>
-    <h4>Аналитические</h4>
-    <p>Анализ, выводы, интерпретации. Пример: &laquo;Проанализируй динамику продаж за 6 месяцев&raquo;</p>
-</div>
-<div class="card">
-    <div class="card-icon" style="background: #e9f1fc;">&#x2696;</div>
-    <h4>Сравнительные</h4>
-    <p>Сравнение объектов. Пример: &laquo;Сравни плюсы и минусы подписной модели и разовых продаж&raquo;</p>
-</div>
-<div class="card">
-    <div class="card-icon" style="background: #ffebe1;">&#x1f914;</div>
-    <h4>Гипотетические</h4>
-    <p>Сценарии &laquo;что если&raquo;. Пример: &laquo;Что произойдёт с юнит-экономикой, если стоимость привлечения клиента вырастет в 2 раза?&raquo;</p>
-</div>
-<div class="card">
-    <div class="card-icon" style="background: #e9fcf0;">&#x1f4dd;</div>
-    <h4>Мнение / Оценка</h4>
-    <p>Субъективная позиция. Пример: &laquo;Как ты оцениваешь эффективность TikTok для продвижения бренда?&raquo;</p>
-</div>
-<div class="card">
-    <div class="card-icon" style="background: #ebe9fc;">&#x1f50d;</div>
-    <h4>Уточняющие</h4>
-    <p>Просьбы разъяснить термин или фразу. Пример: &laquo;Что ты имеешь в виду под &quot;product-market fit&quot;?&raquo;</p>
-</div>
-<div class="card">
-    <div class="card-icon" style="background: #ffebe1;">&#x1f3a8;</div>
-    <h4>Креативные</h4>
-    <p>Генерация историй, слоганов, образов. Пример: &laquo;Придумай 5 слоганов для рекламной кампании нового фитнес-приложения&raquo;</p>
-</div>
-</div>
-<div class="quiz" id="q3">
-    <div class="quiz-title">&#x1f9e9; Проверьте себя</div>
-    <p class="quiz-question">Какой тип промпта лучше всего подходит для задачи: &laquo;Сравни плюсы и минусы подписной модели и разовых продаж&raquo;?</p>
-    <div class="quiz-options">
-<div class="quiz-option" data-answer="a" onclick="selectAnswer(this, 'q3')">
-    <span class="quiz-option-marker">A</span>
-    <span>Информационный</span>
-</div>
-<div class="quiz-option" data-answer="b" onclick="selectAnswer(this, 'q3')">
-    <span class="quiz-option-marker">B</span>
-    <span>Инструкционный</span>
-</div>
-<div class="quiz-option" data-answer="c" onclick="selectAnswer(this, 'q3')">
-    <span class="quiz-option-marker">C</span>
-    <span>Сравнительный</span>
-</div>
-<div class="quiz-option" data-answer="d" onclick="selectAnswer(this, 'q3')">
-    <span class="quiz-option-marker">D</span>
-    <span>Гипотетический</span>
-</div>
-    </div>
-    <button class="quiz-btn" disabled onclick="checkAnswer('q3', 'c', 'Верно! Сравнительные промпты используются для сравнения объектов, их плюсов и минусов.', 'Неверно. Для сравнения объектов используются сравнительные промпты.')">Проверить ответ</button>
-    <div class="quiz-feedback" id="q3-feedback"></div>
-</div>
-
-<div class="nav-buttons">
-    <button class="nav-btn nav-btn-prev" onclick="prevSection()">&#x2190; Назад</button>
-    <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
-</div>
-
-</div>
-
-<div class="section" id="section-5" data-section="5">
-    <div class="section-header">
-        <div class="section-number">&#x1f4a1; Почему промпт важен. Контекст</div>
-        <h1 class="section-title">Почему промпт важен. Контекст</h1>
-    </div>
-<div class="content-block">
-<h3>Основные преимущества хорошего промпта</h3>
-</div>
-<div class="cards-grid">
-<div class="card">
-    <div class="card-icon" style="background: #e9f1fc;">&#x1f3af;</div>
-    <h4>Повышение точности</h4>
-    <p>Чёткий и продуманный запрос помогает модели лучше понять контекст задачи. Больше деталей &mdash; точнее ответ.</p>
-</div>
-<div class="card">
-    <div class="card-icon" style="background: #e9fcf0;">&#x1f4b0;</div>
-    <h4>Снижение затрат</h4>
-    <p>Краткие и структурированные запросы уменьшают потребление токенов. Особенно важно при масштабном использовании.</p>
-</div>
-<div class="card">
-    <div class="card-icon" style="background: #ebe9fc;">&#x26a1;</div>
-    <h4>Ускорение работы</h4>
-    <p>Один точный запрос способен заменить 3&ndash;4 итерации доработки. Экономия времени всей команды.</p>
-</div>
-<div class="card">
-    <div class="card-icon" style="background: #ffebe1;">&#x1f6e1;</div>
-    <h4>Контроль за рисками</h4>
-    <p>Чётко прописанный промпт снижает вероятность &laquo;галлюцинаций&raquo; (выдуманных фактов).</p>
-</div>
-<div class="card">
-    <div class="card-icon" style="background: #e9f1fc;">&#x1f4c2;</div>
-    <h4>Сохранение контекста</h4>
-    <p>Структурированный контекст (через системный промпт или правила) позволяет модели давать согласованные ответы.</p>
-</div>
-</div>
-<div class="definition">
-    <div class="definition-title">&#x1f4d6; Контекст</div>
-    <p>Контекст &mdash; это весь объём информации, который модель учитывает при генерации ответа. Он включает: <br>&bull; <strong>Историю диалога</strong> &mdash; все предыдущие сообщения и ответы в чате.<br>&bull; <strong>Системный промпт</strong> &mdash; глобальные правила: стиль ответов, ограничения, тон общения.<br>&bull; <strong>Подгружаемые данные</strong> &mdash; дополнительные документы, базы знаний, примеры.</p>
-</div>
-<div class="key-point">
-    <div class="key-point-title">&#x1f4a1; Контекстное окно</div>
-    <p>Контекстное окно &mdash; это максимальный объём текста (в токенах), который модель способна учитывать за один раз. Например: GPT-4o &mdash; до 128k токенов, GPT-5 &mdash; до 1M токенов. Если общий объём превысит лимит, &laquo;старые&raquo; части будут отброшены, что может привести к потере ключевой информации.</p>
-</div>
-
-<div class="nav-buttons">
-    <button class="nav-btn nav-btn-prev" onclick="prevSection()">&#x2190; Назад</button>
-    <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
-</div>
-
-</div>
-
-<div class="section" id="section-6" data-section="6">
-    <div class="section-header">
-        <div class="section-number">&#x2699; Структура и элементы промпта</div>
-        <h1 class="section-title">Структура и элементы промпта</h1>
-    </div>
-<div class="content-block">
-<h3>Разбор структуры эффективного промпта</h3><p>Хороший промпт &mdash; это не просто вопрос. Это инструкция с понятной структурой, где каждая часть помогает модели дать более точный и полезный ответ.</p>
-</div>
-<div class="cards-grid">
-<div class="card">
-    <div class="card-icon" style="background: #e9f1fc;">&#x1f4dd;</div>
-    <h4>1. Instruction &mdash; инструкция</h4>
-    <p>Чётко сформулированная задача: что именно нужно сделать. Чем конкретнее &mdash; тем лучше.</p>
-</div>
-<div class="card">
-    <div class="card-icon" style="background: #e9fcf0;">&#x1f4d6;</div>
-    <h4>2. Context &mdash; контекст</h4>
-    <p>Дополнительная информация, которая помогает модели &laquo;понять ситуацию&raquo;.</p>
-</div>
-<div class="card">
-    <div class="card-icon" style="background: #ebe9fc;">&#x1f4c4;</div>
-    <h4>3. Input Data &mdash; входные данные</h4>
-    <p>Данные, факты, параметры, которые ИИ должен учесть при выполнении задачи.</p>
-</div>
-<div class="card">
-    <div class="card-icon" style="background: #ffebe1;">&#x1f4e4;</div>
-    <h4>4. Output Indicator &mdash; формат результата</h4>
-    <p>Формат вывода, длина, стиль, ограничения. Как и в каком виде ответить.</p>
-</div>
-</div>
-<div class="comparison">
-    <div class="comparison-card left">
-        <h4>&#x274c; Плохой промпт</h4>
-        <ul>
-<li>&laquo;Напиши письмо клиенту&raquo;</li>
-<li>&laquo;Сделай текст для лендинга&raquo;</li>
-<li>&laquo;Напиши пост про наш продукт&raquo;</li>
-<li>&laquo;Сделай текст как маркетолог&raquo;</li>
-        </ul>
-    </div>
-    <div class="comparison-card right">
-        <h4>&#x2705; Хороший промпт</h4>
-        <ul>
-<li>&laquo;Составь follow-up письмо клиенту после демо-встречи. Стиль &mdash; деловой, но дружелюбный&raquo;</li>
-<li>&laquo;Составь текст лендинга для SaaS-продукта: преимущества, тарифы, CTA. Стиль &mdash; продающий&raquo;</li>
-<li>&laquo;Создай LinkedIn-пост до 70 слов о запуске новой функции продукта. Тон &mdash; вдохновляющий&raquo;</li>
-<li>&laquo;Ты &mdash; менеджер по продажам IT-компании. Напиши ответ клиенту, который просит скидку&raquo;</li>
-        </ul>
-    </div>
-</div>
-<div class="key-point">
-    <div class="key-point-title">&#x1f4a1; Формула хорошего промпта</div>
-    <p><strong>Хороший промпт = Инструкция</strong> (что сделать) + <strong>Контекст</strong> (где, для кого) + <strong>Входные данные</strong> (что учесть) + <strong>Индикатор результата</strong> (как и в каком виде ответить)</p>
-</div>
-<div class="quiz" id="q4">
-    <div class="quiz-title">&#x1f9e9; Проверьте себя</div>
-    <p class="quiz-question">Какой элемент промпта отвечает за формат, длину и стиль ответа?</p>
-    <div class="quiz-options">
-<div class="quiz-option" data-answer="a" onclick="selectAnswer(this, 'q4')">
-    <span class="quiz-option-marker">A</span>
-    <span>Instruction (инструкция)</span>
-</div>
-<div class="quiz-option" data-answer="b" onclick="selectAnswer(this, 'q4')">
-    <span class="quiz-option-marker">B</span>
-    <span>Context (контекст)</span>
-</div>
-<div class="quiz-option" data-answer="c" onclick="selectAnswer(this, 'q4')">
-    <span class="quiz-option-marker">C</span>
-    <span>Input Data (входные данные)</span>
-</div>
-<div class="quiz-option" data-answer="d" onclick="selectAnswer(this, 'q4')">
-    <span class="quiz-option-marker">D</span>
-    <span>Output Indicator (индикатор результата)</span>
-</div>
-    </div>
-    <button class="quiz-btn" disabled onclick="checkAnswer('q4', 'd', 'Верно! Output Indicator задаёт формат вывода, длину, стиль и ограничения ответа.', 'Неверно. За формат, длину и стиль ответа отвечает Output Indicator (индикатор результата).')">Проверить ответ</button>
-    <div class="quiz-feedback" id="q4-feedback"></div>
-</div>
-
-<div class="nav-buttons">
-    <button class="nav-btn nav-btn-prev" onclick="prevSection()">&#x2190; Назад</button>
-    <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
-</div>
-
-</div>
-
-<div class="section" id="section-7" data-section="7">
-    <div class="section-header">
-        <div class="section-number">&#x1f680; Фреймворки написания промптов</div>
-        <h1 class="section-title">Фреймворки написания промптов</h1>
-    </div>
-<div class="content-block">
-<h3>Фреймворки для структурирования промптов</h3><p>Фреймворки помогают структурировать промпт так, чтобы модель понимала контекст, цель и формат результата. Это особенно важно при работе с бизнесом, обучением, аналитикой или автоматизацией.</p>
-</div>
-<div class="table-container">
-<table class="styled-table">
-<thead><tr><th>Фреймворк</th><th>Расшифровка</th><th>Лучше всего подходит для</th></tr></thead>
-<tbody>
-<tr><td><strong>AUTOMAT</strong></td><td>Act, User, Target, Output, Mode, Atypical, Topics</td><td>Самые сложные и детализированные задачи с множеством условий</td></tr>
-<tr><td><strong>RTF</strong></td><td>Role, Task, Format</td><td>Быстрые инструкции: письма, посты, чек-листы, бизнес-коммуникации</td></tr>
-<tr><td><strong>TAG</strong></td><td>Task, Action, Goal</td><td>Задачи с чётким измеримым результатом: продажи, маркетинг, UX</td></tr>
-<tr><td><strong>BAB</strong></td><td>Before, After, Bridge</td><td>Задачи трансформации &laquo;до/после&raquo;: улучшение процессов, внедрение изменений</td></tr>
-<tr><td><strong>RISE</strong></td><td>Role, Input, Steps, Expectation</td><td>Пошаговые задачи: анализ данных, отчёты, структурированные материалы</td></tr>
-</tbody>
-</table>
-</div>
-<div class="content-block">
-<h4>Разбор каждого фреймворка</h4>
-</div>
-<div class="learning-cards">
-<div class="learning-card">
-    <div class="learning-card-header blue">
-        <h4>AUTOMAT</h4>
-        <p>Act, User, Target, Output, Mode, Atypical, Topics</p>
-    </div>
-    <div class="learning-card-body">
-        <p><strong>Act</strong> &mdash; роль ИИ<br><strong>User</strong> &mdash; для кого создаётся ответ<br><strong>Target</strong> &mdash; что нужно сделать<br><strong>Output</strong> &mdash; формат вывода<br><strong>Mode</strong> &mdash; стиль (дружелюбный, юридический, лаконичный)<br><strong>Atypical</strong> &mdash; как действовать при нехватке данных<br><strong>Topics</strong> &mdash; разрешённые и запрещённые темы</p>
-    </div>
-</div>
-<div class="learning-card">
-    <div class="learning-card-header green">
-        <h4>RTF</h4>
-        <p>Role, Task, Format</p>
-    </div>
-    <div class="learning-card-body">
-        <p><strong>Role</strong> &mdash; кем выступает модель (маркетолог, аналитик, менеджер по продажам)<br><strong>Task</strong> &mdash; чётко сформулированное действие<br><strong>Format</strong> &mdash; в каком виде результат (email, таблица, список)</p>
-    </div>
-</div>
-<div class="learning-card">
-    <div class="learning-card-header purple">
-        <h4>TAG</h4>
-        <p>Task, Action, Goal</p>
-    </div>
-    <div class="learning-card-body">
-        <p><strong>Task</strong> &mdash; проблема или область для работы<br><strong>Action</strong> &mdash; что именно должен сделать ИИ<br><strong>Goal</strong> &mdash; конечный результат, которого нужно достичь</p>
-    </div>
-</div>
-<div class="learning-card">
-    <div class="learning-card-header orange">
-        <h4>BAB</h4>
-        <p>Before, After, Bridge</p>
-    </div>
-    <div class="learning-card-body">
-        <p><strong>Before</strong> &mdash; исходное состояние или проблема<br><strong>After</strong> &mdash; желаемое состояние<br><strong>Bridge</strong> &mdash; действия для перехода от &laquo;До&raquo; к &laquo;После&raquo;</p>
-    </div>
-</div>
-<div class="learning-card">
-    <div class="learning-card-header blue">
-        <h4>RISE</h4>
-        <p>Role, Input, Steps, Expectation</p>
-    </div>
-    <div class="learning-card-body">
-        <p><strong>Role</strong> &mdash; кем выступает модель<br><strong>Input</strong> &mdash; какие данные предоставлены<br><strong>Steps</strong> &mdash; какие действия выполнить<br><strong>Expectation</strong> &mdash; какой итог нужен</p>
-    </div>
-</div>
-</div>
-<div class="example">
-    <div class="example-title">&#x1f4a1; Пример промпта по RTF</div>
-    <p>&laquo;Ты менеджер по продажам B2B SaaS-компании. Составь follow-up письмо клиенту после демо-встречи, поблагодари за время и предложи следующий шаг &mdash; пилотный проект на 2 недели. Email в деловом, но дружелюбном стиле, до 120 слов.&raquo;</p>
-</div>
-<div class="example">
-    <div class="example-title">&#x1f4a1; Пример промпта по TAG</div>
-    <p>&laquo;Улучши процесс онбординга новых клиентов в SaaS-продукте. Составь план из 5 шагов с конкретными активностями (welcome-email, обучающий вебинар, персональный менеджер). Цель &mdash; повысить активацию до 60% и снизить отток в первый месяц.&raquo;</p>
-</div>
-<div class="quiz" id="q5">
-    <div class="quiz-title">&#x1f9e9; Проверьте себя</div>
-    <p class="quiz-question">Какой фреймворк лучше всего подходит для задачи трансформации &laquo;до/после&raquo;?</p>
-    <div class="quiz-options">
-<div class="quiz-option" data-answer="a" onclick="selectAnswer(this, 'q5')">
-    <span class="quiz-option-marker">A</span>
-    <span>RTF (Role, Task, Format)</span>
-</div>
-<div class="quiz-option" data-answer="b" onclick="selectAnswer(this, 'q5')">
-    <span class="quiz-option-marker">B</span>
-    <span>BAB (Before, After, Bridge)</span>
-</div>
-<div class="quiz-option" data-answer="c" onclick="selectAnswer(this, 'q5')">
-    <span class="quiz-option-marker">C</span>
-    <span>TAG (Task, Action, Goal)</span>
-</div>
-<div class="quiz-option" data-answer="d" onclick="selectAnswer(this, 'q5')">
-    <span class="quiz-option-marker">D</span>
-    <span>RISE (Role, Input, Steps, Expectation)</span>
-</div>
-    </div>
-    <button class="quiz-btn" disabled onclick="checkAnswer('q5', 'b', 'Верно! BAB (Before, After, Bridge) создан именно для задач трансформации: показать текущее состояние, желаемое и путь между ними.', 'Неверно. Для задач трансформации &laquo;до/после&raquo; лучше всего подходит BAB (Before, After, Bridge).')">Проверить ответ</button>
-    <div class="quiz-feedback" id="q5-feedback"></div>
-</div>
-
-<div class="nav-buttons">
-    <button class="nav-btn nav-btn-prev" onclick="prevSection()">&#x2190; Назад</button>
-    <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
-</div>
-
-</div>
-
-<!-- На каком языке писать промпты -->
-<div class="section" id="section-8" data-section="8">
-    <div class="section-header">
-        <div class="section-number">&#x1f310; На каком языке писать промпты</div>
-        <h1 class="section-title">На каком языке писать промпты</h1>
-    </div>
-<div class="content-block">
-<h3>Русский или английский?</h3><p>Языковые модели обучены на огромных текстовых корпусах, и большая часть этих данных &mdash; на английском языке. Это означает, что модель &laquo;знает&raquo; больше паттернов, терминов и контекстов именно на английском. Однако для русскоязычных задач русский язык вполне подходит.</p>
-</div>
-<div class="cards-grid">
-<div class="card">
-    <div class="card-icon" style="background: #e9f1fc;">&#x1f1ec;&#x1f1e7;</div>
-    <h4>Правило 1: Если можете &mdash; пишите на английском</h4>
-    <p>Английские промпты часто дают более точные и разнообразные результаты, особенно для технических, аналитических и кодовых задач. Больше обучающих данных = лучше качество.</p>
-</div>
-<div class="card">
-    <div class="card-icon" style="background: #e9fcf0;">&#x1f504;</div>
-    <h4>Правило 2: Промпт на английском, ответ на русском</h4>
-    <p>Если хоть немного понимаете английский &mdash; напишите промпт на русском, переведите его на английский и добавьте в конце: <strong>&laquo;Reply only in Russian&raquo;</strong> или <strong>&laquo;Отвечай только на русском&raquo;</strong>.</p>
-</div>
-<div class="card">
-    <div class="card-icon" style="background: #ffebe1;">&#x1f1f7;&#x1f1fa;</div>
-    <h4>Правило 3: Нет английского &mdash; пишите на русском</h4>
-    <p>Современные модели хорошо работают с русским языком. Для задач генерации русскоязычного контента, писем, текстов &mdash; русский промпт вполне эффективен.</p>
-</div>
-</div>
-<div class="example">
-    <div class="example-title">&#x1f4a1; Пример: промпт на английском с ответом на русском</div>
-    <p><code>{ваш промпт на английском}. Reply only in Russian</code><br><code>{ваш промпт на английском}. Отвечай только на русском</code></p>
-</div>
-<div class="key-point">
-    <div class="key-point-title">&#x1f4a1; Когда какой язык использовать</div>
-    <p><strong>Английский</strong> &mdash; для технических задач, программирования, анализа данных, работы с API, генерации кода. <strong>Русский</strong> &mdash; для создания русскоязычного контента, писем, маркетинговых текстов, переводов. <strong>Смешанный подход</strong> &mdash; промпт на английском + &laquo;Reply in Russian&raquo; для лучшего качества при русскоязычном выводе.</p>
-</div>
-
-<div class="nav-buttons">
-    <button class="nav-btn nav-btn-prev" onclick="prevSection()">&#x2190; Назад</button>
-    <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
-</div>
-
-</div>
-
-<!-- Техники промптинга -->
-<div class="section" id="section-9" data-section="9">
-    <div class="section-header">
-        <div class="section-number">&#x1f9ea; Техники промптинга</div>
-        <h1 class="section-title">Техники промптинга</h1>
-        <p class="section-subtitle">Zero-shot, Few-shot, Chain-of-Thought, Step-back, Self-Criticism</p>
-    </div>
-<div class="content-block">
-<h3>Основные техники создания эффективных промптов</h3><p>Помимо фреймворков (AUTOMAT, RTF, TAG, BAB, RISE), существуют специальные техники промптинга, которые активируют разные &laquo;режимы мышления&raquo; у модели. Каждая техника решает свой класс задач.</p>
-</div>
-
-<div class="learning-cards">
-<div class="learning-card">
-    <div class="learning-card-header blue">
-        <h4>Zero-shot Prompting</h4>
-        <p>Запрос без примеров</p>
-    </div>
-    <div class="learning-card-body">
-        <p>Модели даётся задача <strong>без каких-либо примеров</strong>. Она полагается исключительно на свои предварительно обученные знания. Это самый простой подход &mdash; прямая инструкция.</p>
-        <p><strong>Цель:</strong> быстро решать задачи без подготовки данных. Оценить способность модели справляться с задачей &laquo;с нуля&raquo;.</p>
-        <p><strong>Реализация:</strong> дайте чёткую и лаконичную инструкцию. Укажите контекст и формат ожидаемого ответа.</p>
-    </div>
-</div>
-<div class="learning-card">
-    <div class="learning-card-header green">
-        <h4>Few-shot Prompting</h4>
-        <p>Обучение на примерах</p>
-    </div>
-    <div class="learning-card-body">
-        <p>Модели предоставляется <strong>один или несколько примеров</strong> выполнения задачи перед тем, как попросить её выполнить новую задачу. Это помогает модели уловить формат и логику ответа.</p>
-        <p><strong>Цель:</strong> снизить двусмысленность, повысить точность, задать нужный формат через образцы.</p>
-        <p><strong>Реализация:</strong> (1) краткая инструкция, (2) несколько примеров &laquo;вход &rarr; выход&raquo;, (3) новый запрос для модели.</p>
-        <p><strong>Правила:</strong> чередуйте позитивные/негативные примеры, количество &mdash; равное, избегайте нестандартных символов.</p>
-    </div>
-</div>
-<div class="learning-card">
-    <div class="learning-card-header purple">
-        <h4>Chain-of-Thought (CoT)</h4>
-        <p>Пошаговое рассуждение</p>
-    </div>
-    <div class="learning-card-body">
-        <p>Метод, который побуждает модель <strong>показывать промежуточные шаги рассуждения</strong> при решении задачи. Критически важен для математики, расчётов и многошаговой логики.</p>
-        <p><strong>Реализация:</strong> добавьте фразу <em>&laquo;Решай шаг за шагом&raquo;</em> или <em>&laquo;Покажи ход рассуждений&raquo;</em>.</p>
-        <p><strong>Когда работает:</strong> многошаговая логика, расчёты, юнит-экономика, объяснение причин.</p>
-        <p><strong>Когда не работает:</strong> задача очевидна, нужен только факт или краткий ответ.</p>
-    </div>
-</div>
-<div class="learning-card">
-    <div class="learning-card-header orange">
-        <h4>Step-back Prompting</h4>
-        <p>Отход на шаг назад</p>
-    </div>
-    <div class="learning-card-body">
-        <p>Техника, при которой <strong>сначала задаётся более общий, абстрактный вопрос</strong>, а затем полученные принципы применяются к конкретной задаче. &laquo;Шаг назад&raquo; активирует у модели фоновые знания и улучшает качество ответа.</p>
-        <p><strong>Преимущества:</strong> стимулирует критическое мышление, снижает предвзятость, модель фокусируется на принципах, а не только на деталях.</p>
-        <p><strong>Алгоритм:</strong> (1) спросите общий вопрос о принципах, (2) получите ответ, (3) используйте его как контекст для конкретной задачи.</p>
-    </div>
-</div>
-<div class="learning-card">
-    <div class="learning-card-header blue">
-        <h4>Self-Criticism Prompting</h4>
-        <p>Самокритика модели</p>
-    </div>
-    <div class="learning-card-body">
-        <p>Метод, при котором модель <strong>генерирует ответ, затем сама его критикует и улучшает</strong>. Повышает качество без внешней корректировки.</p>
-        <p><strong>Алгоритм:</strong> (1) сгенерировать первоначальный ответ, (2) попросить оценить свой ответ как независимый эксперт, (3) на основе критики переписать улучшенную версию.</p>
-        <p><strong>Когда использовать:</strong> сложные тексты, инструкции, стратегии, email-рассылки &mdash; везде, где важна полнота и точность.</p>
-    </div>
-</div>
-</div>
-
-<div class="example">
-    <div class="example-title">&#x1f4a1; Zero-shot: прямая инструкция</div>
-    <p>&laquo;Классифицируй настроение этого текста как позитивное, негативное или нейтральное: &lsquo;Я думаю, отпуск был нормальным.&rsquo;&raquo;<br><strong>Результат:</strong> Нейтральное</p>
-</div>
-<div class="example">
-    <div class="example-title">&#x1f4a1; Few-shot: обучение через примеры</div>
-    <p>&laquo;Классифицируй настроение текста как положительное или отрицательное.<br><strong>Текст:</strong> &lsquo;Продукт ужасный.&rsquo; &rarr; <strong>Настроение:</strong> Негативное<br><strong>Текст:</strong> &lsquo;Очень полезно, стоит своих денег!&rsquo; &rarr; <strong>Настроение:</strong> Позитивное<br><strong>Текст:</strong> &lsquo;Это не работает!&rsquo; &rarr; ?&raquo;<br><strong>Результат:</strong> Негативное</p>
-</div>
-<div class="example">
-    <div class="example-title">&#x1f4a1; Chain-of-Thought: пошаговый расчёт</div>
-    <p>&laquo;В компании 100 серверов. Планируется перенести 40% в облако. После переноса расходы на поддержку уменьшатся на 30%. Текущие затраты на поддержку 1 сервера &mdash; 100 тыс. руб./год. Посчитай годовую экономию. Покажи расчёт шаг за шагом.&raquo;</p>
-</div>
-<div class="example">
-    <div class="example-title">&#x1f4a1; Step-back: сначала общий вопрос</div>
-    <p><strong>Вместо:</strong> &laquo;Сделай стратегический план для увеличения выручки AI SaaS-продукта на 30%.&raquo;<br><strong>Сначала спрашиваем:</strong> &laquo;Опиши ключевые элементы успешного стратегического плана для IT-компании: как формируются цели, строятся роадмапы, определяются OKR/KPI.&raquo;<br><strong>Затем:</strong> &laquo;Используя эти элементы, разбей цель &lsquo;увеличить выручку на 30% за год&rsquo; на стратегические шаги, составь квартальный роадмап, предложи OKR/KPI.&raquo;</p>
-</div>
-<div class="example">
-    <div class="example-title">&#x1f4a1; Self-Criticism: три шага улучшения</div>
-    <p><strong>Шаг 1 &mdash; задача:</strong> &laquo;Сгенерируй email для клиента, который положил товар в корзину, но не оформил заказ.&raquo;<br><strong>Шаг 2 &mdash; самокритика:</strong> &laquo;Оцени свой ответ как независимый эксперт: что слишком общее, где не хватает персонализации?&raquo;<br><strong>Шаг 3 &mdash; улучшение:</strong> &laquo;На основе своей критики перепиши email &mdash; добавь конкретные товары, срочность и персональное предложение.&raquo;</p>
-</div>
-
-<div class="quiz" id="q6">
-    <div class="quiz-title">&#x1f9e9; Проверьте себя</div>
-    <p class="quiz-question">Какая техника промптинга просит модель сначала рассмотреть общие принципы, а затем применить их к конкретной задаче?</p>
-    <div class="quiz-options">
-<div class="quiz-option" data-answer="a" onclick="selectAnswer(this, 'q6')">
-    <span class="quiz-option-marker">A</span>
-    <span>Chain-of-Thought</span>
-</div>
-<div class="quiz-option" data-answer="b" onclick="selectAnswer(this, 'q6')">
-    <span class="quiz-option-marker">B</span>
-    <span>Step-back Prompting</span>
-</div>
-<div class="quiz-option" data-answer="c" onclick="selectAnswer(this, 'q6')">
-    <span class="quiz-option-marker">C</span>
-    <span>Self-Criticism Prompting</span>
-</div>
-<div class="quiz-option" data-answer="d" onclick="selectAnswer(this, 'q6')">
-    <span class="quiz-option-marker">D</span>
-    <span>Few-shot Prompting</span>
-</div>
-    </div>
-    <button class="quiz-btn" disabled onclick="checkAnswer('q6', 'b', 'Верно! Step-back Prompting сначала задаёт общий вопрос о принципах, а затем применяет их к конкретной задаче.', 'Неверно. Step-back Prompting &mdash; это техника, где сначала задаётся абстрактный вопрос для получения общих принципов.')">Проверить ответ</button>
-    <div class="quiz-feedback" id="q6-feedback"></div>
-</div>
-
-<div class="nav-buttons">
-    <button class="nav-btn nav-btn-prev" onclick="prevSection()">&#x2190; Назад</button>
-    <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
-</div>
-
-</div>
-
-<!-- Настройка ChatGPT: учёба и обучение -->
-<div class="section" id="section-10" data-section="10">
-    <div class="section-header">
-        <div class="section-number">&#x2699; Настройка ChatGPT</div>
-        <h1 class="section-title">Настройка ChatGPT</h1>
-        <p class="section-subtitle">Персонализация, память и режим обучения</p>
-    </div>
-<div class="content-block">
-<h3>Персонализация и память ChatGPT</h3><p>ChatGPT позволяет настраивать модель &laquo;под себя&raquo;, чтобы каждый новый чат учитывал ваши предпочтения, роль и стиль общения. Это значительно повышает эффективность работы.</p>
-</div>
-
-<div class="cards-grid">
-<div class="card">
-    <div class="card-icon" style="background: #e9f1fc;">&#x1f464;</div>
-    <h4>Custom Instructions</h4>
-    <p>Настройки персонализации: как ChatGPT должен к вам обращаться, кем вы работаете, какой тон использовать, какие характеристики важны. Применяются ко всем новым чатам.</p>
-</div>
-<div class="card">
-    <div class="card-icon" style="background: #e9fcf0;">&#x1f9e0;</div>
-    <h4>Memory (Память)</h4>
-    <p>ChatGPT может запоминать факты о вас между сессиями: имя, должность, предпочтения, контекст проектов. Это позволяет не повторять контекст каждый раз.</p>
-</div>
-<div class="card">
-    <div class="card-icon" style="background: #ebe9fc;">&#x1f393;</div>
-    <h4>Учёба и обучение</h4>
-    <p>Расширенный режим поиска и анализа информации. Модель тратит больше времени на сбор данных и их структурирование. Включает поиск по интернет-источникам и формирование аналитических отчётов.</p>
-</div>
-<div class="card">
-    <div class="card-icon" style="background: #ffebe1;">&#x1f512;</div>
-    <h4>Конфиденциальность</h4>
-    <p>Настройки контроля: какие данные сохраняются, используются ли для обучения моделей. Важно для защиты личной информации и соблюдения корпоративных политик.</p>
-</div>
-</div>
-
-<div class="definition">
-    <div class="definition-title">&#x1f4d6; 6 пунктов настройки Custom Instructions</div>
-    <p><strong>1. Как обращаться</strong> &mdash; имя для персонализации ответов.<br><strong>2. Кем работаете</strong> &mdash; ваша профессиональная роль (влияет на терминологию).<br><strong>3. Личность ChatGPT</strong> &mdash; тон общения: нейтральный, дружелюбный, строгий.<br><strong>4. Характеристики</strong> &mdash; поведенческие качества и подход к ответам.<br><strong>5. Дополнительная информация</strong> &mdash; сфера, опыт, рабочие задачи.<br><strong>6. Включить для новых чатов</strong> &mdash; применять настройки автоматически.</p>
-</div>
-
-<div class="key-point">
-    <div class="key-point-title">&#x1f4a1; Зачем настраивать ChatGPT</div>
-    <p>Правильная настройка Custom Instructions экономит время &mdash; вам не нужно каждый раз объяснять модели, кто вы и в каком контексте работаете. Это как &laquo;системный промпт&raquo;, который применяется автоматически ко всем вашим чатам. Используйте функцию &laquo;Проекты&raquo; для сохранения контекста между чатами по одной задаче.</p>
-</div>
-
-<div class="nav-buttons">
-    <button class="nav-btn nav-btn-prev" onclick="prevSection()">&#x2190; Назад</button>
-    <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
-</div>
-
-</div>
-
-<!-- Практические заметки -->
-<div class="section" id="section-11" data-section="11">
-    <div class="section-header">
-        <div class="section-number">&#x1f4dd; Практические заметки</div>
-        <h1 class="section-title">Практические заметки</h1>
-        <p class="section-subtitle">Ключевые наблюдения и советы из практики</p>
+    <div class="definition">
+        <div class="definition-title">Промпт (Prompt)</div>
+        <p><strong>Промпт</strong> &mdash; это текстовый запрос или инструкция, которую пользователь передаёт языковой модели (ChatGPT, Claude, Gemini и др.) для получения результата. Промпт определяет, что модель будет делать, как и в каком формате ответит.</p>
     </div>
 
     <div class="content-block">
+        <h3>Почему промпт-инжиниринг &mdash; ключевой навык?</h3>
+        <p>Искусственный интеллект &mdash; это инструмент. Как и любой инструмент, его эффективность зависит от того, кто и как им пользуется. Промпт-инжиниринг &mdash; это навык формулирования запросов, который определяет качество результата. Плохой промпт даёт размытый, бесполезный ответ. Хороший &mdash; точный, релевантный и готовый к применению.</p>
+        <p>По данным рынка, оборот маркетплейсов промптов превышает $2M, а профессия &laquo;промпт-инженер&raquo; входит в топ новых позиций в IT-компаниях. Это не временный тренд &mdash; это новая грамотность.</p>
+    </div>
+
+    <div class="warning-block">
+        <div class="warning-title">3 главные ошибки новичков</div>
+        <p><strong>1. Размытая формулировка:</strong> &laquo;Расскажи про маркетинг&raquo; &mdash; модель не знает, с какой стороны подойти к теме из тысяч аспектов.</p>
+        <p><strong>2. Перегрузка информацией:</strong> запрос про маркетинг, финансы, IT и HR одновременно &mdash; модель теряет фокус и выдаёт поверхностный ответ.</p>
+        <p><strong>3. Отсутствие примеров и контекста:</strong> &laquo;Сделай таблицу&raquo; без указания данных, колонок и формата &mdash; модель вынуждена угадывать.</p>
+    </div>
+
+    <div class="content-block">
+        <h3>Типы промптов</h3>
+        <h4>По функции:</h4>
+        <div class="cards-grid cards-grid-3">
+            <div class="card" style="border-top: 4px solid var(--practico-blue);">
+                <h4>Системные</h4>
+                <p>Настраивают AI на определённую роль и поведение для всего диалога. Задают контекст, тон и ограничения.</p>
+                <div class="code-block" style="font-size:0.8rem; margin-top:12px; padding:12px;">&laquo;Ты &mdash; опытный HR-менеджер. Отвечай кратко, профессионально.&raquo;</div>
+            </div>
+            <div class="card" style="border-top: 4px solid var(--accent-green);">
+                <h4>Условные</h4>
+                <p>Содержат логику &laquo;если/то&raquo;. Модель адаптирует ответ в зависимости от условий во входных данных.</p>
+                <div class="code-block" style="font-size:0.8rem; margin-top:12px; padding:12px;">&laquo;Если вопрос про возврат &mdash; предложи форму. Если про доставку &mdash; дай трекинг.&raquo;</div>
+            </div>
+            <div class="card" style="border-top: 4px solid var(--accent-coral);">
+                <h4>На естественном языке</h4>
+                <p>Обычные запросы в свободной форме &mdash; самый простой тип, используемый в повседневном общении с AI.</p>
+                <div class="code-block" style="font-size:0.8rem; margin-top:12px; padding:12px;">&laquo;Помоги мне составить план презентации по продажам.&raquo;</div>
+            </div>
+        </div>
+
+        <h4 style="margin-top: 28px;">По контексту и стилю:</h4>
+        <p><strong>Эксплицитные (Explicit):</strong> высокая специфичность, чёткое описание задачи, формата и ограничений. <strong>Имплицитные (Implicit):</strong> оставляют пространство для интерпретации. <strong>Креативные (Creative):</strong> направлены на генерацию оригинальных идей.</p>
+
+        <h4 style="margin-top: 28px;">По области применения:</h4>
+        <p>Информационные (факты), креативные (идеи), инструктивные (пошагово), уточняющие (разъяснение), сравнительные (анализ альтернатив), гипотетические (&laquo;что если&raquo;), аналитические (глубокий анализ), мнение-ориентированные (оценка).</p>
+    </div>
+
+    <div class="key-point">
+        <div class="key-point-title">Совет для самостоятельной работы</div>
+        <p>Прежде чем писать промпт, определите его тип: вам нужен анализ? сравнение? пошаговая инструкция? Это поможет выбрать правильную структуру запроса. Разные типы задач требуют разных подходов &mdash; нет универсального промпта.</p>
+    </div>
+
+    <div class="nav-buttons">
+        <div></div>
+        <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 1: Элементы хорошего промпта -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="section" id="section-1" data-section="1">
+    <div class="section-header">
+        <div class="section-number">02 &mdash; Структура</div>
+        <h1 class="section-title">Элементы хорошего промпта</h1>
+        <p class="section-subtitle">Четыре ключевых компонента эффективного запроса</p>
+    </div>
+
+    <div class="content-block">
+        <h3>Формула хорошего промпта</h3>
+        <p>Каждый эффективный промпт строится из четырёх компонентов. Не обязательно использовать все четыре каждый раз, но понимание их роли критически важно.</p>
+    </div>
+
+    <div class="cards-grid cards-grid-2">
+        <div class="card" style="border-top: 4px solid var(--practico-blue);">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                <div style="width:40px; height:40px; border-radius:10px; background:var(--practico-blue); color:white; display:flex; align-items:center; justify-content:center; font-weight:800;">1</div>
+                <h4 style="margin:0;">Инструкция (Instructions)</h4>
+            </div>
+            <p>Что именно модель должна сделать. Чёткое действие или задача. Без инструкции модель не знает, чего от неё ждут.</p>
+            <div class="comparison" style="margin-top:12px; gap:12px;">
+                <div style="background:var(--red-light); padding:12px; border-radius:8px; font-size:0.85rem;"><strong style="color:var(--red);">Плохо:</strong> &laquo;Что-нибудь про маркетинг&raquo;</div>
+                <div style="background:var(--green-light); padding:12px; border-radius:8px; font-size:0.85rem;"><strong style="color:var(--accent-green);">Хорошо:</strong> &laquo;Составь план контент-маркетинга на Q1&raquo;</div>
+            </div>
+        </div>
+        <div class="card" style="border-top: 4px solid var(--accent-green);">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                <div style="width:40px; height:40px; border-radius:10px; background:var(--accent-green); color:white; display:flex; align-items:center; justify-content:center; font-weight:800;">2</div>
+                <h4 style="margin:0;">Контекст (Context)</h4>
+            </div>
+            <p>Фоновая информация: кто вы, для кого результат, в какой ситуации. Контекст помогает модели &laquo;понять обстановку&raquo;.</p>
+            <div class="comparison" style="margin-top:12px; gap:12px;">
+                <div style="background:var(--red-light); padding:12px; border-radius:8px; font-size:0.85rem;"><strong style="color:var(--red);">Плохо:</strong> &laquo;Напиши письмо&raquo;</div>
+                <div style="background:var(--green-light); padding:12px; border-radius:8px; font-size:0.85rem;"><strong style="color:var(--accent-green);">Хорошо:</strong> &laquo;Напиши письмо клиенту B2B SaaS, который не продлил подписку&raquo;</div>
+            </div>
+        </div>
+        <div class="card" style="border-top: 4px solid var(--accent-coral);">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                <div style="width:40px; height:40px; border-radius:10px; background:var(--accent-coral); color:white; display:flex; align-items:center; justify-content:center; font-weight:800;">3</div>
+                <h4 style="margin:0;">Входные данные (Input Data)</h4>
+            </div>
+            <p>Конкретные данные для обработки: текст, числа, примеры. Без данных модель может только выдумывать.</p>
+            <div class="comparison" style="margin-top:12px; gap:12px;">
+                <div style="background:var(--red-light); padding:12px; border-radius:8px; font-size:0.85rem;"><strong style="color:var(--red);">Плохо:</strong> &laquo;Проанализируй продажи&raquo;</div>
+                <div style="background:var(--green-light); padding:12px; border-radius:8px; font-size:0.85rem;"><strong style="color:var(--accent-green);">Хорошо:</strong> &laquo;Проанализируй: Q1=$120K, Q2=$95K, Q3=$140K&raquo;</div>
+            </div>
+        </div>
+        <div class="card" style="border-top: 4px solid var(--accent-purple);">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                <div style="width:40px; height:40px; border-radius:10px; background:var(--accent-purple); color:white; display:flex; align-items:center; justify-content:center; font-weight:800;">4</div>
+                <h4 style="margin:0;">Формат вывода (Output Indicator)</h4>
+            </div>
+            <p>Желаемый формат, стиль, длина и структура ответа. Без указания формата модель решает сама &mdash; часто не так, как вы хотите.</p>
+            <div class="comparison" style="margin-top:12px; gap:12px;">
+                <div style="background:var(--red-light); padding:12px; border-radius:8px; font-size:0.85rem;"><strong style="color:var(--red);">Плохо:</strong> &laquo;Дай ответ&raquo;</div>
+                <div style="background:var(--green-light); padding:12px; border-radius:8px; font-size:0.85rem;"><strong style="color:var(--accent-green);">Хорошо:</strong> &laquo;Ответ в виде таблицы: столбцы Метрика, Q1, Q2, Изменение %&raquo;</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="key-point">
+        <div class="key-point-title">Углубление: почему формат вывода &mdash; самый недооценённый элемент</div>
+        <p>Новички чаще всего забывают именно формат вывода. В итоге модель пишет сплошной текст на 2000 слов, когда вам нужна компактная таблица из 5 строк. Указывайте: формат (таблица, список, JSON), длину (до 100 слов), стиль (деловой, разговорный) и структуру (заголовки, нумерация). Один этот элемент может удвоить полезность ответа.</p>
+    </div>
+
+    <!-- QUIZ 1 -->
+    <div class="quiz" id="q1">
+        <div class="quiz-title">Проверьте себя</div>
+        <p class="quiz-question">Вы написали &laquo;Сделай красиво&raquo; и получили не то. Какой элемент промпта вы забыли?</p>
+        <div class="quiz-options">
+            <div class="quiz-option" data-answer="a" onclick="selectAnswer(this, 'q1')"><span class="quiz-option-marker">A</span><span>Инструкцию (что сделать)</span></div>
+            <div class="quiz-option" data-answer="b" onclick="selectAnswer(this, 'q1')"><span class="quiz-option-marker">B</span><span>Контекст (для кого)</span></div>
+            <div class="quiz-option" data-answer="c" onclick="selectAnswer(this, 'q1')"><span class="quiz-option-marker">C</span><span>Формат вывода (описание ожидаемого результата)</span></div>
+            <div class="quiz-option" data-answer="d" onclick="selectAnswer(this, 'q1')"><span class="quiz-option-marker">D</span><span>Входные данные</span></div>
+        </div>
+        <button class="quiz-btn" disabled onclick="checkAnswer('q1', 'c', 'Верно! &laquo;Сделай красиво&raquo; не описывает, как должен выглядеть результат. Формат вывода &mdash; это описание ожидаемого результата: формат, стиль, длина, структура.', 'Неверно. &laquo;Сделай красиво&raquo; содержит некое действие, но совершенно не описывает ожидаемый результат &mdash; это формат вывода (Output Indicator).')">Проверить ответ</button>
+        <div class="quiz-feedback" id="q1-feedback"></div>
+    </div>
+
+    <!-- INTERACTIVE 1: Prompt Builder -->
+    <div class="interactive-block" id="prompt-builder-interactive">
+        <div class="interactive-title">Конструктор промпта</div>
+        <p style="color:var(--text-gray); margin-bottom:20px;">Включайте элементы по одному и наблюдайте, как промпт становится сильнее. Базовый запрос: &laquo;Напиши текст для лендинга.&raquo;</p>
+
+        <div class="pb-element" onclick="togglePB(this, 0)" data-idx="0">
+            <div class="pb-toggle"></div>
+            <div><strong style="color:var(--accent-purple);">Роль:</strong> <span style="color:var(--text-gray); font-size:0.9rem;">Ты &mdash; опытный UX-копирайтер, специализирующийся на B2B SaaS продуктах.</span></div>
+        </div>
+        <div class="pb-element" onclick="togglePB(this, 1)" data-idx="1">
+            <div class="pb-toggle"></div>
+            <div><strong style="color:var(--practico-blue);">Контекст:</strong> <span style="color:var(--text-gray); font-size:0.9rem;">Стартап запускает CRM для малого бизнеса. ЦА: владельцы бизнеса 30-50 лет, не технические.</span></div>
+        </div>
+        <div class="pb-element" onclick="togglePB(this, 2)" data-idx="2">
+            <div class="pb-toggle"></div>
+            <div><strong style="color:var(--accent-coral);">Данные:</strong> <span style="color:var(--text-gray); font-size:0.9rem;">Цена: от $29/мес. Интеграция: WhatsApp, Telegram, email. 14 дней бесплатно.</span></div>
+        </div>
+        <div class="pb-element" onclick="togglePB(this, 3)" data-idx="3">
+            <div class="pb-toggle"></div>
+            <div><strong style="color:var(--text-dark);">Формат:</strong> <span style="color:var(--text-gray); font-size:0.9rem;">Hero-секция (заголовок до 8 слов + подзаголовок до 25 слов + CTA-кнопка). Деловой, но дружелюбный тон.</span></div>
+        </div>
+
+        <div class="pb-output" id="pbOutput">Напиши текст для лендинга.</div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn nav-btn-prev" onclick="prevSection()">&#x2190; Назад</button>
+        <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 2: Промпт-инжиниринг как процесс -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="section" id="section-2" data-section="2">
+    <div class="section-header">
+        <div class="section-number">03 &mdash; Процесс</div>
+        <h1 class="section-title">Промпт-инжиниринг как процесс</h1>
+        <p class="section-subtitle">Итеративный подход: от первого варианта до идеального результата</p>
+    </div>
+
+    <div class="definition">
+        <div class="definition-title">Промпт-инжиниринг</div>
+        <p>Промпт-инжиниринг &mdash; это системный процесс проектирования, тестирования и улучшения запросов к языковым моделям. Это не разовое действие, а цикл, в котором каждая итерация приближает вас к оптимальному результату. Профессиональные промпт-инженеры проходят 5-15 итераций для сложных задач.</p>
+    </div>
+
+    <div class="content-block">
+        <h3>5 этапов итеративного процесса</h3>
+        <div class="timeline">
+            <div class="timeline-item"><h4>1. Определить цель</h4><p>Что именно вы хотите получить? Сформулируйте ожидаемый результат максимально конкретно. &laquo;Хороший текст&raquo; &mdash; это не цель. &laquo;Email на 100 слов с CTA на демо-встречу&raquo; &mdash; цель.</p></div>
+            <div class="timeline-item"><h4>2. Создать первый вариант промпта</h4><p>Используйте формулу: Инструкция + Контекст + Данные + Формат вывода. Не пытайтесь сделать идеально с первого раза &mdash; начните с чего-то.</p></div>
+            <div class="timeline-item"><h4>3. Протестировать</h4><p>Отправьте промпт модели. Получите ответ. Запустите тот же промпт 2-3 раза &mdash; ответы могут отличаться из-за стохастической природы LLM.</p></div>
+            <div class="timeline-item"><h4>4. Проанализировать</h4><p>Оцените: точность, полнота, формат, релевантность. Что не так? Чего не хватает? Что лишнее?</p></div>
+            <div class="timeline-item"><h4>5. Итерировать</h4><p>Скорректируйте промпт на основе анализа и повторите цикл. Обычно 2-3 итерации достаточно для личных задач, 10+ для AI-агентов в бизнесе.</p></div>
+        </div>
+    </div>
+
+    <div class="content-block">
+        <h3>Выбор языка промпта</h3>
+        <div class="cards-grid cards-grid-2">
+            <div class="card" style="border-left: 4px solid var(--practico-blue);">
+                <h4>Английский &mdash; приоритет</h4>
+                <p>Большинство LLM обучены преимущественно на англоязычных данных. Промпты на английском дают более точные и развёрнутые ответы, особенно для технических задач, кода и аналитики.</p>
+            </div>
+            <div class="card" style="border-left: 4px solid var(--accent-coral);">
+                <h4>Русский &mdash; fallback</h4>
+                <p>Используйте русский, когда нужен ответ на русском. Лайфхак: напишите промпт на русском, переведите на английский, добавьте &laquo;Reply in Russian&raquo; в конце &mdash; это даёт лучшее качество.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn nav-btn-prev" onclick="prevSection()">&#x2190; Назад</button>
+        <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 3: Лучшие практики -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="section" id="section-3" data-section="3">
+    <div class="section-header">
+        <div class="section-number">04 &mdash; Практики</div>
+        <h1 class="section-title">Лучшие практики промптинга</h1>
+        <p class="section-subtitle">4 правила, которые сразу повышают качество ответов</p>
+    </div>
+
+    <div class="content-block">
+        <h3>1. Чёткость задачи (Task Clarity)</h3>
+        <p>Определите конкретное действие. &laquo;Помоги с наймом&raquo; &mdash; абстракция. &laquo;Составь описание вакансии Senior Python Developer для финтех-стартапа с опытом от 5 лет&raquo; &mdash; конкретика. Модель работает лучше, когда понимает действие, объект и ограничения.</p>
+
+        <h3 style="margin-top:24px;">2. Контекст (Context)</h3>
+        <p>Добавьте информацию о ситуации, компании, аудитории. Чем больше релевантного контекста, тем точнее результат. Контекст &mdash; это не &laquo;лишний текст&raquo;, а инвестиция в качество ответа.</p>
+
+        <h3 style="margin-top:24px;">3. Точность (Precision)</h3>
+        <p>Укажите количественные параметры: &laquo;15 пунктов&raquo;, &laquo;до 200 слов&raquo;, &laquo;3 колонки&raquo;, &laquo;первая неделя&raquo;. Числа устраняют неоднозначность.</p>
+
+        <h3 style="margin-top:24px;">4. Ролевая игра (Role Play)</h3>
+        <p>Задайте модели роль эксперта: &laquo;Ты &mdash; HR-директор с 15-летним опытом в IT&raquo;. Это активирует соответствующие знания, терминологию и стиль мышления. Роль &mdash; это не формальность, а мощный инструмент управления качеством ответа.</p>
+    </div>
+
+    <div class="key-point">
+        <div class="key-point-title">Когда роли НЕ нужны</div>
+        <p>Для простых задач (перевод текста, арифметика, исправление опечаток, поиск факта) роль избыточна. Контекста самой задачи достаточно. Не усложняйте &mdash; это тоже часть хорошего промптинга.</p>
+    </div>
+
+    <!-- QUIZ 5 -->
+    <div class="quiz" id="q5">
+        <div class="quiz-title">Проверьте себя</div>
+        <p class="quiz-question">Почему промпт на английском часто даёт лучшие результаты?</p>
+        <div class="quiz-options">
+            <div class="quiz-option" data-answer="a" onclick="selectAnswer(this, 'q5')"><span class="quiz-option-marker">A</span><span>Английский проще по грамматике</span></div>
+            <div class="quiz-option" data-answer="b" onclick="selectAnswer(this, 'q5')"><span class="quiz-option-marker">B</span><span>Больше обучающих данных на английском</span></div>
+            <div class="quiz-option" data-answer="c" onclick="selectAnswer(this, 'q5')"><span class="quiz-option-marker">C</span><span>Модели не понимают русский</span></div>
+            <div class="quiz-option" data-answer="d" onclick="selectAnswer(this, 'q5')"><span class="quiz-option-marker">D</span><span>Разницы нет, это миф</span></div>
+        </div>
+        <button class="quiz-btn" disabled onclick="checkAnswer('q5', 'b', 'Верно! Большинство LLM обучены преимущественно на англоязычных текстах, поэтому английские промпты активируют более широкую базу знаний и паттернов.', 'Неверно. Основная причина &mdash; в объёме обучающих данных. Большинство данных, на которых обучены LLM, написаны на английском, что делает англоязычные промпты более эффективными.')">Проверить ответ</button>
+        <div class="quiz-feedback" id="q5-feedback"></div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn nav-btn-prev" onclick="prevSection()">&#x2190; Назад</button>
+        <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 4: Контекстное окно -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="section" id="section-4" data-section="4">
+    <div class="section-header">
+        <div class="section-number">05 &mdash; Контекст</div>
+        <h1 class="section-title">Контекст и контекстное окно</h1>
+        <p class="section-subtitle">Как модель &laquo;видит&raquo; ваш диалог и почему это важно</p>
+    </div>
+
+    <div class="content-block">
+        <h3>Три составляющие контекста</h3>
+        <div class="cards-grid cards-grid-3">
+            <div class="card" style="border-top:4px solid var(--practico-blue);"><h4>История диалога</h4><p>Все предыдущие сообщения в текущем чате. Модель учитывает их при генерации ответа. Длинные диалоги могут &laquo;выпадать&raquo; из контекста.</p></div>
+            <div class="card" style="border-top:4px solid var(--accent-green);"><h4>Системный промпт</h4><p>Скрытые инструкции, задающие роль и поведение (Custom Instructions, system message). Действуют на весь диалог.</p></div>
+            <div class="card" style="border-top:4px solid var(--accent-coral);"><h4>Загруженные данные</h4><p>Файлы, документы, изображения, прикреплённые к диалогу (RAG, вложения). Расширяют знания модели.</p></div>
+        </div>
+    </div>
+
+    <div class="definition">
+        <div class="definition-title">Контекстное окно (Context Window)</div>
+        <p>Максимальный объём текста, который модель может &laquo;видеть&raquo; одновременно. Измеряется в <strong>токенах</strong>. Токен &mdash; это фрагмент текста (слово, часть слова или символ). В среднем: 1 токен &asymp; 0.75 английского слова или &asymp; 0.5 русского слова. 1000 токенов &asymp; 600 слов на русском.</p>
+    </div>
+
+    <div class="content-block">
+        <h3>Размеры контекстного окна (2025-2026)</h3>
+        <div class="table-container">
+            <table class="styled-table">
+                <thead><tr><th>Модель</th><th>Контекстное окно</th><th>~Страниц текста</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>GPT-4o</strong></td><td>128K токенов</td><td>~200 стр.</td></tr>
+                    <tr><td><strong>GPT-5</strong></td><td>1M токенов</td><td>~1500 стр.</td></tr>
+                    <tr><td><strong>Claude Opus 4</strong></td><td>1M токенов</td><td>~1500 стр.</td></tr>
+                    <tr><td><strong>Gemini 2.5 Pro</strong></td><td>1M токенов</td><td>~1500 стр.</td></tr>
+                    <tr><td><strong>LLaMA 4</strong></td><td>128K токенов</td><td>~200 стр.</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p style="margin-top:16px;">Если объём диалога превышает контекстное окно, &laquo;старые&raquo; сообщения отбрасываются. Это может привести к потере важной информации. Поэтому управление контекстом &mdash; практический навык: начинайте новые чаты для новых задач, выносите ключевую информацию в начало промпта.</p>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn nav-btn-prev" onclick="prevSection()">&#x2190; Назад</button>
+        <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 5: Фреймворки (TAG, RISE, BAB, RTF) -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="section" id="section-5" data-section="5">
+    <div class="section-header">
+        <div class="section-number">06 &mdash; Фреймворки</div>
+        <h1 class="section-title">Фреймворки промптинга: TAG, RISE, BAB, RTF</h1>
+        <p class="section-subtitle">Готовые шаблоны для быстрой сборки эффективных промптов</p>
+    </div>
+
+    <div class="content-block">
+        <p>Фреймворк &mdash; это структурированный шаблон, который помогает не забыть ключевые элементы промпта. Вместо того чтобы каждый раз изобретать структуру заново, вы заполняете готовую форму. Рассмотрим четыре основных фреймворка.</p>
+    </div>
+
+    <div class="learning-cards">
+        <div class="learning-card">
+            <div class="learning-card-header blue"><h4>TAG</h4><p>Task &bull; Action &bull; Goal</p></div>
+            <div class="learning-card-body">
+                <p><strong>Task</strong> &mdash; область задачи. <strong>Action</strong> &mdash; конкретное действие. <strong>Goal</strong> &mdash; измеримая цель. Идеален для рутинных, чётко формулируемых задач. Самый лаконичный из фреймворков.</p>
+                <p><strong>Пример:</strong> Task: написать email клиенту. Action: составь вежливое напоминание об оплате. Goal: клиент оплачивает в течение 3 дней.</p>
+            </div>
+        </div>
+        <div class="learning-card">
+            <div class="learning-card-header green"><h4>RISE</h4><p>Role &bull; Input &bull; Steps &bull; Expectation</p></div>
+            <div class="learning-card-body">
+                <p><strong>Role</strong> &mdash; экспертная роль. <strong>Input</strong> &mdash; входные данные. <strong>Steps</strong> &mdash; последовательность шагов. <strong>Expectation</strong> &mdash; ожидаемый результат. Идеален для задач с чёткой последовательностью и аналитикой.</p>
+                <p><strong>Пример:</strong> Role: бизнес-аналитик e-commerce. Input: продажи Q1-Q3 + отзывы. Steps: тренды &rarr; проблемы &rarr; сопоставление. Expectation: отчёт с 5 выводами.</p>
+            </div>
+        </div>
+        <div class="learning-card">
+            <div class="learning-card-header orange"><h4>BAB</h4><p>Before &bull; After &bull; Bridge</p></div>
+            <div class="learning-card-body">
+                <p><strong>Before</strong> &mdash; текущее состояние (проблема). <strong>After</strong> &mdash; желаемое состояние. <strong>Bridge</strong> &mdash; путь трансформации. Идеален для задач улучшения, трансформации и внедрения изменений.</p>
+                <p><strong>Пример:</strong> Before: onboarding 2 недели, 40% уходят. After: onboarding 5 дней, удержание 90%. Bridge: предложи план трансформации с шагами.</p>
+            </div>
+        </div>
+        <div class="learning-card">
+            <div class="learning-card-header purple"><h4>RTF</h4><p>Role &bull; Task &bull; Format</p></div>
+            <div class="learning-card-body">
+                <p><strong>Role</strong> &mdash; кем выступает модель. <strong>Task</strong> &mdash; конкретная задача. <strong>Format</strong> &mdash; формат вывода. Универсальный фреймворк для генерации контента с заданным форматом.</p>
+                <p><strong>Пример:</strong> Role: SMM-менеджер IT-компании. Task: 5 постов для LinkedIn о запуске продукта. Format: заголовок до 10 слов, тело до 150 слов, 3 хештега, CTA.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUIZ 3 -->
+    <div class="quiz" id="q3">
+        <div class="quiz-title">Проверьте себя</div>
+        <p class="quiz-question">Какой фреймворк использовать для письма клиенту о повышении цен?</p>
+        <div class="quiz-options">
+            <div class="quiz-option" data-answer="a" onclick="selectAnswer(this, 'q3')"><span class="quiz-option-marker">A</span><span>TAG (Task-Action-Goal)</span></div>
+            <div class="quiz-option" data-answer="b" onclick="selectAnswer(this, 'q3')"><span class="quiz-option-marker">B</span><span>BAB (Before-After-Bridge)</span></div>
+            <div class="quiz-option" data-answer="c" onclick="selectAnswer(this, 'q3')"><span class="quiz-option-marker">C</span><span>RISE (Role-Input-Steps-Expectation)</span></div>
+            <div class="quiz-option" data-answer="d" onclick="selectAnswer(this, 'q3')"><span class="quiz-option-marker">D</span><span>RTF (Role-Task-Format)</span></div>
+        </div>
+        <button class="quiz-btn" disabled onclick="checkAnswer('q3', 'b', 'Верно! BAB идеально подходит: Before (текущая цена), After (новая цена с улучшенным сервисом), Bridge (обоснование перехода и выгоды для клиента). Это письмо &mdash; по сути трансформация восприятия клиента.', 'Неверно. Письмо о повышении цен &mdash; это задача трансформации: нужно показать текущую ситуацию, желаемое восприятие и путь между ними. Это BAB (Before-After-Bridge).')">Проверить ответ</button>
+        <div class="quiz-feedback" id="q3-feedback"></div>
+    </div>
+
+    <!-- INTERACTIVE 2: Framework Selector -->
+    <div class="interactive-block" id="fw-selector">
+        <div class="interactive-title">Подбери фреймворк под задачу</div>
+        <p style="color:var(--text-gray); margin-bottom:16px;">Нажмите на задачу &mdash; увидите рекомендуемый фреймворк с готовым промптом.</p>
+        <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px;">
+            <button class="interactive-btn" onclick="showFW(0)" style="background:var(--practico-blue-light); color:var(--practico-blue); border-color:var(--practico-blue);">Написать follow-up email</button>
+            <button class="interactive-btn" onclick="showFW(1)" style="background:var(--green-light); color:var(--accent-green); border-color:var(--accent-green);">Улучшить процесс найма</button>
+            <button class="interactive-btn" onclick="showFW(2)" style="background:var(--orange-light); color:var(--accent-coral); border-color:var(--accent-coral);">Проанализировать продажи</button>
+            <button class="interactive-btn" onclick="showFW(3)" style="background:var(--accent-purple-light); color:var(--accent-purple); border-color:var(--accent-purple);">Создать контент-план</button>
+        </div>
+        <div class="result-panel" id="fwResult">
+            <div id="fwName" style="font-size:1.2rem; font-weight:800; margin-bottom:8px;"></div>
+            <div id="fwWhy" style="font-size:0.9rem; color:var(--text-gray); margin-bottom:16px;"></div>
+            <div id="fwPrompt" class="code-block" style="font-size:0.82rem;"></div>
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn nav-btn-prev" onclick="prevSection()">&#x2190; Назад</button>
+        <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 6: AUTOMAT -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="section" id="section-6" data-section="6">
+    <div class="section-header">
+        <div class="section-number">07 &mdash; AUTOMAT</div>
+        <h1 class="section-title">Фреймворк AUTOMAT</h1>
+        <p class="section-subtitle">Самый детальный фреймворк из 7 компонентов для сложных задач</p>
+    </div>
+
+    <div class="content-block">
+        <p>AUTOMAT &mdash; это расширенный фреймворк, который покрывает все аспекты промпта. Используйте его для сложных, многослойных задач, где простые фреймворки (TAG, RTF) не дают достаточной детализации.</p>
+
+        <div class="table-container" style="margin-top:20px;">
+            <table class="styled-table">
+                <thead><tr><th>Буква</th><th>Компонент</th><th>Что задаёт</th><th>Пример</th></tr></thead>
+                <tbody>
+                    <tr><td><strong style="color:var(--practico-blue);">A</strong></td><td>Act &mdash; Роль</td><td>Кем должна быть модель</td><td>&laquo;Маркетинг-директор с 10-летним опытом в SaaS&raquo;</td></tr>
+                    <tr><td><strong style="color:var(--accent-green);">U</strong></td><td>User &mdash; Аудитория</td><td>Для кого результат</td><td>&laquo;Для CEO стартапов без технического бэкграунда&raquo;</td></tr>
+                    <tr><td><strong style="color:var(--accent-coral);">T</strong></td><td>Target &mdash; Трансформация</td><td>Какое изменение нужно</td><td>&laquo;Превратить хаотичный маркетинг в системную стратегию&raquo;</td></tr>
+                    <tr><td><strong style="color:var(--accent-purple);">O</strong></td><td>Output &mdash; Формат</td><td>В каком виде ответ</td><td>&laquo;Таблица: Канал, Бюджет, KPI, Срок&raquo;</td></tr>
+                    <tr><td><strong style="color:#0EA5E9;">M</strong></td><td>Model &mdash; Эталон</td><td>На что ориентироваться</td><td>&laquo;По модели McKinsey 7S framework&raquo;</td></tr>
+                    <tr><td><strong style="color:#F59E0B;">A</strong></td><td>Additional &mdash; Ограничения</td><td>Допусловия, что исключить</td><td>&laquo;Не более 2 стр. Без техжаргона. На русском.&raquo;</td></tr>
+                    <tr><td><strong style="color:var(--text-dark);">T</strong></td><td>Tone &mdash; Тон</td><td>Стиль коммуникации</td><td>&laquo;Профессиональный, но доступный&raquo;</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="example-title">Полный пример AUTOMAT</div>
+        <div class="code-block">A (Act): Ты &mdash; маркетинг-директор с 10-летним опытом в SaaS
+U (User): Для CEO стартапов без технического бэкграунда
+T (Target): Создать стратегию выхода на новый рынок
+O (Output): Таблица с колонками: Канал, Бюджет, KPI, Срок
+M (Model): По модели Go-to-Market Strategy
+A (Additional): Бюджет до $50K, фокус на B2B, рынок EU
+T (Tone): Профессиональный, с конкретными цифрами</div>
+    </div>
+
+    <!-- QUIZ 6 -->
+    <div class="quiz" id="q6">
+        <div class="quiz-title">Проверьте себя</div>
+        <p class="quiz-question">Чем AUTOMAT отличается от TAG?</p>
+        <div class="quiz-options">
+            <div class="quiz-option" data-answer="a" onclick="selectAnswer(this, 'q6')"><span class="quiz-option-marker">A</span><span>AUTOMAT &mdash; для простых задач, TAG &mdash; для сложных</span></div>
+            <div class="quiz-option" data-answer="b" onclick="selectAnswer(this, 'q6')"><span class="quiz-option-marker">B</span><span>Они одинаковые, просто разные названия</span></div>
+            <div class="quiz-option" data-answer="c" onclick="selectAnswer(this, 'q6')"><span class="quiz-option-marker">C</span><span>AUTOMAT детализирует 7 компонентов vs 3 у TAG</span></div>
+            <div class="quiz-option" data-answer="d" onclick="selectAnswer(this, 'q6')"><span class="quiz-option-marker">D</span><span>TAG включает роль, AUTOMAT &mdash; нет</span></div>
+        </div>
+        <button class="quiz-btn" disabled onclick="checkAnswer('q6', 'c', 'Верно! AUTOMAT включает 7 компонентов (Act, User, Target, Output, Model, Additional, Tone), тогда как TAG содержит только 3 (Task, Action, Goal). AUTOMAT даёт гораздо больше контроля над результатом.', 'Неверно. Ключевое отличие &mdash; в уровне детализации. AUTOMAT (7 компонентов) покрывает роль, аудиторию, тон, ограничения и эталон, а TAG (3 компонента) &mdash; только задачу, действие и цель.')">Проверить ответ</button>
+        <div class="quiz-feedback" id="q6-feedback"></div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn nav-btn-prev" onclick="prevSection()">&#x2190; Назад</button>
+        <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 7: 8 Техник промптинга -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="section" id="section-7" data-section="7">
+    <div class="section-header">
+        <div class="section-number">08 &mdash; Техники</div>
+        <h1 class="section-title">8 техник промптинга</h1>
+        <p class="section-subtitle">Техники меняют сам способ рассуждения модели</p>
+    </div>
+
+    <div class="content-block">
+        <p>Фреймворки помогают <em>структурировать</em> промпт. Техники &mdash; это другой уровень: они управляют <em>процессом мышления</em> модели. Правильная техника может превратить посредственный ответ в экспертный.</p>
+    </div>
+
+    <div class="learning-cards">
+        <div class="learning-card"><div class="learning-card-header blue"><h4>1. Zero-shot</h4><p>Без примеров</p></div><div class="learning-card-body"><p>Прямая инструкция без примеров. Модель опирается только на обученные знания. Подходит для простых, однозначных задач. Если результат неудовлетворителен &mdash; переходите к Few-shot.</p><p><strong>Когда:</strong> перевод, классификация, простые факты.</p></div></div>
+        <div class="learning-card"><div class="learning-card-header green"><h4>2. Few-shot</h4><p>2-5 примеров</p></div><div class="learning-card-body"><p>Даёте 2-5 примеров &laquo;вход &rarr; выход&raquo; перед задачей. Модель &laquo;считывает&raquo; паттерн и воспроизводит его. Критически важно: примеры должны быть консистентны по формату и чередовать классы (позитив/негатив).</p><p><strong>Когда:</strong> нужен конкретный формат, стиль или классификация.</p></div></div>
+        <div class="learning-card"><div class="learning-card-header orange"><h4>3. Chain-of-Thought (CoT)</h4><p>Цепочка рассуждений</p></div><div class="learning-card-body"><p>Просите модель рассуждать шаг за шагом: &laquo;Решай пошагово&raquo;. Значительно повышает точность в задачах с логикой, расчётами и многоступенчатым анализом. Без CoT модель часто ошибается в арифметике.</p><p><strong>Когда:</strong> расчёты, логические задачи, юнит-экономика.</p></div></div>
+        <div class="learning-card"><div class="learning-card-header purple"><h4>4. Tree of Thoughts (ToT)</h4><p>Дерево мыслей</p></div><div class="learning-card-body"><p>Модель рассматривает несколько путей рассуждения параллельно: &laquo;Рассмотри 3 варианта, оцени каждый, выбери лучший&raquo;. Для задач с неочевидным оптимальным решением.</p><p><strong>Когда:</strong> стратегические решения, выбор из альтернатив.</p></div></div>
+        <div class="learning-card"><div class="learning-card-header sky"><h4>5. Step-back Prompting</h4><p>Шаг назад</p></div><div class="learning-card-body"><p>Сначала задаёте общий вопрос о принципах, затем конкретный. Помогает модели увидеть полную картину и избежать ошибок. Двухшаговый процесс: абстракция &rarr; конкретика.</p><p><strong>Когда:</strong> сложные домены, стратегические вопросы.</p></div></div>
+        <div class="learning-card"><div class="learning-card-header red"><h4>6. Self-Criticism</h4><p>Самокритика</p></div><div class="learning-card-body"><p>Трёхэтапный цикл: генерация &rarr; критика &rarr; улучшение. Модель сама находит слабые места в своём ответе и переписывает его. 3 итерации дают экспертный результат.</p><p><strong>Когда:</strong> важные тексты, инструкции, стратегии.</p></div></div>
+        <div class="learning-card"><div class="learning-card-header violet"><h4>7. Re-Reading (Re2)</h4><p>Перечитывание</p></div><div class="learning-card-body"><p>Повторяете ключевую часть запроса для акцента: &laquo;Повторяю: ключевой фокус &mdash; сезонные паттерны&raquo;. Помогает модели сфокусироваться на важном при длинных промптах.</p><p><strong>Когда:</strong> длинные промпты с важным условием.</p></div></div>
+        <div class="learning-card"><div class="learning-card-header pink"><h4>8. Rephrase and Respond (RaR)</h4><p>Перефразируй и ответь</p></div><div class="learning-card-body"><p>Модель сначала перефразирует ваш вопрос своими словами, затем отвечает. Это улучшает понимание задачи и снижает вероятность неправильной интерпретации.</p><p><strong>Когда:</strong> сложные или неоднозначные запросы.</p></div></div>
+    </div>
+
+    <!-- QUIZ 2 -->
+    <div class="quiz" id="q2">
+        <div class="quiz-title">Проверьте себя</div>
+        <p class="quiz-question">Менеджер просит AI написать отчёт. В каком случае лучше Few-shot, а не Zero-shot?</p>
+        <div class="quiz-options">
+            <div class="quiz-option" data-answer="a" onclick="selectAnswer(this, 'q2')"><span class="quiz-option-marker">A</span><span>Когда отчёт короткий</span></div>
+            <div class="quiz-option" data-answer="b" onclick="selectAnswer(this, 'q2')"><span class="quiz-option-marker">B</span><span>Когда нужен конкретный формат, который сложно описать словами</span></div>
+            <div class="quiz-option" data-answer="c" onclick="selectAnswer(this, 'q2')"><span class="quiz-option-marker">C</span><span>Когда отчёт на английском</span></div>
+            <div class="quiz-option" data-answer="d" onclick="selectAnswer(this, 'q2')"><span class="quiz-option-marker">D</span><span>Всегда &mdash; Few-shot лучше Zero-shot</span></div>
+        </div>
+        <button class="quiz-btn" disabled onclick="checkAnswer('q2', 'b', 'Верно! Few-shot незаменим, когда нужный формат проще показать на примере, чем объяснять словами. Пример быстрее передаёт паттерн, чем описание.', 'Неверно. Few-shot лучше Zero-shot тогда, когда нужный формат или стиль проще показать примерами, чем описывать текстом. Это его главное преимущество.')">Проверить ответ</button>
+        <div class="quiz-feedback" id="q2-feedback"></div>
+    </div>
+
+    <!-- QUIZ 4 -->
+    <div class="quiz" id="q4">
+        <div class="quiz-title">Проверьте себя</div>
+        <p class="quiz-question">AI дал ответ с ошибкой. Какая техника поможет улучшить ответ без перезапроса?</p>
+        <div class="quiz-options">
+            <div class="quiz-option" data-answer="a" onclick="selectAnswer(this, 'q4')"><span class="quiz-option-marker">A</span><span>Zero-shot</span></div>
+            <div class="quiz-option" data-answer="b" onclick="selectAnswer(this, 'q4')"><span class="quiz-option-marker">B</span><span>Few-shot</span></div>
+            <div class="quiz-option" data-answer="c" onclick="selectAnswer(this, 'q4')"><span class="quiz-option-marker">C</span><span>Self-Criticism</span></div>
+            <div class="quiz-option" data-answer="d" onclick="selectAnswer(this, 'q4')"><span class="quiz-option-marker">D</span><span>Step-back</span></div>
+        </div>
+        <button class="quiz-btn" disabled onclick="checkAnswer('q4', 'c', 'Верно! Self-Criticism позволяет модели самой найти ошибки и исправить их: вы просите &laquo;Найди 3 слабых места в своём ответе и перепиши&raquo; &mdash; и получаете улучшенную версию без нового промпта.', 'Неверно. Self-Criticism &mdash; единственная техника, которая работает с уже полученным ответом: модель критикует свой ответ и улучшает его в рамках того же диалога.')">Проверить ответ</button>
+        <div class="quiz-feedback" id="q4-feedback"></div>
+    </div>
+
+    <!-- INTERACTIVE 3: Technique Comparison -->
+    <div class="interactive-block" id="tech-compare">
+        <div class="interactive-title">Сравнение техник: выбери подходящую</div>
+        <p style="color:var(--text-gray); margin-bottom:16px;">Нажмите на тип задачи &mdash; подсветится рекомендуемая техника.</p>
+        <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px;">
+            <button class="interactive-btn" onclick="showTech(0)" style="background:var(--practico-blue-light); color:var(--practico-blue); border-color:var(--practico-blue);">Простая задача</button>
+            <button class="interactive-btn" onclick="showTech(1)" style="background:var(--green-light); color:var(--accent-green); border-color:var(--accent-green);">Нужен формат</button>
+            <button class="interactive-btn" onclick="showTech(2)" style="background:var(--orange-light); color:var(--accent-coral); border-color:var(--accent-coral);">Расчёт / логика</button>
+            <button class="interactive-btn" onclick="showTech(3)" style="background:var(--accent-purple-light); color:var(--accent-purple); border-color:var(--accent-purple);">Много вариантов</button>
+            <button class="interactive-btn" onclick="showTech(4)" style="background:var(--red-light); color:var(--red); border-color:var(--red);">Улучшить ответ</button>
+            <button class="interactive-btn" onclick="showTech(5)" style="background:#E0F2FE; color:#0EA5E9; border-color:#0EA5E9;">Сложный домен</button>
+        </div>
+        <div class="result-panel" id="techResult">
+            <div id="techName" style="font-size:1.2rem; font-weight:800; margin-bottom:4px;"></div>
+            <div id="techDesc" style="font-size:0.9rem; color:var(--text-gray); margin-bottom:16px;"></div>
+            <div id="techPrompt" class="code-block" style="font-size:0.82rem;"></div>
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn nav-btn-prev" onclick="prevSection()">&#x2190; Назад</button>
+        <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 8: Инструменты ChatGPT -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="section" id="section-8" data-section="8">
+    <div class="section-header">
+        <div class="section-number">09 &mdash; Инструменты</div>
+        <h1 class="section-title">Инструменты ChatGPT</h1>
+        <p class="section-subtitle">Возможности ChatGPT за пределами обычного чата</p>
+    </div>
+
+    <div class="content-block">
+        <p>ChatGPT &mdash; это не просто чат-бот. Это платформа с множеством инструментов, каждый из которых решает свой класс задач. Знание этих инструментов позволяет выбирать правильный подход для каждой ситуации.</p>
+    </div>
+
+    <div class="cards-grid cards-grid-3">
+        <div class="card" style="border-top:4px solid var(--accent-purple);">
+            <h4>Агентный режим</h4>
+            <p>AI самостоятельно планирует и выполняет многошаговые задачи: поиск в интернете, анализ данных, создание контента. Модель сама решает, какие шаги нужны для достижения цели.</p>
+        </div>
+        <div class="card" style="border-top:4px solid var(--accent-coral);">
+            <h4>Canvas</h4>
+            <p>Режим совместного редактирования. Документ открывается рядом с чатом. Можно редактировать отдельные абзацы, менять стиль, просить AI переписать части текста и экспортировать результат.</p>
+        </div>
+        <div class="card" style="border-top:4px solid #0EA5E9;">
+            <h4>Deep Research</h4>
+            <p>Глубокий анализ темы с множественными источниками из интернета. Создаёт структурированный отчёт с цитатами и ссылками. Сначала задаёт уточняющие вопросы, затем проводит исследование.</p>
+        </div>
+        <div class="card" style="border-top:4px solid #8B5CF6;">
+            <h4>Режимы работы (модели)</h4>
+            <p>Переключение между моделями (GPT-4o, o1, o3) для разных задач. GPT-4o &mdash; быстрый и универсальный. o1/o3 &mdash; для задач, требующих глубокого рассуждения.</p>
+        </div>
+        <div class="card" style="border-top:4px solid var(--accent-green);">
+            <h4>Поиск в интернете</h4>
+            <p>ChatGPT может искать актуальную информацию, цитировать источники и давать свежие данные. Критически важно для задач, где нужны данные после даты обучения модели.</p>
+        </div>
+        <div class="card" style="border-top:4px solid var(--practico-blue);">
+            <h4>Connected Apps</h4>
+            <p>Подключение Google Drive, OneDrive и других сервисов. ChatGPT работает с вашими файлами напрямую, анализирует документы и создаёт контент на их основе.</p>
+        </div>
+    </div>
+
+    <div class="key-point">
+        <div class="key-point-title">Как выбрать инструмент?</div>
+        <p><strong>Обычный чат</strong> &mdash; для большинства задач. <strong>Canvas</strong> &mdash; когда нужно совместно редактировать длинный текст. <strong>Deep Research</strong> &mdash; когда нужен обзор с источниками. <strong>Агентный режим</strong> &mdash; когда задача требует нескольких шагов (поиск + анализ + создание).</p>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn nav-btn-prev" onclick="prevSection()">&#x2190; Назад</button>
+        <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 9: Настройка ChatGPT -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="section" id="section-9" data-section="9">
+    <div class="section-header">
+        <div class="section-number">10 &mdash; Настройка</div>
+        <h1 class="section-title">Настройка ChatGPT</h1>
+        <p class="section-subtitle">Приватность, Custom Instructions и создание CustomGPT</p>
+    </div>
+
+    <div class="warning-block">
+        <div class="warning-title">Настройки приватности</div>
+        <p>По умолчанию ChatGPT может использовать ваши данные для обучения. Три действия для защиты:</p>
+        <p><strong>1.</strong> Settings &rarr; Data Controls &rarr; Improve the model &rarr; Off</p>
+        <p><strong>2.</strong> Используйте Temporary Chat для конфиденциальных данных &mdash; они не сохраняются</p>
+        <p><strong>3.</strong> Для бизнеса: Team/Enterprise план &mdash; данные не используются для обучения по умолчанию</p>
+    </div>
+
+    <div class="content-block">
+        <h3>Custom Instructions</h3>
+        <p>Custom Instructions &mdash; это &laquo;системный промпт&raquo;, который применяется автоматически ко всем вашим чатам. Вместо того чтобы каждый раз объяснять модели, кто вы и в каком контексте работаете, вы настраиваете это один раз.</p>
+        <p><strong>Что указать:</strong> как обращаться, кем работаете, личность ChatGPT (тон), характеристики поведения, дополнительная информация (сфера, опыт), включение для новых чатов.</p>
+
+        <h3 style="margin-top:24px;">Memory (Память)</h3>
+        <p>ChatGPT запоминает факты о вас между сессиями: имя, должность, предпочтения, контекст проектов. Используйте &laquo;Проекты&raquo; для сохранения контекста между чатами по одной задаче.</p>
+
+        <h3 style="margin-top:24px;">Создание CustomGPT</h3>
+        <p><strong>Шаг 1:</strong> определите задачу &mdash; роль, аудитория, типичные запросы. <strong>Шаг 2:</strong> напишите Instructions (системный промпт, используйте AUTOMAT). <strong>Шаг 3:</strong> загрузите знания (PDF, DOCX, CSV) &mdash; GPT использует их как базу знаний. <strong>Шаг 4:</strong> настройте capabilities (Web, DALL-E, Code) и протестируйте.</p>
+    </div>
+
+    <div class="key-point">
+        <div class="key-point-title">GPT Store</div>
+        <p>Маркетплейс готовых GPT от сообщества: тысячи ассистентов для маркетинга, аналитики, кода и творчества. Прежде чем создавать свой GPT &mdash; проверьте, нет ли готового решения в Store.</p>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn nav-btn-prev" onclick="prevSection()">&#x2190; Назад</button>
+        <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 10: Платформы -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="section" id="section-10" data-section="10">
+    <div class="section-header">
+        <div class="section-number">11 &mdash; Платформы</div>
+        <h1 class="section-title">Платформы и рынок промптов</h1>
+        <p class="section-subtitle">Маркетплейсы, где качественные промпты продаются и покупаются</p>
+    </div>
+
+    <div class="content-block">
+        <p>Промпт-инжиниринг &mdash; это не только навык, но и рынок. Качественные промпты &mdash; это цифровые активы, которые можно монетизировать. Рынок промптов оценивается в сотни миллионов долларов и продолжает расти.</p>
+    </div>
+
+    <div class="cards-grid cards-grid-2">
+        <div class="card" style="border-top:4px solid var(--practico-blue);">
+            <h4>PromptBase</h4>
+            <p>Крупнейший маркетплейс промптов. Продажа и покупка промптов для DALL-E, Midjourney, ChatGPT, Stable Diffusion. Промпты от $2.</p>
+            <p style="margin-top:8px;"><a href="https://promptbase.com" target="_blank" style="color:var(--practico-blue); font-weight:600;">promptbase.com</a></p>
+        </div>
+        <div class="card" style="border-top:4px solid var(--accent-green);">
+            <h4>PromptHero</h4>
+            <p>Поисковик по промптам для генерации изображений. Миллионы промптов с результатами и настройками.</p>
+            <p style="margin-top:8px;"><a href="https://prompthero.com" target="_blank" style="color:var(--accent-green); font-weight:600;">prompthero.com</a></p>
+        </div>
+        <div class="card" style="border-top:4px solid var(--accent-coral);">
+            <h4>FlowGPT</h4>
+            <p>Сообщество и платформа для шеринга промптов. Категории: маркетинг, код, образование, творчество.</p>
+            <p style="margin-top:8px;"><a href="https://flowgpt.com" target="_blank" style="color:var(--accent-coral); font-weight:600;">flowgpt.com</a></p>
+        </div>
+        <div class="card" style="border-top:4px solid var(--accent-purple);">
+            <h4>PromptPerfect</h4>
+            <p>Инструмент для автоматической оптимизации промптов. Улучшает ваши промпты с помощью AI.</p>
+            <p style="margin-top:8px;"><a href="https://promptperfect.jina.ai" target="_blank" style="color:var(--accent-purple); font-weight:600;">promptperfect.jina.ai</a></p>
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn nav-btn-prev" onclick="prevSection()">&#x2190; Назад</button>
+        <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 11: Рекомендации -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="section" id="section-11" data-section="11">
+    <div class="section-header">
+        <div class="section-number">12 &mdash; Рекомендации</div>
+        <h1 class="section-title">Рекомендации для дальнейшего изучения</h1>
+        <p class="section-subtitle">Ресурсы для самостоятельного углубления в промпт-инжиниринг</p>
+    </div>
+
+    <div class="cards-grid cards-grid-3">
+        <div class="card" style="text-align:center; border-top:4px solid var(--practico-blue);">
+            <h4>Prompt Engineering Guide</h4>
+            <p>Самый полный открытый гайд по промпт-инжинирингу с примерами всех техник.</p>
+            <p style="margin-top:12px;"><a href="https://www.promptingguide.ai" target="_blank" style="color:var(--practico-blue); font-weight:600;">promptingguide.ai</a></p>
+        </div>
+        <div class="card" style="text-align:center; border-top:4px solid var(--accent-green);">
+            <h4>OpenAI Cookbook</h4>
+            <p>Официальные примеры и best practices от OpenAI для работы с GPT моделями.</p>
+            <p style="margin-top:12px;"><a href="https://cookbook.openai.com" target="_blank" style="color:var(--accent-green); font-weight:600;">cookbook.openai.com</a></p>
+        </div>
+        <div class="card" style="text-align:center; border-top:4px solid var(--accent-purple);">
+            <h4>Learn Prompting</h4>
+            <p>Бесплатный курс по промптингу с интерактивными упражнениями и сертификатом.</p>
+            <p style="margin-top:12px;"><a href="https://learnprompting.org" target="_blank" style="color:var(--accent-purple); font-weight:600;">learnprompting.org</a></p>
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn nav-btn-prev" onclick="prevSection()">&#x2190; Назад</button>
+        <button class="nav-btn nav-btn-next" onclick="nextSection()">Далее &#x2192;</button>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 12: Итоги -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="section" id="section-12" data-section="12">
+    <div class="section-header">
+        <div class="section-number">13 &mdash; Итоги</div>
+        <h1 class="section-title">Итоги и практические заметки</h1>
+        <p class="section-subtitle">Ключевые выводы и советы из практики</p>
+    </div>
+
+    <div class="content-block">
+        <h3>Что вы изучили</h3>
+        <div class="cards-grid cards-grid-2">
+            <div class="card"><p><strong>Промпт и его типы:</strong> системные, условные, на ест. языке; по конкретике и области применения</p></div>
+            <div class="card"><p><strong>4 элемента промпта:</strong> Инструкция + Контекст + Данные + Формат вывода</p></div>
+            <div class="card"><p><strong>Итеративный процесс:</strong> 5 этапов от цели до оптимального результата</p></div>
+            <div class="card"><p><strong>4 практики:</strong> чёткость, контекст, точность, ролевая игра</p></div>
+            <div class="card"><p><strong>5 фреймворков:</strong> TAG, RISE, BAB, RTF, AUTOMAT</p></div>
+            <div class="card"><p><strong>8 техник:</strong> Zero-shot, Few-shot, CoT, ToT, Step-back, Self-Criticism, Re2, RaR</p></div>
+            <div class="card"><p><strong>Инструменты ChatGPT:</strong> агентный режим, Canvas, Deep Research, Custom Instructions</p></div>
+            <div class="card"><p><strong>Рынок промптов:</strong> маркетплейсы, монетизация, ресурсы для обучения</p></div>
+        </div>
+    </div>
+
+    <div class="content-block">
+        <h3>Практические советы</h3>
         <div class="cards-grid">
-            <div class="card">
-                <div class="card-icon" style="background: #e9f1fc;">&#x1f504;</div>
-                <h4>Итерации: личные задачи vs агенты</h4>
-                <p>Для личных задач достаточно 2-3 итерации промпта. Для AI-агентов в бизнесе — 10+ итераций до стабильного результата.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon" style="background: #e9fcf0;">&#x1f3af;</div>
-                <h4>АВТОМАТ: детали решают</h4>
-                <p>Роль должна быть максимально конкретной, стиль — специфичным. «Маркетолог B2B SaaS» лучше, чем просто «маркетолог».</p>
-            </div>
-            <div class="card">
-                <div class="card-icon" style="background: #ffebe1;">&#x1f4b0;</div>
-                <h4>Рынок промтов — $222 млн</h4>
-                <p>PromptBase продаёт готовые промпты от $5. Качественный промпт — это актив, который можно монетизировать.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon" style="background: #ebe9fc;">&#x1f4d6;</div>
-                <h4>Техника Rereading</h4>
-                <p>Попросите модель перечитать входные данные перед ответом. Помогает при неоднозначных текстах и сложных инструкциях.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon" style="background: #e9f1fc;">&#x1f522;</div>
-                <h4>Few-Shot: правила примеров</h4>
-                <p>Примеры нужно чередовать (позитивные/негативные), количество — равное, избегать нестандартных символов в тексте.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon" style="background: #e9fcf0;">&#x1f9ee;</div>
-                <h4>Chain-of-Thought для расчётов</h4>
-                <p>CoT критична для математических задач и юнит-экономики. Без неё модель часто ошибается в вычислениях.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon" style="background: #ffebe1;">&#x1f4c1;</div>
-                <h4>Проекты в ChatGPT</h4>
-                <p>Функция «Проекты» сохраняет контекст между чатами. Создайте отдельный проект для каждой бизнес-задачи.</p>
-            </div>
+            <div class="card" style="border-left:4px solid var(--practico-blue);"><h4>Итерации: личные vs бизнес</h4><p>Для личных задач: 2-3 итерации. Для AI-агентов в бизнесе: 10+ итераций до стабильного результата.</p></div>
+            <div class="card" style="border-left:4px solid var(--accent-green);"><h4>Роль = детали</h4><p>&laquo;Маркетолог B2B SaaS&raquo; лучше, чем &laquo;маркетолог&raquo;. Специфичность роли определяет глубину ответа.</p></div>
+            <div class="card" style="border-left:4px solid var(--accent-coral);"><h4>CoT для расчётов</h4><p>Chain-of-Thought критична для юнит-экономики и финансовых расчётов. Без неё модель часто ошибается.</p></div>
+            <div class="card" style="border-left:4px solid var(--accent-purple);"><h4>Проекты в ChatGPT</h4><p>Используйте &laquo;Проекты&raquo; для сохранения контекста между чатами по одной задаче. Это аналог рабочей папки.</p></div>
         </div>
     </div>
 
@@ -1664,159 +1651,186 @@
     </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- COMPLETION -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
 <div class="section" id="section-complete" data-section="complete">
     <div class="completion">
         <div class="completion-icon">&#x2713;</div>
         <h2>Урок завершён!</h2>
-        <p>Вы успешно изучили основы промпт-инжиниринга, техники промптинга и настройку ChatGPT.</p>
-<div class="cards-grid" style="text-align: left; margin-top: 24px;">
-<div class="card">
-    <p>&#x2705; Что такое промпт и промпт-инжиниринг</p>
-</div>
-<div class="card">
-    <p>&#x2705; 5 шагов итеративного подхода к созданию промптов</p>
-</div>
-<div class="card">
-    <p>&#x2705; Типология промптов: по конкретике, роли и назначению</p>
-</div>
-<div class="card">
-    <p>&#x2705; Почему промпт важен: точность, экономия, скорость, контроль рисков</p>
-</div>
-<div class="card">
-    <p>&#x2705; Контекст и контекстное окно LLM</p>
-</div>
-<div class="card">
-    <p>&#x2705; 4 ключевых элемента эффективного промпта (Instruction, Context, Input Data, Output Indicator)</p>
-</div>
-<div class="card">
-    <p>&#x2705; 5 фреймворков: AUTOMAT, RTF, TAG, BAB, RISE</p>
-</div>
-<div class="card">
-    <p>&#x2705; На каком языке писать промпты: русский vs английский</p>
-</div>
-<div class="card">
-    <p>&#x2705; Техники: Zero-shot, Few-shot, Chain-of-Thought, Step-back, Self-Criticism</p>
-</div>
-<div class="card">
-    <p>&#x2705; Настройка ChatGPT: Custom Instructions, память, персонализация</p>
-</div>
-</div>
+        <p>Вы успешно изучили промпт-инжиниринг: от базовых элементов до продвинутых техник и фреймворков.</p>
     </div>
 </div>
 
-            </div>
-        </main>
+        </div>
+    </main>
 </div>
 
 <script>
+    const sections = [
+        { id: 0, title: 'Введение и типы промптов', icon: '01' },
+        { id: 1, title: 'Элементы хорошего промпта', icon: '02' },
+        { id: 2, title: 'Промпт-инжиниринг как процесс', icon: '03' },
+        { id: 3, title: 'Лучшие практики', icon: '04' },
+        { id: 4, title: 'Контекст и контекстное окно', icon: '05' },
+        { id: 5, title: 'Фреймворки: TAG, RISE, BAB, RTF', icon: '06' },
+        { id: 6, title: 'Фреймворк AUTOMAT', icon: '07' },
+        { id: 7, title: '8 техник промптинга', icon: '08' },
+        { id: 8, title: 'Инструменты ChatGPT', icon: '09' },
+        { id: 9, title: 'Настройка ChatGPT', icon: '10' },
+        { id: 10, title: 'Платформы и рынок', icon: '11' },
+        { id: 11, title: 'Рекомендации', icon: '12' },
+        { id: 12, title: 'Итоги', icon: '13' }
+    ];
 
-        const sections = [
-            { id: 0, title: 'Что такое промпт', icon: '&#x1f4ac;' },
-            { id: 1, title: 'Промпт-инжиниринг и итеративный подход', icon: '&#x1f504;' },
-            { id: 2, title: 'Проверка знаний: основы', icon: '&#x1f9e9;' },
-            { id: 3, title: 'Типология промптов', icon: '&#x1f4da;' },
-            { id: 4, title: 'Типы промптов по назначению', icon: '&#x1f3af;' },
-            { id: 5, title: 'Почему промпт важен. Контекст', icon: '&#x1f4a1;' },
-            { id: 6, title: 'Структура и элементы промпта', icon: '&#x2699;' },
-            { id: 7, title: 'Фреймворки написания промптов', icon: '&#x1f680;' },
-            { id: 8, title: 'На каком языке писать промпты', icon: '&#x1f310;' },
-            { id: 9, title: 'Техники промптинга', icon: '&#x1f9ea;' },
-            { id: 10, title: 'Настройка ChatGPT', icon: '&#x2699;' },
-            { id: 11, title: 'Практические заметки', icon: '&#x1f4dd;' }
-        ];
+    let currentSection = 0;
+    let completedSections = new Set();
 
-        let currentSection = 0;
-        let completedSections = new Set();
+    function initNav() {
+        const navContainer = document.querySelector('.practico-longread #navSections');
+        navContainer.innerHTML = sections.map((s, i) => `
+            <li class="nav-section">
+                <div class="nav-section-title ${i === 0 ? 'active' : ''}" data-section="${s.id}" onclick="goToSection(${s.id})">
+                    <span class="nav-section-number"><span>${s.icon}</span></span>
+                    <span>${s.title}</span>
+                </div>
+            </li>
+        `).join('');
+        document.querySelector('.practico-longread #totalSections').textContent = sections.length;
+    }
 
-        function initNav() {
-            const navContainer = document.querySelector('.practico-longread #navSections');
-            navContainer.innerHTML = sections.map((s, i) => `
-                <li class="nav-section">
-                    <div class="nav-section-title ${i === 0 ? 'active' : ''}" data-section="${s.id}" onclick="goToSection(${s.id})">
-                        <span class="nav-section-number"><span>${i === 0 ? '&#x2192;' : i}</span></span>
-                        <span>${s.title}</span>
-                    </div>
-                </li>
-            `).join('');
-            document.querySelector('.practico-longread #totalSections').textContent = sections.length;
-        }
+    function updateProgress() {
+        const percent = Math.round((completedSections.size / sections.length) * 100);
+        var bar = document.querySelector('.practico-longread #progressBar');
+        if (bar) bar.style.width = percent + '%';
+        var comp = document.querySelector('.practico-longread #completedSections');
+        if (comp) comp.textContent = completedSections.size;
+    }
 
-        function updateProgress() {
-            const percent = Math.round((completedSections.size / sections.length) * 100);
-            var bar = document.querySelector('.practico-longread #progressBar');
-            if (bar) bar.style.width = percent + '%';
-            var pct = document.querySelector('.practico-longread #progressPercent');
-            if (pct) pct.textContent = percent + '%';
-            var comp = document.querySelector('.practico-longread #completedSections');
-            if (comp) comp.textContent = completedSections.size;
-        }
-
-        function goToSection(id) {
-            document.querySelectorAll('.practico-longread .section').forEach(s => s.classList.remove('active'));
-            const target = document.querySelector('.practico-longread #section-' + id);
-            if (target) {
-                target.classList.add('active');
-                currentSection = id;
-                document.querySelectorAll('.practico-longread .nav-section-title').forEach(n => {
-                    n.classList.remove('active');
-                    if (parseInt(n.dataset.section) === id) {
-                        n.classList.add('active');
-                    }
-                });
-                var container = document.querySelector('.practico-longread .main-content');
-                if (container) { container.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-            }
-        }
-
-        function nextSection() {
-            completedSections.add(currentSection);
-            const navItem = document.querySelector(`.practico-longread .nav-section-title[data-section="${currentSection}"]`);
-            if (navItem) { navItem.classList.add('completed'); }
-            updateProgress();
-            if (currentSection < sections.length - 1) { goToSection(currentSection + 1); }
-        }
-
-        function prevSection() {
-            if (currentSection > 0) { goToSection(currentSection - 1); }
-        }
-
-        function completeLesson() {
-            completedSections.add(currentSection);
-            updateProgress();
-            document.querySelectorAll('.practico-longread .section').forEach(s => s.classList.remove('active'));
-            document.querySelector('.practico-longread #section-complete').classList.add('active');
-            document.querySelectorAll('.practico-longread .nav-section-title').forEach(n => { n.classList.add('completed'); });
-        }
-
-        function selectAnswer(element, quizId) {
-            const quiz = document.querySelector('.practico-longread #' + quizId);
-            quiz.querySelectorAll('.quiz-option').forEach(opt => { opt.classList.remove('selected'); });
-            element.classList.add('selected');
-            quiz.querySelector('.quiz-btn').disabled = false;
-        }
-
-        function checkAnswer(quizId, correctAnswer, correctMsg, incorrectMsg) {
-            const quiz = document.querySelector('.practico-longread #' + quizId);
-            const selected = quiz.querySelector('.quiz-option.selected');
-            const feedback = document.querySelector('.practico-longread #' + quizId + '-feedback');
-            if (!selected) return;
-            const answer = selected.dataset.answer;
-            quiz.querySelectorAll('.quiz-option').forEach(opt => {
-                opt.style.pointerEvents = 'none';
-                if (opt.dataset.answer === correctAnswer) { opt.classList.add('correct'); }
-                else if (opt.classList.contains('selected')) { opt.classList.add('incorrect'); }
+    function goToSection(id) {
+        document.querySelectorAll('.practico-longread .section').forEach(s => s.classList.remove('active'));
+        const target = document.querySelector('.practico-longread #section-' + id);
+        if (target) {
+            target.classList.add('active');
+            currentSection = id;
+            document.querySelectorAll('.practico-longread .nav-section-title').forEach(n => {
+                n.classList.remove('active');
+                if (parseInt(n.dataset.section) === id) n.classList.add('active');
             });
-            if (answer === correctAnswer) {
-                feedback.textContent = '\u2713 ' + correctMsg;
-                feedback.className = 'quiz-feedback show correct';
-            } else {
-                feedback.textContent = '\u2717 ' + incorrectMsg;
-                feedback.className = 'quiz-feedback show incorrect';
-            }
-            quiz.querySelector('.quiz-btn').disabled = true;
+            var container = document.querySelector('.practico-longread .main-content');
+            if (container) container.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+    }
 
-        initNav();
+    function nextSection() {
+        completedSections.add(currentSection);
+        const navItem = document.querySelector(`.practico-longread .nav-section-title[data-section="${currentSection}"]`);
+        if (navItem) navItem.classList.add('completed');
+        updateProgress();
+        if (currentSection < sections.length - 1) goToSection(currentSection + 1);
+    }
 
+    function prevSection() {
+        if (currentSection > 0) goToSection(currentSection - 1);
+    }
+
+    function completeLesson() {
+        completedSections.add(currentSection);
+        updateProgress();
+        document.querySelectorAll('.practico-longread .section').forEach(s => s.classList.remove('active'));
+        document.querySelector('.practico-longread #section-complete').classList.add('active');
+        document.querySelectorAll('.practico-longread .nav-section-title').forEach(n => n.classList.add('completed'));
+    }
+
+    function selectAnswer(element, quizId) {
+        const quiz = document.querySelector('.practico-longread #' + quizId);
+        quiz.querySelectorAll('.quiz-option').forEach(opt => opt.classList.remove('selected'));
+        element.classList.add('selected');
+        quiz.querySelector('.quiz-btn').disabled = false;
+    }
+
+    function checkAnswer(quizId, correctAnswer, correctMsg, incorrectMsg) {
+        const quiz = document.querySelector('.practico-longread #' + quizId);
+        const selected = quiz.querySelector('.quiz-option.selected');
+        const feedback = document.querySelector('.practico-longread #' + quizId + '-feedback');
+        if (!selected) return;
+        const answer = selected.dataset.answer;
+        quiz.querySelectorAll('.quiz-option').forEach(opt => {
+            opt.style.pointerEvents = 'none';
+            if (opt.dataset.answer === correctAnswer) opt.classList.add('correct');
+            else if (opt.classList.contains('selected')) opt.classList.add('incorrect');
+        });
+        if (answer === correctAnswer) {
+            feedback.innerHTML = '\u2713 ' + correctMsg;
+            feedback.className = 'quiz-feedback show correct';
+        } else {
+            feedback.innerHTML = '\u2717 ' + incorrectMsg;
+            feedback.className = 'quiz-feedback show incorrect';
+        }
+        quiz.querySelector('.quiz-btn').disabled = true;
+    }
+
+    // ═══ INTERACTIVE 1: Prompt Builder ═══
+    var pbState = [false, false, false, false];
+    var pbTexts = [
+        '\n\nРоль: Ты — опытный UX-копирайтер, специализирующийся на B2B SaaS продуктах.',
+        '\n\nКонтекст: Стартап запускает CRM для малого бизнеса. ЦА: владельцы бизнеса 30-50 лет, не технические.',
+        '\n\nДанные: Цена от $29/мес. Интеграция: WhatsApp, Telegram, email. 14 дней бесплатно.',
+        '\n\nФормат: Hero-секция (заголовок до 8 слов + подзаголовок до 25 слов + CTA-кнопка). Деловой, но дружелюбный тон.'
+    ];
+
+    function togglePB(el, idx) {
+        pbState[idx] = !pbState[idx];
+        el.classList.toggle('active', pbState[idx]);
+        var output = 'Напиши текст для лендинга.';
+        for (var i = 0; i < 4; i++) {
+            if (pbState[i]) output += pbTexts[i];
+        }
+        document.getElementById('pbOutput').textContent = output;
+    }
+
+    // ═══ INTERACTIVE 2: Framework Selector ═══
+    var fwData = [
+        { name: 'RTF — Role, Task, Format', why: 'Follow-up email — это генерация контента с конкретным форматом. RTF идеален.', prompt: 'Role: Менеджер по продажам B2B SaaS-компании.\n\nTask: Составь follow-up письмо клиенту после демо-встречи. Поблагодари за время, подчеркни ключевую выгоду и предложи пилот на 2 недели.\n\nFormat: Email, деловой но дружелюбный стиль, до 120 слов, с CTA-кнопкой.' },
+        { name: 'BAB — Before, After, Bridge', why: 'Улучшение процесса — это трансформация. BAB показывает путь от проблемы к решению.', prompt: 'Before: Процесс найма занимает 45 дней, 60% кандидатов отказываются на этапе оффера.\n\nAfter: Наём за 20 дней, принятие оффера 85%.\n\nBridge: Предложи конкретные шаги оптимизации каждого этапа воронки найма.' },
+        { name: 'RISE — Role, Input, Steps, Expectation', why: 'Анализ данных — задача с чёткими шагами и входными данными. RISE структурирует процесс.', prompt: 'Role: Бизнес-аналитик с опытом в e-commerce.\n\nInput: Данные о продажах за Q1-Q3: Q1=$120K, Q2=$95K, Q3=$140K. Категории: электроника (45%), одежда (30%), дом (25%).\n\nSteps: 1) Выяви тренды 2) Определи проблемные категории 3) Предложи 5 гипотез причин\n\nExpectation: Отчёт с таблицей трендов и 5 рекомендациями.' },
+        { name: 'TAG — Task, Action, Goal', why: 'Контент-план — рутинная задача с чётким результатом. TAG лаконичен и достаточен.', prompt: 'Task: Создать контент-план для Telegram-канала IT-компании на 2 недели.\n\nAction: Составь расписание из 10 постов, распредели по темам (продукт, кейсы, образование, развлечение).\n\nGoal: Увеличить вовлечённость на 20% за счёт разнообразия форматов.' }
+    ];
+
+    function showFW(i) {
+        var d = fwData[i];
+        document.getElementById('fwName').textContent = d.name;
+        document.getElementById('fwWhy').textContent = d.why;
+        document.getElementById('fwPrompt').textContent = d.prompt;
+        document.getElementById('fwResult').classList.add('visible');
+        document.querySelectorAll('#fw-selector .interactive-btn').forEach(function(b, j) {
+            b.classList.toggle('active', j === i);
+            b.style.opacity = j === i ? '1' : '0.5';
+        });
+    }
+
+    // ═══ INTERACTIVE 3: Technique Selector ═══
+    var techData = [
+        { name: 'Zero-shot', desc: 'Прямая инструкция без примеров. Модель справится сама — задача однозначная.', prompt: 'Переведи на английский: «Искусственный интеллект меняет бизнес-процессы»' },
+        { name: 'Few-shot', desc: 'Даёте 2-3 примера нужного формата. Модель считывает паттерн и воспроизводит его.', prompt: '«Быстрая доставка» → #logistics_positive\n«Товар сломан» → #quality_negative\n«Вежливый менеджер» → ?' },
+        { name: 'Chain-of-Thought', desc: 'Пошаговое рассуждение. Резко улучшает точность в задачах с логикой и расчётами.', prompt: 'У нас 1000 клиентов, конверсия 3%, средний чек $50. Если конверсия вырастет до 5%, как изменится выручка? Рассуждай пошагово.' },
+        { name: 'Tree of Thoughts', desc: 'Модель генерирует несколько вариантов, оценивает каждый и выбирает лучший.', prompt: 'Предложи 3 стратегии выхода на новый рынок. Для каждой: плюсы, минусы, риски (1-10), стоимость. Выбери лучшую и обоснуй.' },
+        { name: 'Self-Criticism', desc: 'Генерация → Критика → Улучшение. Модель сама находит и исправляет ошибки.', prompt: 'Напиши email клиенту об изменении цен.\nТеперь найди 3 слабых места.\nПерепиши, исправив все проблемы.' },
+        { name: 'Step-back', desc: 'Сначала общий вопрос о принципах, затем конкретная задача. Помогает избежать ошибок.', prompt: '1) Какие общие принципы ценообразования SaaS?\n2) Применяя их, какую цену поставить для B2B CRM с 500 пользователями?' }
+    ];
+
+    function showTech(i) {
+        var d = techData[i];
+        document.getElementById('techName').textContent = d.name;
+        document.getElementById('techDesc').textContent = d.desc;
+        document.getElementById('techPrompt').textContent = d.prompt;
+        document.getElementById('techResult').classList.add('visible');
+        document.querySelectorAll('#tech-compare .interactive-btn').forEach(function(b, j) {
+            b.classList.toggle('active', j === i);
+            b.style.opacity = j === i ? '1' : '0.5';
+        });
+    }
+
+    initNav();
 </script>
 </div>
