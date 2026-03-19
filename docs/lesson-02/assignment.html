@@ -1,0 +1,173 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+.practico-assignment {
+    --practico-blue: #0080ff;
+    --practico-blue-dark: #0060cc;
+    --practico-blue-light: #e9f1fc;
+    --accent-coral: #ff6805;
+    --accent-green: #2e8749;
+    --accent-yellow: #FBBF24;
+    --accent-purple: #5243c3;
+    --text-dark: #1e1e1e;
+    --text-gray: #64748B;
+    --bg-light: #F8FAFC;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 20px rgba(0,128,255,0.15);
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg-light);
+    color: var(--text-dark);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px;
+}
+.practico-assignment h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
+.practico-assignment .subtitle { font-size: 1.1rem; color: var(--text-gray); margin-bottom: 32px; }
+.practico-assignment .badge { display: inline-flex; align-items: center; gap: 8px; background: var(--practico-blue-light); color: var(--practico-blue); padding: 6px 16px; border-radius: 50px; font-weight: 700; font-size: 0.85rem; margin-bottom: 16px; }
+.practico-assignment .content-block { background: white; border-radius: var(--radius-lg); padding: 32px; margin-bottom: 24px; box-shadow: var(--shadow-sm); }
+.practico-assignment .content-block h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 16px; }
+.practico-assignment .content-block p { color: var(--text-gray); margin-bottom: 12px; }
+.practico-assignment .context-box { background: linear-gradient(135deg, var(--practico-blue-light) 0%, #F0F9FF 100%); border-left: 4px solid var(--practico-blue); padding: 20px 24px; border-radius: 0 var(--radius-md) var(--radius-md) 0; margin: 20px 0; }
+.practico-assignment .context-box p { color: var(--text-dark); margin: 0; }
+.practico-assignment .task-card { background: white; border: 2px solid #E2E8F0; border-radius: var(--radius-md); padding: 24px; margin-bottom: 16px; transition: all 0.2s ease; }
+.practico-assignment .task-card:hover { border-color: var(--practico-blue); box-shadow: var(--shadow-md); }
+.practico-assignment .task-number { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: var(--practico-blue); color: white; border-radius: 50%; font-weight: 700; font-size: 0.9rem; margin-right: 12px; }
+.practico-assignment .task-card h4 { display: inline; font-size: 1.05rem; font-weight: 700; }
+.practico-assignment .task-card p { color: var(--text-gray); margin: 12px 0 0 44px; font-size: 0.95rem; }
+.practico-assignment .task-card .hint { background: #FFFBEB; border: 1px dashed var(--accent-yellow); border-radius: var(--radius-sm); padding: 12px 16px; margin: 12px 0 0 44px; font-size: 0.9rem; color: #92400E; }
+.practico-assignment .example-box { background: #F0FDF4; border-left: 4px solid var(--accent-green); padding: 20px 24px; border-radius: 0 var(--radius-md) var(--radius-md) 0; margin: 20px 0; }
+.practico-assignment .example-box .example-title { font-weight: 700; color: var(--accent-green); margin-bottom: 8px; }
+.practico-assignment .criteria-list { list-style: none; padding: 0; }
+.practico-assignment .criteria-list li { padding: 10px 0; border-bottom: 1px solid #F1F5F9; display: flex; align-items: flex-start; gap: 10px; color: var(--text-gray); }
+.practico-assignment .criteria-list li:last-child { border-bottom: none; }
+.practico-assignment .criteria-list .check { color: var(--accent-green); font-weight: 700; flex-shrink: 0; }
+.practico-assignment .submission-box { background: linear-gradient(135deg, #EDE9FE 0%, #F5F3FF 100%); border: 2px solid var(--accent-purple); border-radius: var(--radius-lg); padding: 32px; text-align: center; }
+.practico-assignment .submission-box h3 { color: var(--accent-purple); margin-bottom: 12px; }
+.practico-assignment .submission-box p { color: var(--text-dark); }
+.practico-assignment .table-container { overflow-x: auto; margin: 16px 0; border-radius: var(--radius-md); border: 1px solid #E2E8F0; }
+.practico-assignment .styled-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.practico-assignment .styled-table th { background: var(--practico-blue); color: white; padding: 14px 20px; text-align: left; font-weight: 700; }
+.practico-assignment .styled-table td { padding: 14px 20px; border-bottom: 1px solid #E2E8F0; color: var(--text-gray); }
+.practico-assignment .styled-table tr:last-child td { border-bottom: none; }
+@media (max-width: 640px) { .practico-assignment { padding: 20px 16px; } .practico-assignment .content-block { padding: 20px; } }
+</style>
+
+<div class="practico-assignment">
+
+    <div class="badge">&#x1f4dd; Практическое задание</div>
+    <h1>Мастер промптов</h1>
+    <p class="subtitle">Научитесь писать эффективные промпты, используя структуру и фреймворки</p>
+
+    <div class="content-block">
+        <h2>&#x1f3af; Цель задания</h2>
+        <p>Закрепить навыки составления промптов: научиться превращать расплывчатые запросы в чёткие, структурированные инструкции для AI, применять профессиональные фреймворки и улучшать результат итеративно.</p>
+        <div class="context-box">
+            <p><strong>&#x23f0; Время:</strong> 25&ndash;35 минут</p>
+        </div>
+    </div>
+
+    <!-- Задание 1 -->
+    <div class="content-block">
+        <h2>&#x1f4cb; Задание 1: Улучшите слабые промпты</h2>
+
+        <div class="task-card">
+            <span class="task-number">1</span>
+            <h4>Перепишите 3 слабых промпта, добавив структуру</h4>
+            <p>Ниже даны три расплывчатых промпта. Перепишите каждый, добавив четыре обязательных элемента:</p>
+            <p>&bull; <strong>Инструкция</strong> &mdash; что именно должен сделать AI<br>
+               &bull; <strong>Контекст</strong> &mdash; для кого, в какой ситуации<br>
+               &bull; <strong>Входные данные</strong> &mdash; с чем работать<br>
+               &bull; <strong>Формат вывода</strong> &mdash; как должен выглядеть результат</p>
+        </div>
+
+        <div class="table-container">
+            <table class="styled-table">
+                <thead><tr><th>#</th><th>Слабый промпт</th><th>Ваш улучшенный промпт</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>A</strong></td><td>&laquo;Напиши пост про маркетинг&raquo;</td><td>&mdash;</td></tr>
+                    <tr><td><strong>B</strong></td><td>&laquo;Помоги с презентацией&raquo;</td><td>&mdash;</td></tr>
+                    <tr><td><strong>C</strong></td><td>&laquo;Сделай анализ конкурентов&raquo;</td><td>&mdash;</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="example-box">
+            <div class="example-title">&#x1f4d6; Пример улучшения</div>
+            <p><strong>Слабый промпт:</strong> &laquo;Напиши письмо клиенту&raquo;</p>
+            <p><strong>Улучшенный промпт:</strong></p>
+            <p>&bull; <strong>Инструкция:</strong> Напиши деловое письмо-извинение клиенту за задержку доставки<br>
+               &bull; <strong>Контекст:</strong> Клиент &mdash; постоянный покупатель интернет-магазина электроники, заказ задержан на 5 дней<br>
+               &bull; <strong>Входные данные:</strong> Имя клиента: Алексей, номер заказа: #4521, причина задержки: проблемы у логистической компании<br>
+               &bull; <strong>Формат вывода:</strong> Письмо на 3&ndash;4 абзаца, тон вежливый и профессиональный, включить промокод на скидку 10% как компенсацию</p>
+        </div>
+    </div>
+
+    <!-- Задание 2 -->
+    <div class="content-block">
+        <h2>&#x1f4cb; Задание 2: Примените фреймворки</h2>
+
+        <div class="task-card">
+            <span class="task-number">2</span>
+            <h4>Напишите 2 промпта, используя разные фреймворки</h4>
+            <p>Выберите любую рабочую задачу и составьте два промпта для неё, используя <strong>два разных фреймворка</strong> из списка ниже:</p>
+            <p>&bull; <strong>RTF</strong> (Role &ndash; Task &ndash; Format) &mdash; роль, задача, формат<br>
+               &bull; <strong>TAG</strong> (Task &ndash; Action &ndash; Goal) &mdash; задача, действие, цель<br>
+               &bull; <strong>BAB</strong> (Before &ndash; After &ndash; Bridge) &mdash; до, после, мост<br>
+               &bull; <strong>RISE</strong> (Role &ndash; Input &ndash; Steps &ndash; Expectation) &mdash; роль, ввод, шаги, ожидание<br>
+               &bull; <strong>AUTOMAT</strong> (Audience &ndash; Urgency &ndash; Tone &ndash; Output &ndash; Method &ndash; Aim &ndash; Topic)</p>
+        </div>
+
+        <div class="example-box">
+            <div class="example-title">&#x1f4d6; Пример: фреймворк RTF</div>
+            <p><strong>Задача:</strong> Подготовить пост для LinkedIn о трендах AI в маркетинге</p>
+            <p><strong>Role:</strong> Ты &mdash; опытный маркетолог и эксперт по AI в digital-маркетинге</p>
+            <p><strong>Task:</strong> Напиши пост для LinkedIn о трёх главных трендах использования AI в маркетинге в 2025 году</p>
+            <p><strong>Format:</strong> Пост на 150&ndash;200 слов с вступлением, тремя пунктами и призывом к обсуждению. Тон &mdash; экспертный, но дружелюбный</p>
+        </div>
+
+        <div class="hint" style="background: #FFFBEB; border: 1px dashed #FBBF24; border-radius: 8px; padding: 12px 16px; margin-top: 16px; font-size: 0.9rem; color: #92400E;">&#x1f4a1; <strong>Подсказка:</strong> Попробуйте один и тот же запрос сформулировать через два фреймворка и сравните, какой результат получится лучше.</div>
+    </div>
+
+    <!-- Задание 3 -->
+    <div class="content-block">
+        <h2>&#x1f4cb; Задание 3: Итеративное улучшение</h2>
+
+        <div class="task-card">
+            <span class="task-number">3</span>
+            <h4>Покажите процесс улучшения промпта за 3 итерации</h4>
+            <p>Выберите одну задачу и покажите, как вы улучшаете промпт шаг за шагом:</p>
+            <p>&bull; <strong>Итерация 1:</strong> Напишите первый вариант промпта, отправьте в ChatGPT, оцените результат<br>
+               &bull; <strong>Итерация 2:</strong> Уточните промпт на основе полученного ответа &mdash; добавьте детали, ограничения или примеры<br>
+               &bull; <strong>Итерация 3:</strong> Доработайте промпт до финального варианта, который даёт нужный результат</p>
+            <p>Для каждой итерации зафиксируйте: текст промпта, что не устроило в ответе, что вы изменили.</p>
+        </div>
+
+        <div class="example-box">
+            <div class="example-title">&#x1f4d6; Пример итерационного процесса</div>
+            <p><strong>Итерация 1:</strong> &laquo;Напиши описание вакансии продакт-менеджера&raquo; &rarr; Результат слишком общий, нет специфики компании</p>
+            <p><strong>Итерация 2:</strong> &laquo;Напиши описание вакансии продакт-менеджера для fintech-стартапа, опыт от 3 лет, знание Agile&raquo; &rarr; Лучше, но формат не подходит для HeadHunter</p>
+            <p><strong>Итерация 3:</strong> &laquo;Напиши описание вакансии продакт-менеджера для fintech-стартапа. Требования: опыт от 3 лет, Agile, SQL. Формат: стандартная структура HeadHunter (о компании, задачи, требования, условия). Тон: дружелюбный, но профессиональный&raquo; &rarr; Готово!</p>
+        </div>
+    </div>
+
+    <!-- Критерии -->
+    <div class="content-block">
+        <h2>&#x1f4ca; Критерии оценки</h2>
+        <ul class="criteria-list">
+            <li><span class="check">&#x2713;</span> Все 3 слабых промпта улучшены с добавлением инструкции, контекста, входных данных и формата вывода</li>
+            <li><span class="check">&#x2713;</span> Написаны 2 промпта с использованием двух разных фреймворков, фреймворки названы</li>
+            <li><span class="check">&#x2713;</span> Показан итеративный процесс из 3 шагов с описанием изменений на каждом этапе</li>
+        </ul>
+    </div>
+
+    <!-- Формат сдачи -->
+    <div class="submission-box">
+        <h3>&#x1f4e4; Формат сдачи</h3>
+        <p>Документ со всеми тремя заданиями: тексты промптов, скриншоты ответов ChatGPT (по желанию).<br>Объём: 1&ndash;2 страницы.</p>
+    </div>
+
+</div>

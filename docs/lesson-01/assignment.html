@@ -1,0 +1,157 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+.practico-assignment {
+    --practico-blue: #0080ff;
+    --practico-blue-dark: #0060cc;
+    --practico-blue-light: #e9f1fc;
+    --accent-coral: #ff6805;
+    --accent-green: #2e8749;
+    --accent-yellow: #FBBF24;
+    --accent-purple: #5243c3;
+    --text-dark: #1e1e1e;
+    --text-gray: #64748B;
+    --bg-light: #F8FAFC;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 20px rgba(0,128,255,0.15);
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg-light);
+    color: var(--text-dark);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px;
+}
+.practico-assignment h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
+.practico-assignment .subtitle { font-size: 1.1rem; color: var(--text-gray); margin-bottom: 32px; }
+.practico-assignment .badge { display: inline-flex; align-items: center; gap: 8px; background: var(--practico-blue-light); color: var(--practico-blue); padding: 6px 16px; border-radius: 50px; font-weight: 700; font-size: 0.85rem; margin-bottom: 16px; }
+.practico-assignment .content-block { background: white; border-radius: var(--radius-lg); padding: 32px; margin-bottom: 24px; box-shadow: var(--shadow-sm); }
+.practico-assignment .content-block h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 16px; }
+.practico-assignment .content-block p { color: var(--text-gray); margin-bottom: 12px; }
+.practico-assignment .context-box { background: linear-gradient(135deg, var(--practico-blue-light) 0%, #F0F9FF 100%); border-left: 4px solid var(--practico-blue); padding: 20px 24px; border-radius: 0 var(--radius-md) var(--radius-md) 0; margin: 20px 0; }
+.practico-assignment .context-box p { color: var(--text-dark); margin: 0; }
+.practico-assignment .task-card { background: white; border: 2px solid #E2E8F0; border-radius: var(--radius-md); padding: 24px; margin-bottom: 16px; transition: all 0.2s ease; }
+.practico-assignment .task-card:hover { border-color: var(--practico-blue); box-shadow: var(--shadow-md); }
+.practico-assignment .task-number { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: var(--practico-blue); color: white; border-radius: 50%; font-weight: 700; font-size: 0.9rem; margin-right: 12px; }
+.practico-assignment .task-card h4 { display: inline; font-size: 1.05rem; font-weight: 700; }
+.practico-assignment .task-card p { color: var(--text-gray); margin: 12px 0 0 44px; font-size: 0.95rem; }
+.practico-assignment .task-card .hint { background: #FFFBEB; border: 1px dashed var(--accent-yellow); border-radius: var(--radius-sm); padding: 12px 16px; margin: 12px 0 0 44px; font-size: 0.9rem; color: #92400E; }
+.practico-assignment .example-box { background: #F0FDF4; border-left: 4px solid var(--accent-green); padding: 20px 24px; border-radius: 0 var(--radius-md) var(--radius-md) 0; margin: 20px 0; }
+.practico-assignment .example-box .example-title { font-weight: 700; color: var(--accent-green); margin-bottom: 8px; }
+.practico-assignment .criteria-list { list-style: none; padding: 0; }
+.practico-assignment .criteria-list li { padding: 10px 0; border-bottom: 1px solid #F1F5F9; display: flex; align-items: flex-start; gap: 10px; color: var(--text-gray); }
+.practico-assignment .criteria-list li:last-child { border-bottom: none; }
+.practico-assignment .criteria-list .check { color: var(--accent-green); font-weight: 700; flex-shrink: 0; }
+.practico-assignment .submission-box { background: linear-gradient(135deg, #EDE9FE 0%, #F5F3FF 100%); border: 2px solid var(--accent-purple); border-radius: var(--radius-lg); padding: 32px; text-align: center; }
+.practico-assignment .submission-box h3 { color: var(--accent-purple); margin-bottom: 12px; }
+.practico-assignment .submission-box p { color: var(--text-dark); }
+.practico-assignment .table-container { overflow-x: auto; margin: 16px 0; border-radius: var(--radius-md); border: 1px solid #E2E8F0; }
+.practico-assignment .styled-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.practico-assignment .styled-table th { background: var(--practico-blue); color: white; padding: 14px 20px; text-align: left; font-weight: 700; }
+.practico-assignment .styled-table td { padding: 14px 20px; border-bottom: 1px solid #E2E8F0; color: var(--text-gray); }
+.practico-assignment .styled-table tr:last-child td { border-bottom: none; }
+@media (max-width: 640px) { .practico-assignment { padding: 20px 16px; } .practico-assignment .content-block { padding: 20px; } }
+</style>
+
+<div class="practico-assignment">
+
+    <div class="badge">&#x1f4dd; Практическое задание</div>
+    <h1>AI вокруг нас</h1>
+    <p class="subtitle">Научитесь распознавать AI в повседневной жизни и понимать, как он работает</p>
+
+    <div class="content-block">
+        <h2>&#x1f3af; Цель задания</h2>
+        <p>Закрепить понятия из урока на практике: научиться определять, где используется AI, различать Rule-Based подход от Machine Learning и понимать, какие AI-возможности применяются в реальных продуктах.</p>
+        <div class="context-box">
+            <p><strong>&#x23f0; Время:</strong> 20&ndash;30 минут</p>
+        </div>
+    </div>
+
+    <!-- Задание 1 -->
+    <div class="content-block">
+        <h2>&#x1f4cb; Задание 1: AI-детектив</h2>
+
+        <div class="task-card">
+            <span class="task-number">1</span>
+            <h4>Найдите 5 примеров AI в своей повседневной жизни</h4>
+            <p>Вспомните приложения, сервисы или устройства, которыми вы пользуетесь. Для каждого примера укажите:</p>
+            <p>&bull; Название продукта или сервиса<br>
+               &bull; Какую AI-возможность он использует (LLM, распознавание речи, компьютерное зрение, генерация изображений и т.д.)<br>
+               &bull; К какому типу AI относится: дискриминативный (распознаёт/классифицирует) или генеративный (создаёт новое)</p>
+        </div>
+
+        <div class="example-box">
+            <div class="example-title">&#x1f4d6; Пример</div>
+            <p><strong>Продукт:</strong> Яндекс.Переводчик</p>
+            <p><strong>AI-возможность:</strong> LLM (понимание и генерация текста на разных языках)</p>
+            <p><strong>Тип:</strong> Генеративный &mdash; создаёт новый текст (перевод), которого не было в обучающих данных</p>
+        </div>
+    </div>
+
+    <!-- Задание 2 -->
+    <div class="content-block">
+        <h2>&#x1f4cb; Задание 2: Rule-Based или ML?</h2>
+
+        <div class="task-card">
+            <span class="task-number">2</span>
+            <h4>Определите подход для каждой ситуации</h4>
+            <p>Прочитайте 4 ситуации ниже. Для каждой определите: здесь лучше подойдёт <strong>Rule-Based</strong> подход или <strong>Machine Learning</strong>? Объясните почему в 1&ndash;2 предложениях.</p>
+        </div>
+
+        <div class="table-container">
+            <table class="styled-table">
+                <thead><tr><th>#</th><th>Ситуация</th><th>Ваш ответ</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>A</strong></td><td>Интернет-магазин начисляет скидку 10% всем клиентам, сделавшим более 5 покупок за месяц</td><td>&mdash;</td></tr>
+                    <tr><td><strong>B</strong></td><td>Банк хочет определять мошеннические транзакции среди миллионов платежей в день</td><td>&mdash;</td></tr>
+                    <tr><td><strong>C</strong></td><td>Служба поддержки автоматически направляет обращения в нужный отдел по ключевым словам: &laquo;возврат&raquo; &rarr; отдел возвратов, &laquo;оплата&raquo; &rarr; бухгалтерия</td><td>&mdash;</td></tr>
+                    <tr><td><strong>D</strong></td><td>Стриминговый сервис рекомендует пользователю фильмы на основе его истории просмотров и предпочтений похожих зрителей</td><td>&mdash;</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="hint" style="background: #FFFBEB; border: 1px dashed #FBBF24; border-radius: 8px; padding: 12px 16px; margin-top: 16px; font-size: 0.9rem; color: #92400E;">&#x1f4a1; <strong>Подсказка:</strong> Спросите себя: можно ли описать логику чёткими правилами &laquo;если &mdash; то&raquo;? Или нужно анализировать большие объёмы данных и находить неочевидные закономерности?</div>
+    </div>
+
+    <!-- Задание 3 -->
+    <div class="content-block">
+        <h2>&#x1f4cb; Задание 3: AI в вашей работе</h2>
+
+        <div class="task-card">
+            <span class="task-number">3</span>
+            <h4>Предложите одно применение AI в вашей сфере</h4>
+            <p>Подумайте о своей работе или области деятельности. Выберите <strong>одну</strong> рутинную задачу, которую мог бы упростить AI, и опишите:</p>
+            <p>&bull; Какая это задача и почему она отнимает время<br>
+               &bull; Какую AI-возможность вы бы применили (LLM, распознавание речи и т.д.)<br>
+               &bull; Что AI будет делать, а что останется за человеком</p>
+        </div>
+
+        <div class="example-box">
+            <div class="example-title">&#x1f4d6; Пример</div>
+            <p><strong>Задача:</strong> Каждую неделю составляю отчёт по продажам &mdash; собираю данные из CRM, считаю метрики, пишу выводы. Занимает 3 часа.</p>
+            <p><strong>AI-возможность:</strong> LLM &mdash; может анализировать данные и генерировать текстовые выводы</p>
+            <p><strong>AI делает:</strong> Собирает данные, считает метрики, генерирует черновик отчёта</p>
+            <p><strong>Человек делает:</strong> Проверяет выводы, добавляет контекст, принимает решения</p>
+        </div>
+    </div>
+
+    <!-- Критерии -->
+    <div class="content-block">
+        <h2>&#x1f4ca; Критерии оценки</h2>
+        <ul class="criteria-list">
+            <li><span class="check">&#x2713;</span> Найдено 5 реальных примеров AI с корректным определением типа и возможности</li>
+            <li><span class="check">&#x2713;</span> Верно определён подход (Rule-Based vs ML) для всех 4 ситуаций с обоснованием</li>
+            <li><span class="check">&#x2713;</span> Предложено осмысленное применение AI в своей работе с разделением ролей AI и человека</li>
+        </ul>
+    </div>
+
+    <!-- Формат сдачи -->
+    <div class="submission-box">
+        <h3>&#x1f4e4; Формат сдачи</h3>
+        <p>Свободный формат: текст, таблица или список.<br>Объём: примерно 1 страница.</p>
+    </div>
+
+</div>
